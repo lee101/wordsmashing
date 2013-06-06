@@ -1,0 +1,66 @@
+application: wordsmashing
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+default_expiration: "300d 5h"
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+- url: /css
+  static_dir: css
+  http_headers:
+    Vary: Accept-Encoding
+- url: /js
+  static_dir: js
+  http_headers:
+    Vary: Accept-Encoding
+- url: /images
+  static_dir: images
+- url: /bootstrap/*
+  static_dir: bootstrap
+- url: /channel.html
+  static_files: channel.html
+  upload: channel.html
+  expiration: "300d"
+# - url: /(.*)html
+  # static_files: \1html
+  # upload: \1html
+- url: /contact
+  static_files: contact.html
+  upload: contact.html
+  expiration: "0d 1h"
+- url: /about
+  static_files: about.html
+  upload: about.html
+  expiration: "0d 1h"
+- url: /terms
+  static_files: terms.html
+  upload: terms.html
+  expiration: "0d 1h"
+- url: /privacy-policy
+  static_files: privacy-policy.html
+  upload: privacy-policy.html
+  expiration: "0d 1h"
+- url: /sitemap
+  static_files: sitemap.xml
+  upload: sitemap.xml
+- url: /BingSiteAuth.xml
+  static_files: BingSiteAuth.xml
+  upload: BingSiteAuth.xml
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
+- url: /facebook
+  static_files: facebook.html
+  upload: facebook.html
+  expiration: "0d 1h"
+- url: .*
+  script: main.app
+  
+libraries:
+- name: webapp2
+  version: "2.5.2"

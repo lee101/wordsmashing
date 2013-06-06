@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>About Word Smashing - Addicting and Fun Word Puzzle Game</title>
+    <meta name="description"
+          content="An Utterly Addicting Word Game, Fun For Everyone! Play This Addicting New Word Puzzle, Now For Free!">
+
+    <meta name="keywords" content="puzzle games, word finder, crossword, game, word puzzle game">
+    <meta property="og:title" content="About Word Smashing The Addicting and Fun Word Puzzle Game">
+    <meta property="og:url" content="http://www.wordsmashing.com">
+    <meta property="og:image" content="http://www.wordsmashing.com/wordsmashing_logo.png">
+    <meta property="og:description"
+          content="Play Word Smashing! The Utterly Addicting and Fun Word Puzzle Game">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Word Smashing">
+    <meta property="fb:admins" content="337972272904903">
+
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+{% if ws.debug %}
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/main.css"/>
+    {% endif %}
+    {% if not ws.debug %}
+    <link type="text/css" rel="stylesheet" href="{{ ws.css }}"/>
+    {% endif %}
+    <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
+    <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
+    {% if ws.debug %}
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="js/wordutils.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    {% endif %}
+    {% if not ws.debug %}
+    <script type="text/javascript" src="{{ ws.js }}"></script>
+    
+    {% endif %}
+    <script type="text/javascript">var switchTo5x=true;</script>
+    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
+
+
+
+</head>
+<body>
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function() {
+        // init the FB JS SDK
+        FB.init({
+            appId      : '138831849632195',                        // App ID from the app dashboard
+            channelUrl : '//wordsmashing.appspot.com/channel.html', // Channel file for x-domain comms
+            status     : true,                                 // Check Facebook Login status
+            xfbml      : true                                  // Look for social plugins on the page
+        });
+
+        // Additional initialization code such as adding Event Listeners goes here
+    };
+
+    // Load the SDK asynchronously
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+<div id="pagebody">
+    <div id="container">
+        <div id="main">
+        	<div id="logo">
+	        	<img src="/images/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing"/>
+	        </div>
+            
+            <table border="1">
+                <tr ng-repeat="row in gamedata2d">
+                    <td ng-repeat="cell in row">
+                        <p>{{cell.letter}}</p>
+                    </td>
+
+                </tr>
+            </table>
+            
+            <div id="showscore0">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore1">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore2">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore3">
+                <button style="display: none"></button>
+            </div>
+        </div>
+        <div id="gameoptions">
+            <div id="score">
+                <button class="btn-large btn-danger" type="button">Score: 0</button>
+            </div>
+			<div id="newgame">
+            	<button class="btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+			</div>
+			<div id="difficulty">
+            	<button class="btn-large btn-danger" onclick="changeDifficulty()" type="button">Difficulty: Easy</button>
+			</div>
+        </div>
+        <div id="bannerAdd">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7026363262140448";
+            /* word game vert */
+            google_ad_slot = "3713734958";
+            google_ad_width = 160;
+            google_ad_height = 600;
+            //-->
+            </script>
+            <script type="text/javascript"
+                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+
+        </div>
+        
+        <div id="instructions">
+        	
+            <h1>About Word Smashing</h1>
+            <p class="lead">Word smashing is a brand new, free online word search puzzle. It offers free addicting fun for the whole family. Be puzzled and build your brain today by playing Word Smashing. </p>
+            <p class="lead"><b>Instructions:</b><br/>
+            	Make Words for points and to clear space!<br/> 
+            	Click a letter and click on an empty space to move it there.<br/>
+            	You will only be able to move if there is a clear path.<br/>
+            	Every turn three new letters will grow into the game.<br/> 
+            	Its game over when the board is filled with letters!<br/>
+            	Get two words in one turn and get combos by making words every turn for bounus points.<br/>
+            	On Easy You can make words with 2 or more letters.<br/>
+            	On Medium You can make words with 3 or more letters.<br/>
+            	On Hard You can only make words with 4 or more letters!<br/>
+            	Some place names and peoples names do not count as words.
+            	</p>
+        </div>
+        <div class="clear"></div>
+        <div id="btm">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7026363262140448";
+            /* big h default */
+            google_ad_slot = "3155331752";
+            google_ad_width = 728;
+            google_ad_height = 90;
+            //-->
+            </script>
+            <script type="text/javascript"
+                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+            
+
+        </div>
+    </div>
+		
+    <div class="clear">
+    </div>
+	<div id="footer">
+		<p>
+			<a href="/contact" title="Contact Us">Contact</a> 
+			<span>About Us</span>
+			<a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
+		    <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
+		    <span>© 2013 Word Smashing</span> 
+		    <!--<a href="https://plus.google.com/ID" rel="publisher">Find us on Google+</a>
+		    <a href="http://www.facebook.com/ID" title="Word Smashing on Facebook">
+		        <img src="/content/images/facebook.jpg" alt="Word Smashing on Facebook" style="margin-bottom: -15px;" width="144px" height="44px">
+		    </a> -->
+		</p>
+	</div>
+	<div class="clear">
+	</div>
+</div>
+
+<script type="text/javascript">stLight.options({publisher: "f60d3075-2d40-427d-8b64-9ed35940588c", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+<script>
+    var options={ "publisher": "f60d3075-2d40-427d-8b64-9ed35940588c", "position": "right", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "pinterest", "linkedin", "email", "sharethis"]}};
+    var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
+</script>
+</body>
+</html>
