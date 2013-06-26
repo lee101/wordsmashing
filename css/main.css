@@ -1,3 +1,42 @@
+
+#overlay {
+	position:fixed; 
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:#000;
+	opacity:0.5;
+	filter:alpha(opacity=50);
+}
+
+#modal {
+	position:absolute;
+	background:url(tint20.png) 0 0 repeat;
+	background:rgba(0,0,0,0.2);
+	border-radius:14px;
+	padding:8px;
+}
+
+#content {
+	border-radius:8px;
+	background:#fff;
+	padding:20px;
+}
+
+#close {
+	position:absolute;
+	background:url('/img/close.png') 0 0 no-repeat;
+	width:24px;
+	height:27px;
+	display:block;
+	text-indent:-9999px;
+	top:-7px;
+	right:-7px;
+}
+
+
+
 #logo {
 	text-align: center;
 }
@@ -60,21 +99,26 @@ body {
     position: relative;
     left: 203px;
     top: -384px;
+    height: 0;
 }
 #showscore1{
     position: relative;
     left: 53px;
-    top: -384px;
+    top: -314px;
+    height: 0;
 }
 #showscore2{
     position: relative;
     left: 203px;
-    top: -121px;
+    top: -161px;
+    height: 0;
+
 }
 #showscore3{
     position: relative;
     left: 53px;
-    top: -121px;
+    top: -111px;
+    height: 0;
 }
 #score{
 	margin: 40px 0 30px 10px;
@@ -125,7 +169,7 @@ body {
 	float: left;
 	width: 100%;
 }
-#footer p {
+#footer {
 	text-align: center;
 }
 #footer a {
@@ -145,3 +189,36 @@ body {
 #fb-gameoptions div {
 margin: 10px 0 10px 10px;
 }
+#changedifficulty{
+	background-color: #FFFFFF;
+	width:512px;
+	text-align: center;
+	padding:20px 10px;
+}
+#changedifficulty button{
+	margin:0px 20px;
+}
+#fbbtm {
+	float: left;
+	height: 280px;
+	position: relative;
+	text-align:center;
+}
+#login{
+	float: right;
+}
+.winadd{
+    width: 336px;
+    height: 280px;
+    margin: 20px;
+}
+/*#changedifficulty {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}*/

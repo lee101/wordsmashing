@@ -18,8 +18,8 @@ handlers:
   static_dir: js
   http_headers:
     Vary: Accept-Encoding
-- url: /images
-  static_dir: images
+- url: /img
+  static_dir: img
 - url: /bootstrap/*
   static_dir: bootstrap
 - url: /channel.html
@@ -29,22 +29,6 @@ handlers:
 # - url: /(.*)html
   # static_files: \1html
   # upload: \1html
-- url: /contact
-  static_files: contact.html
-  upload: contact.html
-  expiration: "0d 1h"
-- url: /about
-  static_files: about.html
-  upload: about.html
-  expiration: "0d 1h"
-- url: /terms
-  static_files: terms.html
-  upload: terms.html
-  expiration: "0d 1h"
-- url: /privacy-policy
-  static_files: privacy-policy.html
-  upload: privacy-policy.html
-  expiration: "0d 1h"
 - url: /sitemap
   static_files: sitemap.xml
   upload: sitemap.xml
@@ -54,9 +38,17 @@ handlers:
 - url: /robots.txt
   static_files: robots.txt
   upload: robots.txt
-- url: /facebook
-  static_files: facebook.html
-  upload: facebook.html
+- url: /leecole
+  static_files: leecole.html
+  upload: leecole.html
+  expiration: "0d 1h"
+- url: /achievement-hard.html
+  static_files: achievement-hard.html
+  upload: achievement-hard.html
+  expiration: "0d 1h"
+- url: /achievement-medium.html
+  static_files: achievement-medium.html
+  upload: achievement-medium.html
   expiration: "0d 1h"
 - url: .*
   script: main.app

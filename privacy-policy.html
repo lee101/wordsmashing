@@ -2,16 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>About Word Smashing - Addicting and Fun Word Puzzle Game</title>
+    <title>Privacy Policy Word Smashing - Addicting and Fun Word Puzzle Game</title>
     <meta name="description"
-          content="An Utterly Addicting Word Game, Fun For Everyone! Play This Addicting New Word Puzzle, Now For Free!">
+          content="Word Smashing Privacy Policy. Play This Addicting New Word Puzzle, Free Fun For Everyone!">
 
-    <meta name="keywords" content="puzzle games, word finder, crossword, game, word puzzle game">
-    <meta property="og:title" content="Word Smashing - Addicting and Fun Word Puzzle Game | Privacy">
+    <meta name="keywords" content="puzzle games, word smashing privacy, crossword, game, word puzzle game">
+    <meta property="og:title" content="Privacy Policy | Word Smashing - Addicting and Fun Word Puzzle Game">
     <meta property="og:url" content="http://www.wordsmashing.com">
     <meta property="og:image" content="http://www.wordsmashing.com/wordsmashing_logo.png">
     <meta property="og:description"
-          content="Play Word Smashing! The Utterly Addicting and Fun Word Puzzle Game">
+          content="Word Smashing Privacy Policy. Play The Utterly Addicting and Fun Word Puzzle Game Now For Free.">
     <meta property="og:type" content="game">
     <meta property="og:site_name" content="Word Smashing">
     <meta property="fb:admins" content="337972272904903">
@@ -27,6 +27,19 @@
     {% endif %}
     <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
     <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
+    
+        <script>
+    var achievements = {};
+    {% for achievement in achievements %}
+    {% if achievement.type = UNLOCKED_MEDIUM %}
+    achievements.medium = true;
+    {% endif %}
+    {% if achievement.type = UNLOCKED_HARD %}
+    achievements.hard = true;
+    {% endif %}
+    {% endfor %}
+    </script>
+    
     {% if ws.debug %}
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/jquery.blockUI.js"></script>
@@ -72,7 +85,10 @@
     <div id="container">
         <div id="main">
         	<div id="logo">
-	        	<img src="/images/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing"/>
+	        	<img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing"/>
+                <div id="login">
+		        	<fb:login-button autologoutlink="true" scope="publish_stream" width="200" max-rows="1"></fb:login-button>
+			    </div>
 	        </div>
             
             <table border="1">
@@ -105,7 +121,7 @@
             	<button class="btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
 			</div>
 			<div id="difficulty">
-            	<button class="btn-large btn-danger" onclick="changeDifficulty()" type="button">Difficulty: Easy</button>
+            	<button id="changedifficultybutton" class="btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
 			</div>
         </div>
         <div id="bannerAdd">
@@ -244,11 +260,22 @@ This policy was last modified on 20/05/2013</p>
 			<a href="/about" title="About Word Smashing">About Us</a>
 			<a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
 		    <span>Privacy Policy</span> 
-		    <span>© 2013 Word Smashing</span> 
-		    <!--<a href="https://plus.google.com/ID" rel="publisher">Find us on Google+</a>
-		    <a href="http://www.facebook.com/ID" title="Word Smashing on Facebook">
-		        <img src="/content/images/facebook.jpg" alt="Word Smashing on Facebook" style="margin-bottom: -15px;" width="144px" height="44px">
-		    </a> -->
+		    <span>© 2013 Word Smashing</span>
+            <a href="http://www.facebook.com/WordSmashingCommunity" title="Word Smashing on Facebook" target="_blank">
+		        <img src="/img/facebook.jpg" alt="Word Smashing on Facebook" width="144px" height="44px">
+		    </a>
+			<div class="g-plus" data-href="//plus.google.com/116949277834973226564" data-rel="publisher"></div>
+
+			<!-- Place this tag after the last badge tag. -->
+			<script type="text/javascript">
+			  (function() {
+			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			    po.src = 'https://apis.google.com/js/plusone.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			  })();
+			</script><br/>
+		    <a href="https://twitter.com/Wordsmashing" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Wordsmashing</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 		</p>
 	</div>
 	<div class="clear">

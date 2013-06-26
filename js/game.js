@@ -1,9 +1,4 @@
-/**
- * User: user-000
- * Date: 1/04/13
- * Time: 10:37 PM
- * To change this template use File | Settings | File Templates.
- */
+
 var game = {
     'width': 9,
     'height': 9,
@@ -15,11 +10,34 @@ var EASY = 2;
 var MEDIUM = 3;
 var HARD = 4;
 var difficulty = EASY;
-function changeDifficulty(){
-	difficulty++;
-	if(difficulty > HARD){
-		difficulty = EASY;
+/**
+ * implementing 5 10 20 combos!
+ */
+var comboCounter = 0;
+function showChangeDifficultyDialog(){
+	//TODO fix ui
+	var mediumButton = '<button class="btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button" title="Change difficulty to Medium">Medium</button>';
+	if(! achievements.medium){
+		var mediumButton = '<button class="btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Easy!"><span class="icon-lock"></span>Medium</button>';
 	}
+	
+	var hardButton = '<button class="btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button" title="Change difficulty to Hard">Hard</button>';
+	if(! achievements.hard){
+		var hardButton = '<button class="btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Medium!"><span class="icon-lock"></span>Hard</button>';
+	}
+	
+	modal.open({content: '<div id="changedifficulty">'+
+		'<p class="lead">Change difficulty and start a new game?</p>'+
+    	'<button class="btn-large btn-danger" onclick="changeDifficulty(EASY)" type="button" title="Change difficulty to Easy">Easy</button>'+
+    	mediumButton+
+    	hardButton+
+	'</div>'});
+	
+}
+function changeDifficulty(newDifficulty){
+	modal.close();
+	newGame();
+	difficulty = newDifficulty;
 	var difficultyText = "Medium";
 	if(difficulty == EASY){
 		difficultyText = "Easy";
@@ -28,7 +46,7 @@ function changeDifficulty(){
 		difficultyText = "Hard";
 	}
 	
-	$('#difficulty button').text('Difficulty: ' + difficultyText);
+	$('#changedifficultybutton').text('Difficulty: ' + difficultyText);
 }
 var gamedata = []
 var gamedata2d = []
@@ -68,7 +86,7 @@ newGame = function () {
     }
     //remove score and game over screen
     game.score=0
-    $('#showscore1 button').replaceWith('<button style="display: none"></button>')
+    $('#showscore1').html('<button style="display: none"></button>')
     update();
 
 }
@@ -91,27 +109,27 @@ function selectWord(imclicked) {
     var xPos = getXIndex(imclicked)
     var yPos = getYIndex(imclicked)
 
-    //unselect if its already selected
-    if (xPos == selectedXpos && yPos == selectedYpos) {
-        gamedata2d[yPos][xPos].selected = false;
+    //unselect current if there is a current selected
+    if (selectedXpos != -1 && selectedYpos != -1) {
+        gamedata2d[selectedYpos][selectedXpos].selected = false;
+        $("#"+selectedYpos+'-'+selectedXpos).removeClass('btn-warning');
+        $("#"+selectedYpos+'-'+selectedXpos).addClass('btn-danger');
+        //stop if current selected is this
+        if(selectedXpos == xPos && selectedYpos == yPos){
+        	return;        	
+        }
         selectedXpos = -1;
         selectedYpos = -1;
-        update()
-        return;
+    }
 
-    }
-    //unselect all --- TODO could only unselect one thats selected
-    for (var i = 0; i < game.height; i++) {
-        for (var j = 0; j < game.width; j++) {
-            curr = gamedata2d[i][j].selected = false;
-        }
-    }
     gamedata2d[yPos][xPos].selected = true;
     selectedXpos = xPos
     selectedYpos = yPos
 
     //update view
-    update();
+
+    $("#"+yPos+'-'+xPos).removeClass('btn-danger');
+    $("#"+yPos+'-'+xPos).addClass('btn-warning');
 }
 /*
  animate along path
@@ -386,6 +404,15 @@ function turnEnd(endPos) {
     	showDouble();
     	game.score += scores;
     }
+    if(matches == 0){
+        comboCounter = 0;
+    }
+    else{
+        comboCounter++;
+        if(comboCounter >= 2){
+            showCombo();
+        }
+    }
     /*
      for (var i = 0; i < game.startwords; i++) {
      gamedata.push({letter: getRandomLetter(), 'selected': false})
@@ -444,21 +471,77 @@ function turnEnd(endPos) {
     }
 }
 function gameover(){
-    $('#showscore1 button').replaceWith("<button class=\"btn-large btn-warning\" type=\"button\">Game Over. Your Score: " + game.score + " Points!</button>")
+//    $('#showscore1').html("<button class=\"btn-large btn-warning\" type=\"button\">Game Over. Your Score: " + game.score + " Points!</button>"+
+//    		'<button class="btn-large btn-primary" onclick="postHighScoreToFacebook()">Post High Score To Facebook!</button>')
+	modal.open({content: '<div id="changedifficulty">'+
+		'<p class="lead">Smashed It!</p>'+
+		'<p class="lead">Congratulations! Your Score: ' + game.score + '!</p>'+
+    	'<div style="float:left"><button class="btn-large btn-primary" onclick="postHighScoreToFacebook()">Post High Score To Facebook!</button></div>'+
+    	'<div style="float:right"><button class="btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
+    	'<div class="clear"></div>'+
+	'</div>'});
+
+    saveHighScore()
+
+	if(! achievements.medium && game.score >= 5000){
+		achievements.medium = true;
+		saveAchievement(1);
+		var firstTime = true;
+		//bind new event to close function
+		var parent = modal.close;
+		modal.close = function(){
+			parent();
+			if(firstTime){
+				modal.open({content: '<div id="changedifficulty">'+
+					'<p class="lead">Congratulations!!</p>'+
+					'<p class="lead">You Have Unlocked Medium Difficulty!</p>'+
+					'<p class="lead">Only Words With 3 or More Letters on Medium!</p>'+
+                    '<button class="btn-large btn-primary" onclick="postAchievementToFacebook(MEDIUM)" style="margin:20px;">Post Achievement To Facebook!</button>'+
+			    	'<div style="float:left"><button class="btn-large btn-danger" onclick="changeDifficulty(EASY)" type="button">Play Again On Easy!</button></div>'+
+			    	'<div style="float:right"><button class="btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button">Play On Medium!</button></div>'+
+			    	'<div class="clear"></div>'+
+				'</div>'});
+				
+				firstTime = false
+			}
+		}
+	}
+	if(! achievements.hard && game.score >= 5000 && difficulty == MEDIUM){
+		achievements.hard = true;
+		saveAchievement(2);
+		var firstTime = true;
+		//bind new event to close function
+		var parent = modal.close;
+		modal.close = function(){
+			parent();
+			if(firstTime){
+				modal.open({content: '<div id="changedifficulty">'+
+					'<p class="lead">Congratulations!!</p>'+
+					'<p class="lead">You Have Unlocked Hard Difficulty!</p>'+
+					'<p class="lead">Only Words With 4 or More Letters on Hard!</p>'+
+                    '<button class="btn-large btn-primary" onclick="postAchievementToFacebook(HARD)" style="margin:20px;">Post Achievement To Facebook!</button>'+
+			    	'<div style="float:left"><button class="btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button">Play Again On Medium!</button></div>'+
+			    	'<div style="float:right"><button class="btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button">Play On Hard!</button></div>'+
+			    	'<div class="clear"></div>'+
+				'</div>'});
+				
+				firstTime = false
+			}
+		}
+	}
 }
+
 var iteration=0;
 function showScore(word, score) {
     iteration++
     iteration = iteration%4;
     word = word.toUpperCase()
     $('#showscore'+iteration+' button').empty()
-    $('#showscore'+iteration+' button').replaceWith("<button class=\"btn-large btn-warning\" type=\"button\">" + word + ". " + score + " Points!</button>")
+    $('#showscore'+iteration).html("<button class=\"btn-large btn-warning\" type=\"button\">" + word + ". " + score + " Points!</button>")
     var definiteit=iteration
-    $('#showscore'+iteration+' button').animate({top: '-=100px',opacity:0},2500,function(){
+    $('#showscore'+iteration+' button').animate({top: '-=100px',opacity:0},4000,function(){
         $('#showscore'+definiteit+' button').css({display:'none'})
     })
-
-
     //"<button class=\"" + btnclass + "\" onclick=\"selectWord(this)\" type=\"button\">" + gd.letter + "</button>"
 }
 function showDouble() {
@@ -467,13 +550,25 @@ function showDouble() {
     $('#showscore'+iteration+' button').empty()
     $('#showscore'+iteration+' button').replaceWith("<button class=\"btn-large btn-success\" type=\"button\">Double Points!</button>")
     var definiteit=iteration
-    $('#showscore'+iteration+' button').animate({top: '-=100px',opacity:0},2500,function(){
+    $('#showscore'+iteration+' button').animate({top: '-=100px',opacity:0},4000,function(){
         $('#showscore'+definiteit+' button').css({display:'none'})
     })
-
-
-    //"<button class=\"" + btnclass + "\" onclick=\"selectWord(this)\" type=\"button\">" + gd.letter + "</button>"
 }
+function showCombo(){
+
+    var bonusPoints = comboCounter*10;
+
+    game.score += bonusPoints;
+    iteration++
+    iteration = iteration%4;
+    $('#showscore'+iteration+' button').empty()
+    $('#showscore'+iteration+' button').replaceWith("<button class=\"btn-large btn-success\" type=\"button\">"+comboCounter+"X Combo "+bonusPoints+" Points!</button>")
+    var definiteit=iteration
+    $('#showscore'+iteration+' button').animate({top: '-=100px',opacity:0},4000,function(){
+        $('#showscore'+definiteit+' button').css({display:'none'})
+    })
+}
+
 function update() {
     function renderGameData(gd,i,j) {
         var cssclass = ''
@@ -488,7 +583,7 @@ function update() {
         }
         if (gd.halfgrown) {
             val = '<div id="'+i+'-'+j+'" onclick="moveTo(this)" class="btn-link swap" style="height: 36px;padding-top: 10px;" >'+
-            '<a class="btn btn-small disabled btn-danger swap" href="#" >' + gd.letter + "</a></div>"
+            '<button class="btn btn-small disabled btn-danger swap" type="button" >' + gd.letter + "</button></div>"
         }
         return val
     }
@@ -592,15 +687,19 @@ function getpath(start, goal) {
 
 // high scores service
 function saveHighScore(){
-	
+    if(window.FB){
+        FB.api('/me/scores/', 'post', { score: game.score }, function(response) {
+            console.log("Score posted to Facebook");
+        });
+    }
+
 	$.ajax( {
         "url":  "/scores",
-        "data": {"score":game.score},
-        "success": function (json) {
-            
+        "data": {"score":game.score, "difficulty":difficulty},
+        "success": function (text) {
+
         },
-        "dataType": "json",
-        "type": "POST",
+        "type": "GET",
         "cache": false,
         "error": function (xhr, error, thrown) {
             if ( error == "parsererror" ) {
@@ -610,6 +709,107 @@ function saveHighScore(){
         }
     } );
 }
+function saveAchievement(achievement_number){
 
+    var achievementURLs = Array();
+    achievementURLs[0] = "";
+    achievementURLs[1] = "http://www.wordsmashing.com/achievement-medium.html";
+    achievementURLs[2] = "http://www.wordsmashing.com/achievement-hard.html";
 
+    achievementURLs[2] = "http://www.wordsmashing.com/achievement150.html";
+    achievementURLs[3] = "http://www.wordsmashing.com/achievement200.html";
+    achievementURLs[4] = "http://www.wordsmashing.com/achievementx3.html";
+
+    $.ajax( {
+        "url":  "/achievements",
+        "data": {"achievement":achievement_number},
+        "success": function (text) {
+
+        },
+        "type": "GET",
+        "cache": false,
+        "error": function (xhr, error, thrown) {
+            if ( error == "parsererror" ) {
+                console.log( "JSON data from "+
+                    "server could not be parsed. This is caused by a JSON formatting error." );
+            }
+        }
+    } );
+    if(window.FB)
+        FB.api('/me/scores/', 'post', { achievement: achievementURLs[achievement_number] }, function(response) {
+            if(response.error){
+                console.log(response.error.toString());
+            }
+            else{
+                console.log("Achievement posted");
+            }
+        });
+}
+function postHighScoreToFacebook(){
+    if(window.FB)
+        FB.ui(
+            {
+                method: 'feed',
+                name: 'Word Smashing',
+                link: 'http://apps.facebook.com/wordsmashing',
+                picture: 'http://www.wordsmashing.com/img/wordsmashing_logo155x100.png',
+                caption: 'Got a High Score of ' + game.score + '!',
+                description: 'Come play the challenging new word puzzle at WordSmashing.com!'
+            },
+            function(response) {
+                if (response && response.post_id) {
+                    //alert('Post was published.');
+                } else {
+                    //alert('Post was not published.');
+                }
+            }
+        );
+}
+function postAchievementToFacebook(achievementnumber) {
+    if(achievementnumber == MEDIUM) {
+        achievementname = 'Medium';
+    }
+    else if(achievementnumber == HARD) {
+        achievementname = 'Hard';
+    }
+    else {
+        return;
+    }
+    if(window.FB)
+        FB.ui(
+            {
+                method: 'feed',
+                name: 'Word Smashing',
+                link: 'http://apps.facebook.com/wordsmashing',
+                picture: 'http://www.wordsmashing.com/img/wordsmashing_logo155x100.png',
+                caption: 'Unlocked ' + achievementname + ' Difficulty on Word Smashing!',
+                description: 'Come Play the Challenging new Word Puzzle at WordSmashing.com!'
+            },
+            function(response) {
+                if (response && response.post_id) {
+                    //alert('Post was published.');
+                } else {
+                    //alert('Post was not published.');
+                }
+            }
+        );
+}
+
+function showHighScores(){
+    if(! highscores.medium){
+        highscores.medium = 0;
+    }
+    if(! highscores.easy){
+        highscores.easy = 0;
+    }
+    if(! highscores.hard){
+        highscores.hard = 0;
+    }
+	modal.open({content: '<div id="highscores-modal">'+
+		'<p class="lead">Your High Scores</p>'+
+    	'<p class="lead">Easy: ' + highscores.easy + '</p>'+
+    	'<p class="lead">Medium: ' + highscores.medium + '</p>'+
+    	'<p class="lead">Hard: ' + highscores.hard + '</p>'+
+	'</div>'});
+}
 
