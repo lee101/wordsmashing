@@ -109,6 +109,9 @@ class BaseHandler(webapp2.RequestHandler):
         #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         achievements = Achievement.getUserAchievements(self.current_user)
         highscores = HighScore.getHighScores(self.current_user)
+
+        achievements = achievements.get_result()
+        highscores = highscores.get_result()
         template_values = {
             'ws': ws,
             'facebook_app_id': FACEBOOK_APP_ID,
@@ -206,7 +209,7 @@ class LogoutHandler(BaseHandler):
 
 
 
-app = webapp2.WSGIApplication([
+app = ndb.toplevel(webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/scores', ScoresHandler),
     ('/achievements', AchievementsHandler),
@@ -218,4 +221,4 @@ app = webapp2.WSGIApplication([
     ('/contact', ContactHandler),
 
 
-], debug=True, config=config)
+], debug=True, config=config))

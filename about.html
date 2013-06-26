@@ -28,7 +28,7 @@
     <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
     <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
     
-        <script>
+    <script>
     var achievements = {};
     {% for achievement in achievements %}
     {% if achievement.type = UNLOCKED_MEDIUM %}
@@ -37,6 +37,19 @@
     {% if achievement.type = UNLOCKED_HARD %}
     achievements.hard = true;
     {% endif %}
+    {% endfor %}
+
+    var highscores = {};
+    {% for score in highscores %}
+        {% if score.difficulty = MEDIUM %}
+            highscores.medium = {{ score.score }};
+        {% endif %}
+        {% if score.difficulty = EASY %}
+            highscores.easy = {{ score.score }};
+        {% endif %}
+        {% if score.difficulty = HARD %}
+            highscores.hard = {{ score.score }};
+        {% endif %}
     {% endfor %}
     </script>
     
@@ -92,14 +105,15 @@
 	        </div>
             
             <table border="1">
-                <tr ng-repeat="row in gamedata2d">
-                    <td ng-repeat="cell in row">
-                        <p>{{cell.letter}}</p>
+                <tr>
+                    <td>
+
                     </td>
 
                 </tr>
             </table>
-            
+            <div class="fb-like" data-href="http://www.wordsmashing.com" data-send="true" data-width="450" data-show-faces="true"></div>
+
             <div id="showscore0">
                 <button style="display: none"></button>
             </div>

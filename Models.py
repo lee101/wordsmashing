@@ -47,7 +47,7 @@ class HighScore(ndb.Model):
 
     @classmethod
     def getHighScores(cls, user):
-        return cls.query(cls.user == user.key).order(-cls.difficulty).fetch(10)
+        return cls.query(cls.user == user.key).order(-cls.difficulty).fetch_async(10)
 
     @classmethod
     def updateHighScoreFor(cls, user, score, difficulty):
@@ -90,7 +90,7 @@ class Achievement(ndb.Model):
         '''
         user a User object
         '''
-        achievements = cls.query(cls.user == user.key).fetch(10)#.all()?
+        achievements = cls.query(cls.user == user.key).fetch_async(10)#.all()?
         # if len(achievements) == 0:
         #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         return achievements;
