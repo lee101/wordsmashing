@@ -12,6 +12,13 @@ indexes:
 
 - kind: HighScore
   properties:
+  - name: difficulty
+  - name: user
+  - name: score
+    direction: desc
+
+- kind: HighScore
+  properties:
   - name: user
   - name: difficulty
     direction: desc

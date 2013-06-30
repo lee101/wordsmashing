@@ -4,22 +4,27 @@
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
-		<url>
+    <url>
+		<loc>http://wordsmashing.com/timed</loc>
+		<changefreq>weekly</changefreq>
+		<priority>1</priority>
+	</url>
+	<url>
 		<loc>http://wordsmashing.com/about</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0.1</priority>
 	</url>
-		<url>
+	<url>
 		<loc>http://wordsmashing.com/terms</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
-		<url>
+	<url>
 		<loc>http://wordsmashing.com/privacy-policy</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
-		<url>
+	<url>
 		<loc>http://wordsmashing.com/contact</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>

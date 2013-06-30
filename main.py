@@ -199,6 +199,13 @@ class TermsHandler(BaseHandler):
     def post(self):
         self.render('terms.html')
 
+class TimedHandler(BaseHandler):
+    def get(self):
+        self.render('timed.html')
+
+    def post(self):
+        self.render('timed.html')
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -219,6 +226,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/facebook', FbHandler),
     ('/about', AboutHandler),
     ('/contact', ContactHandler),
+    ('/timed', TimedHandler),
 
 
 ], debug=True, config=config))

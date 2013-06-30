@@ -12,7 +12,7 @@
 
 #modal {
 	position:absolute;
-	background:url(tint20.png) 0 0 repeat;
+	/*background:url(tint20.png) 0 0 repeat;*/
 	background:rgba(0,0,0,0.2);
 	border-radius:14px;
 	padding:8px;
@@ -211,6 +211,9 @@ margin: 10px 0 10px 10px;
     width: 336px;
     height: 280px;
     margin: 20px;
+}
+.time{
+    text-align: center;
 }
 /*#changedifficulty {
     position: fixed;

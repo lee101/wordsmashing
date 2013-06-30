@@ -86,6 +86,7 @@ newGame = function () {
     }
     //remove score and game over screen
     game.score=0
+    comboCounter=0
     $('#showscore1').html('<button style="display: none"></button>')
     update();
 
@@ -583,7 +584,7 @@ function update() {
         }
         if (gd.halfgrown) {
             val = '<div id="'+i+'-'+j+'" onclick="moveTo(this)" class="btn-link swap" style="height: 36px;padding-top: 10px;" >'+
-            '<button class="btn btn-small disabled btn-danger swap" type="button" >' + gd.letter + "</button></div>"
+            '<button class="btn btn-small disabled btn-danger swap grower" type="button" >' + gd.letter + "</button></div>"
         }
         return val
     }

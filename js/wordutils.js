@@ -44,7 +44,7 @@ var modal = (function(){
 	};
 
 	// Generate the HTML and add it to the document
-	$overlay = $('<div id="overlay"></div>');
+	$overlay = $('<div id="overlay" onclick="modal.close()"></div>');
 	$modal = $('<div id="modal"></div>');
 	$content = $('<div id="content"></div>');
 	$close = $('<a id="close" href="#">close</a>');
