@@ -215,9 +215,9 @@ margin: 10px 0 10px 10px;
 .time{
     text-align: center;
 }
-.instructions-text {
+#instructions .lead {
     margin-bottom: 20px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 200;
     line-height: 36px;
 }
