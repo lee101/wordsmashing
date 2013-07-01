@@ -215,6 +215,12 @@ margin: 10px 0 10px 10px;
 .time{
     text-align: center;
 }
+.instructions-text {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 36px;
+}
 /*#changedifficulty {
     position: fixed;
     z-index:100;
