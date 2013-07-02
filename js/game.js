@@ -6,6 +6,7 @@ var game = {
     'growth_rate': 3,
     score: 0
 };
+var timedMode = 0;
 var EASY = 2;
 var MEDIUM = 3;
 var HARD = 4;
@@ -696,7 +697,7 @@ function saveHighScore(){
 
 	$.ajax( {
         "url":  "/scores",
-        "data": {"score":game.score, "difficulty":difficulty},
+        "data": {"score":game.score, "difficulty":difficulty, "timedMode":timedMode},
         "success": function (text) {
 
         },
@@ -709,6 +710,18 @@ function saveHighScore(){
             }
         }
     } );
+    if(difficulty == EASY){
+        if(game.score > highscores.easy)
+            highscores.easy = game.score
+    }
+    else if (difficulty == MEDIUM) {
+        if(game.score > highscores.medium)
+            highscores.medium = game.score
+    }
+    else {
+        if(game.score > highscores.hard)
+            highscores.hard = game.score
+    }
 }
 function saveAchievement(achievement_number){
 

@@ -134,6 +134,8 @@ class ScoresHandler(BaseHandler):
         userscore = Score()
         userscore.score = int(self.request.get('score'))
         userscore.difficulty = int(self.request.get('difficulty'))
+        userscore.timedMode = int(self.request.get('timedMode'))
+
         if userscore.difficulty not in DIFFICULTIES:
             raise Exception("unknown difficulty: " + userscore.difficulty)
 
@@ -141,7 +143,7 @@ class ScoresHandler(BaseHandler):
         if self.current_user:
             userscore.user = self.current_user.key
         userscore.put()
-        HighScore.updateHighScoreFor(self.current_user, userscore.score, userscore.difficulty)
+        HighScore.updateHighScoreFor(self.current_user, userscore.score, userscore.difficulty, userscore.timedMode)
 
         self.response.out.write('success!')
 class AchievementsHandler(BaseHandler):

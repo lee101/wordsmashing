@@ -13,9 +13,28 @@ indexes:
 - kind: HighScore
   properties:
   - name: difficulty
+  - name: timedMode
   - name: user
   - name: score
     direction: desc
+
+- kind: HighScore
+  properties:
+  - name: difficulty
+  - name: user
+  - name: score
+    direction: desc
+
+- kind: HighScore
+  properties:
+  - name: user
+  - name: difficulty
+
+- kind: HighScore
+  properties:
+  - name: user
+  - name: difficulty
+  - name: score
 
 - kind: HighScore
   properties:

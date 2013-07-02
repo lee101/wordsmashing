@@ -36,6 +36,7 @@ class Score(ndb.Model):
     user = ndb.KeyProperty(kind=User)
     score = ndb.IntegerProperty(default=0)
     difficulty = ndb.IntegerProperty(default=2)
+    timedMode = ndb.IntegerProperty(default=0)
 
 class HighScore(ndb.Model):
     '''
@@ -44,23 +45,26 @@ class HighScore(ndb.Model):
     user = ndb.KeyProperty(kind=User)
     score = ndb.IntegerProperty(default=0)
     difficulty = ndb.IntegerProperty(default=2)
+    timedMode = ndb.IntegerProperty(default=0)
 
     @classmethod
     def getHighScores(cls, user):
-        return cls.query(cls.user == user.key).order(-cls.difficulty).fetch_async(10)
+        return cls.query(cls.user == user.key).order(cls.difficulty, cls.score).fetch_async(10)
 
     @classmethod
-    def updateHighScoreFor(cls, user, score, difficulty):
+    def updateHighScoreFor(cls, user, score, difficulty, timedMode):
         '''
         updates users highscore returns true if it is there high score false otherwise
         '''
         hs = cls.query(cls.user == user.key,
-                       cls.difficulty == difficulty).order(-cls.score).fetch(1)
+                       cls.difficulty == difficulty,
+                       cls.timedMode == timedMode).order(-cls.score).fetch(1)
         if len(hs)>0 and hs[0].score < score:
             hs = HighScore()
             hs.user = user.key
             hs.score = score
             hs.difficulty = difficulty
+            hs.timedMode = timedMode
             hs.put()
             return True
         if len(hs) == 0:
@@ -68,6 +72,7 @@ class HighScore(ndb.Model):
             hs.user = user.key
             hs.score = score
             hs.difficulty = difficulty
+            hs.timedMode = timedMode
             hs.put()
             return True
         return False
