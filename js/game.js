@@ -450,7 +450,7 @@ function turnEnd(endPos) {
     }
     //generate random 3 letter places
     growers = []
-    for (var i = 0; i < numspaces - 3; i++) {
+    for (var i = 0; i < numspaces - game.growth_rate; i++) {
         growers.push({'selected': false})
     }
 
@@ -473,17 +473,19 @@ function turnEnd(endPos) {
     }
 }
 function gameover(){
-//    $('#showscore1').html("<button class=\"btn-large btn-warning\" type=\"button\">Game Over. Your Score: " + game.score + " Points!</button>"+
-//    		'<button class="btn-large btn-primary" onclick="postHighScoreToFacebook()">Post High Score To Facebook!</button>')
+    var isHighScore = saveHighScore()
+
+    var congratsMessage = 'Congratulations! Your Score: ' + game.score + '!';
+    if(isHighScore){
+        congratsMessage = 'Thats A New Best! Your New High Score: ' + game.score + '!';
+    }
 	modal.open({content: '<div id="changedifficulty">'+
 		'<p class="lead">Smashed It!</p>'+
-		'<p class="lead">Congratulations! Your Score: ' + game.score + '!</p>'+
+		'<p class="lead">' + congratsMessage + '</p>'+
     	'<div style="float:left"><button class="btn-large btn-primary" onclick="postHighScoreToFacebook()">Post High Score To Facebook!</button></div>'+
     	'<div style="float:right"><button class="btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
     	'<div class="clear"></div>'+
 	'</div>'});
-
-    saveHighScore()
 
 	if(! achievements.medium && game.score >= 5000){
 		achievements.medium = true;
@@ -711,17 +713,24 @@ function saveHighScore(){
         }
     } );
     if(difficulty == EASY){
-        if(game.score > highscores.easy)
+        if(game.score > highscores.easy){
             highscores.easy = game.score
+            return true;
+        }
     }
     else if (difficulty == MEDIUM) {
-        if(game.score > highscores.medium)
+        if(game.score > highscores.medium){
             highscores.medium = game.score
+            return true;
+        }
     }
     else {
-        if(game.score > highscores.hard)
+        if(game.score > highscores.hard){
             highscores.hard = game.score
+            return true;
+        }
     }
+    return false;
 }
 function saveAchievement(achievement_number){
 
