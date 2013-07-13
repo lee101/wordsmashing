@@ -10,12 +10,18 @@ import webapp2
 import facebook
 from webapp2_extras import sessions
 import utils
+import jinja2
 
 FACEBOOK_APP_ID = "138831849632195"
 FACEBOOK_APP_SECRET = "93986c9cdd240540f70efaea56a9e3f2"
 
 config = {}
 config['webapp2_extras.sessions'] = dict(secret_key='93986c9cdd240540f70efaea56a9e3f2')
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'])
+
 
 class BaseHandler(webapp2.RequestHandler):
     """Provides access to the active Facebook user in self.current_user
@@ -74,7 +80,16 @@ class BaseHandler(webapp2.RequestHandler):
             anon_user.put()
             return anon_user
         else:
-            return User.byId(anonymous_cookie)
+            anon_user = User.byId(anonymous_cookie)
+            if anon_user:
+                return anon_user
+            cookie_value = utils.random_string()
+            self.response.set_cookie('wsuser', cookie_value, max_age = 15724800)
+            anon_user = User()
+            anon_user.cookie_user=1
+            anon_user.id = cookie_value
+            anon_user.put()
+            return anon_user
 
 
     def dispatch(self):
@@ -126,8 +141,9 @@ class BaseHandler(webapp2.RequestHandler):
         }
 
         #self.response.set_cookie('wsuser', , max_age = 15724800)
-        path = os.path.join(os.path.dirname(__file__), view_name)
-        self.response.out.write(template.render(path, template_values))
+
+        template = JINJA_ENVIRONMENT.get_template(view_name)
+        self.response.write(template.render(template_values))
 
 class ScoresHandler(BaseHandler):
     def get(self):
@@ -208,6 +224,13 @@ class TimedHandler(BaseHandler):
     def post(self):
         self.render('timed.html')
 
+class FriendsHandler(BaseHandler):
+    def get(self):
+        self.render('with-your-friends.html')
+
+    def post(self):
+        self.render('with-your-friends.html')
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -229,6 +252,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/about', AboutHandler),
     ('/contact', ContactHandler),
     ('/timed', TimedHandler),
+    ('/with-your-friends', FriendsHandler),
 
 
 ], debug=True, config=config))

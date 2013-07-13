@@ -1,0 +1,146 @@
+{% macro jplayer() -%}
+<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+
+<div id="jp_container_1" class="jp-audio">
+<div class="jp-type-single">
+  <div class="jp-gui jp-interface">
+    <ul class="jp-controls">
+      <!--<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>-->
+      <!--<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>-->
+      <!--<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>-->
+      <li><a href="javascript:;" class="jp-mute btn btn-small btn-danger" tabindex="1" title="mute"><span class="icon-volume-off"></span></a></li>
+      <li><a href="javascript:;" class="jp-unmute btn btn-small btn-danger" tabindex="1" title="unmute"><span class="icon-volume-up"></span></a></li>
+      <!--<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>-->
+    </ul>
+    <!--<div class="jp-progress">-->
+      <!--<div class="jp-seek-bar">-->
+        <!--<div class="jp-play-bar"></div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <div class="jp-volume-bar">
+        <div class="jp-volume-bg">
+            <div class="jp-volume-bar-value"></div>
+        </div>
+    </div>
+    <!--<div class="jp-time-holder">-->
+      <!--<div class="jp-current-time"></div>-->
+      <!--<div class="jp-duration"></div>-->
+      <!--<ul class="jp-toggles">-->
+        <!--<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>-->
+        <!--<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  </div>
+  <!--<div class="jp-title">-->
+    <!--<ul>-->
+      <!--<li>Bubble</li>-->
+    <!--</ul>-->
+  <!--</div>-->
+  <!--<div class="jp-no-solution">-->
+    <!--<span>Update Required</span>-->
+    <!--To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.-->
+  <!--</div>-->
+</div>
+</div>
+{%- endmacro %}
+
+{% macro headers(ws, highscores, achievements) -%}
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	{% if ws.debug %}
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/main.css"/>
+    {% endif %}
+    {% if not ws.debug %}
+    <link type="text/css" rel="stylesheet" href="{{ ws.css }}"/>
+    {% endif %}
+    <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
+    <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
+    <link type="text/css" href="/jplayerskin/jplayer.pink.flag.css" rel="stylesheet" />
+
+    <script>
+    var achievements = {};
+    {% for achievement in achievements %}
+    {% if achievement.type == UNLOCKED_MEDIUM %}
+    achievements.medium = true;
+    {% endif %}
+    {% if achievement.type == UNLOCKED_HARD %}
+    achievements.hard = true;
+    {% endif %}
+    {% endfor %}
+
+    var highscores = {};
+    {% for score in highscores %}
+        {% if score.difficulty == MEDIUM %}
+            highscores.medium = {{ score.score }};
+        {% endif %}
+        {% if score.difficulty == EASY %}
+            highscores.easy = {{ score.score }};
+        {% endif %}
+        {% if score.difficulty == HARD %}
+            highscores.hard = {{ score.score }};
+        {% endif %}
+    {% endfor %}
+    </script>
+
+    {% if ws.debug %}
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="js/wordutils.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    {% endif %}
+    {% if not ws.debug %}
+    <script type="text/javascript" src="{{ ws.js }}"></script>
+
+    {% endif %}
+    <script type="text/javascript" src="/js/jquery.jplayer.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#jquery_jplayer_1").jPlayer({
+            ready: function () {
+                $(this).jPlayer("setMedia", {
+                    mp3: "/music/ws-theme.mp3",
+                    oga: "/music/ws-theme.ogg"
+                });
+                $(this).jPlayer("option", "loop",true);
+                $(this).jPlayer("play");
+            },
+            ended: function() { // The $.jPlayer.event.ended event
+                $(this).jPlayer("play"); // Repeat the media
+            },
+            swfPath: "/js",
+            supplied: "mp3, oga"
+        });
+    });
+</script>
+    <script type="text/javascript">var switchTo5x=true;</script>
+    <!--<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>-->
+    <!--<script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>-->
+	<script>
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 's.sharethis.com/loader.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'w.sharethis.com/button/buttons.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+//            $(function(){
+//                stLight.options({publisher: "f60d3075-2d40-427d-8b64-9ed35940588c", doNotHash: false, doNotCopy: false, hashAddressBar: false});
+//                var options={ "publisher": "f60d3075-2d40-427d-8b64-9ed35940588c", "position": "right", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "pinterest", "linkedin", "email", "sharethis"]}};
+//                var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
+//            });
+        })();
+
+
+
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-41301467-1', 'wordsmashing.com');
+	  ga('send', 'pageview');
+
+	</script>
+{%- endmacro %}

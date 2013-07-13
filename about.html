@@ -1,3 +1,4 @@
+{% import "macros.html" as macros %}
 <!doctype html>
 <html>
 <head>
@@ -16,58 +17,7 @@
     <meta property="og:site_name" content="Word Smashing">
     <meta property="fb:admins" content="337972272904903">
 
-
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-{% if ws.debug %}
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/main.css"/>
-    {% endif %}
-    {% if not ws.debug %}
-    <link type="text/css" rel="stylesheet" href="{{ ws.css }}"/>
-    {% endif %}
-    <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
-    <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
-    
-    <script>
-    var achievements = {};
-    {% for achievement in achievements %}
-    {% if achievement.type = UNLOCKED_MEDIUM %}
-    achievements.medium = true;
-    {% endif %}
-    {% if achievement.type = UNLOCKED_HARD %}
-    achievements.hard = true;
-    {% endif %}
-    {% endfor %}
-
-    var highscores = {};
-    {% for score in highscores %}
-        {% if score.difficulty = MEDIUM %}
-            highscores.medium = {{ score.score }};
-        {% endif %}
-        {% if score.difficulty = EASY %}
-            highscores.easy = {{ score.score }};
-        {% endif %}
-        {% if score.difficulty = HARD %}
-            highscores.hard = {{ score.score }};
-        {% endif %}
-    {% endfor %}
-    </script>
-    
-    {% if ws.debug %}
-    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="js/wordutils.js"></script>
-    <script type="text/javascript" src="js/game.js"></script>
-    {% endif %}
-    {% if not ws.debug %}
-    <script type="text/javascript" src="{{ ws.js }}"></script>
-    
-    {% endif %}
-    <script type="text/javascript">var switchTo5x=true;</script>
-    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-    <script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
-
-
+    {{ macros.headers(ws, highscores, achievements) }}
 
 </head>
 <body>
@@ -98,9 +48,12 @@
     <div id="container">
         <div id="main">
         	<div id="logo">
-	        	<img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing"/>
+                <a href="/" title="Word Smashing Word Puzzle Game">
+                    <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                </a>
                 <div id="login">
 		        	<fb:login-button autologoutlink="true" scope="publish_stream" width="200" max-rows="1"></fb:login-button>
+                    {{ macros.jplayer() }}
 			    </div>
 	        </div>
             
@@ -218,8 +171,8 @@
 	</div>
 </div>
 
-<script type="text/javascript">stLight.options({publisher: "f60d3075-2d40-427d-8b64-9ed35940588c", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 <script>
+    stLight.options({publisher: "f60d3075-2d40-427d-8b64-9ed35940588c", doNotHash: false, doNotCopy: false, hashAddressBar: false});
     var options={ "publisher": "f60d3075-2d40-427d-8b64-9ed35940588c", "position": "right", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "pinterest", "linkedin", "email", "sharethis"]}};
     var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
 </script>

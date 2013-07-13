@@ -52,11 +52,17 @@ tr{
 
 }
 td{
-    width: 56px;
+    width: 57px;
     height: 50px;
     text-align: center;
     padding: 3px;
     border: 1px solid gray;
+}
+td div {
+    width: 10px;
+}
+.grower {
+    margin-left: 12px;
 }
 .swap:hover{
 	cursor:pointer;
@@ -221,13 +227,8 @@ margin: 10px 0 10px 10px;
     font-weight: 200;
     line-height: 36px;
 }
-/*#changedifficulty {
-    position: fixed;
-    z-index:100;
-    top: 0px;
-    left: 0px;
-    height:100%;
-    width:100%;
-    background: #000;
-    display: none;
-}*/
+.icon-volume-off,
+.icon-volume-on,
+.icon-volume-up {
+    margin-top: 5px !important;
+}

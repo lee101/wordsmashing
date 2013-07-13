@@ -18,8 +18,18 @@ handlers:
   static_dir: js
   http_headers:
     Vary: Accept-Encoding
+- url: /jplayerskin
+  static_dir: jplayerskin
+  http_headers:
+    Vary: Accept-Encoding
+- url: /music
+  static_dir: music
+  http_headers:
+    Vary: Accept-Encoding
 - url: /img
   static_dir: img
+  http_headers:
+    Vary: Accept-Encoding
 - url: /bootstrap/*
   static_dir: bootstrap
 - url: /channel.html
@@ -56,3 +66,5 @@ handlers:
 libraries:
 - name: webapp2
   version: "2.5.2"
+- name: jinja2
+  version: "2.6"
