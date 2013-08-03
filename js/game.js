@@ -46,49 +46,59 @@ function changeDifficulty(newDifficulty){
 	else if(difficulty == HARD){
 		difficultyText = "Hard";
 	}
-	
+
 	$('#changedifficultybutton').text('Difficulty: ' + difficultyText);
 }
-var gamedata = []
-var gamedata2d = []
+var gamedata = [];
+var gamedata2d = [];
 currentNumWords = game.startwords + game.growth_rate;
-words = {}
+words = {};
 jQuery.get('js/words.txt', function (data) {
     wordslist = data.split('\n');
     for (var i = 0; i < wordslist.length; i++) {
-        words[wordslist[i]] = 1
+        words[wordslist[i]] = 1;
     }
 });
 
 newGame = function () {
-    gamedata = []
-    gamedata2d = []
+    if(typeof GAMESAPI === 'object') {
+        GAMESAPI.beginGameSession(
+           function(response) {
+               // success callback.  response.statusCode == 200
+           },
+           function(response) {
+               // error handler callback.  response.statusCode != 200
+           }
+       );
+    }
+    gamedata = [];
+    gamedata2d = [];
     for (var i = 0; i < game.startwords; i++) {
-        gamedata.push({letter: getRandomLetter(), 'selected': false})
+        gamedata.push({letter: getRandomLetter(), 'selected': false});
     }
     for (var i = 0; i < game.growth_rate; i++) {
-        gamedata.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false})
+        gamedata.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false});
     }
     //push empty spaces
-    var numspaces = game.width * game.height - game.startwords - game.growth_rate
+    var numspaces = game.width * game.height - game.startwords - game.growth_rate;
     for (var i = 0; i < numspaces; i++) {
-        gamedata.push({'selected': false})
+        gamedata.push({'selected': false});
     }
     gamedata.shuffle()
 
     //wrap into 2d
 
     for (var i = 0; i < game.height; i++) {
-        gamedata2d.push([])
+        gamedata2d.push([]);
         for (var j = 0; j < game.width; j++) {
 
-            gamedata2d[i].push(gamedata[i * game.height + j])
+            gamedata2d[i].push(gamedata[i * game.height + j]);
         }
     }
     //remove score and game over screen
-    game.score=0
-    comboCounter=0
-    $('#showscore1').html('<button style="display: none"></button>')
+    game.score = 0;
+    comboCounter = 0;
+    $('#showscore1').html('<button style="display: none"></button>');
     update();
 }
 function getXIndex(imclicked){
@@ -475,7 +485,16 @@ function turnEnd(endPos) {
 }
 function gameover(){
     var isHighScore = saveHighScore()
-
+    if(typeof GAMESAPI === 'object') {
+        GAMESAPI.endGameSession(
+           function(response) {
+               // success callback.  response.statusCode == 200
+           },
+           function(response) {
+               // error handler callback.  response.statusCode != 200
+           }
+       );
+    }
     var congratsMessage = 'Congratulations! Your Score: ' + game.score + '!';
     if(isHighScore){
         congratsMessage = 'Thats A New Best! Your New High Score: ' + game.score + '!';
@@ -694,8 +713,17 @@ function getpath(start, goal) {
 function saveHighScore(){
     if(window.FB){
         FB.api('/me/scores/', 'post', { score: game.score }, function(response) {
-            console.log("Score posted to Facebook");
+            if(response.error){
+                console.log(response.error);
+            }
+            else{
+                console.log("Score posted to Facebook");
+            }
         });
+    }
+
+    if(typeof GAMESAPI === 'object') {
+        GAMESAPI.postScore(game.score,function(){},function(){});
     }
 
 	$.ajax( {
@@ -762,7 +790,7 @@ function saveAchievement(achievement_number){
     if(window.FB)
         FB.api('/me/scores/', 'post', { achievement: achievementURLs[achievement_number] }, function(response) {
             if(response.error){
-                console.log(response.error.toString());
+                console.log(response.error);
             }
             else{
                 console.log("Achievement posted");
