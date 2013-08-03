@@ -231,6 +231,13 @@ class FriendsHandler(BaseHandler):
     def post(self):
         self.render('with-your-friends.html')
 
+class GamesHandler(BaseHandler):
+    def get(self):
+        self.render('games.html')
+
+    def post(self):
+        self.render('games.html')
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -253,6 +260,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/contact', ContactHandler),
     ('/timed', TimedHandler),
     ('/with-your-friends', FriendsHandler),
+    ('/games', GamesHandler),
 
 
 ], debug=True, config=config))
