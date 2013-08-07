@@ -35,6 +35,8 @@ function showChangeDifficultyDialog(){
 	'</div>'});
 	
 }
+
+
 function changeDifficulty(newDifficulty){
 	modal.close();
 	newGame();
