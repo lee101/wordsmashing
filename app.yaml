@@ -68,3 +68,7 @@ libraries:
   version: "2.5.2"
 - name: jinja2
   version: "2.6"
+
+automatic_scaling:
+  min_idle_instances: 2
+  max_pending_latency: 14.3s
