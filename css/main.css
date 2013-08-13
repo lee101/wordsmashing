@@ -232,3 +232,8 @@ margin: 10px 0 10px 10px;
 .icon-volume-up {
     margin-top: 5px !important;
 }
+.modal-text {
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 36px;
+}
