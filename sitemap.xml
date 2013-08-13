@@ -4,6 +4,11 @@
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
+	<url>
+		<loc>http://wordsmashing.com/learn-english</loc>
+		<changefreq>weekly</changefreq>
+		<priority>1</priority>
+	</url>
     <url>
 		<loc>http://wordsmashing.com/timed</loc>
 		<changefreq>weekly</changefreq>

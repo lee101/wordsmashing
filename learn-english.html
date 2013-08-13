@@ -1,0 +1,247 @@
+{% import "macros.html" as macros %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Word Smashing - Addicting and Fun Word Puzzle Game</title>
+    <meta name="description"
+          content="Learn English Playing Word Smashing! Play This Addicting New Word Puzzle, For Free!">
+
+    <meta name="keywords" content="learn english, word finder, crossword, free online puzzle games, word puzzle game">
+    <meta property="og:title" content="Word Smashing - Learn English With Word Puzzle Games!">
+    <meta property="og:url" content="http://www.wordsmashing.com">
+    <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
+    <meta property="og:description"
+          content="Word Smashing! An Utterly Addicting and Fun Word Puzzle and Brain Training Game, For Free!">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Word Smashing">
+    <meta property="fb:admins" content="337972272904903">
+
+
+    {{ macros.headers(ws, highscores, achievements) }}
+  <script type="text/javascript">
+    var learnedwords = {};
+    var parent1 = showScore;
+    showScore = function(word, score) {
+      parent1(word, score);
+      learnedwords[word] = true;
+    };
+
+    var parent2 = gameover;
+    gameover = function() {
+      parent2();
+      var firstTime = true;
+      //bind new event to close function
+      var parent = modal.close;
+      modal.close = function() {
+        parent();
+        if(firstTime) {
+            var words = '<p>' + Object.keys(learnedwords).join('</p><p>') + '</p>'
+            modal.open({content: '<div id="changedifficulty">'+
+              '<p class="lead">Congratulations!!</p>'+
+              '<p class="lead">You Got '+Object.keys(learnedwords).length+' Different Words!</p>'+
+              words +
+              '<div style="float:right"><button class="btn btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
+              '<div class="clear"></div>'+
+            '</div>'});
+            
+            firstTime = false;
+            learnedwords = {};
+        }
+      }
+    }
+
+  </script>
+
+</head>
+<body>
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '138831849632195',                        // App ID from the app dashboard
+    channelUrl : '//wordsmashing.appspot.com/channel.html', // Channel file for x-domain comms
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+  });
+
+  // Here we subscribe to the auth.authResponseChange JavaScript event. This event is fired
+  // for any authentication related change, such as login, logout or session refresh. This means that
+  // whenever someone who was previously logged out tries to log in again, the correct case below 
+  // will be handled. 
+  FB.Event.subscribe('auth.authResponseChange', function(response) {
+    // Here we specify what we do with the response anytime this event occurs. 
+    if (response.status === 'connected') {
+      // The response object is returned with a status field that lets the app know the current
+      // login status of the person. In this case, we're handling the situation where they 
+      // have logged in to the app.
+        console.log(response);
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // In this case, the person is logged into Facebook, but not into the app, so we call
+      // FB.login() to prompt them to do so. 
+      // In real-life usage, you wouldn't want to immediately prompt someone to login 
+      // like this, for two reasons:
+      // (1) JavaScript created popup windows are blocked by most browsers unless they 
+      // result from direct interaction from people using the app (such as a mouse click)
+      // (2) it is a bad experience to be continually prompted to login upon page load.
+      FB.login();
+    } else {
+      // In this case, the person is not logged into Facebook, so we call the login() 
+      // function to prompt them to do so. Note that at this stage there is no indication
+      // of whether they are logged into the app. If they aren't then they'll see the Login
+      // dialog right after they log in to Facebook. 
+      // The same caveats as above apply to the FB.login() call here.
+      FB.login();
+    }
+  });
+  };
+
+  // Load the SDK asynchronously
+  (function(d){
+   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement('script'); js.id = id; js.async = true;
+   js.src = "//connect.facebook.net/en_US/all.js";
+   ref.parentNode.insertBefore(js, ref);
+  }(document));
+
+  // Here we run a very simple test of the Graph API after login is successful. 
+  // This testAPI() function is only called in those cases. 
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Good to see you, ' + response.name + '.');
+    });
+  }
+</script>
+<div id="pagebody">
+    <div id="container">
+        <div id="main">
+        	<div id="logo">
+              <a href="/" title="Word Smashing Word Puzzle">
+                <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+              </a>
+		        <div id="login">
+		        	<fb:login-button autologoutlink="true" scope="publish_stream" width="200" max-rows="1"></fb:login-button>
+                    {{ macros.jplayer() }}
+			    </div>
+	        </div>
+            <table border="1">
+                <tr>
+                    <td>
+
+                    </td>
+
+                </tr>
+            </table>
+            <span class="fb-like" data-href="http://www.wordsmashing.com" data-send="true" data-width="450" data-show-faces="true"></span>
+            {{ macros.shareBtnsHorizontal() }}
+            <div id="showscore0">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore1">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore2">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore3">
+                <button style="display: none"></button>
+            </div>
+        </div>
+        <div id="gameoptions">
+            <div id="score" onclick="showHighScores()">
+                <button class="btn btn-large btn-danger" type="button">Score: 0</button>
+            </div>
+			<div id="newgame">
+            	<button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+			</div>
+			<div id="difficulty">
+            	<button id="changedifficultybutton" class="btn btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
+			</div>
+        </div>
+        <div id="bannerAdd">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7026363262140448";
+            /* word game vert */
+            google_ad_slot = "3713734958";
+            google_ad_width = 160;
+            google_ad_height = 600;
+            //-->
+            </script>
+            <script type="text/javascript"
+                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+
+        </div>
+        
+        <div id="instructions">
+        	
+            <h1>Learn English Playing Word Games!</h1>
+            <p class="lead">
+              <b>Instructions: </b><br/>
+              Make Words for points and to clear space!<br/> 
+            	Click a letter and click on an empty space to move it there.<br/>
+            	You will only be able to move if there is a clear path.<br/>
+            	Every turn three new letters will grow into the game.<br/> 
+            	Its game over when the board is filled with letters!<br/>
+            	Get two words in one turn, get combos and learn new words for bonus points!<br/>
+            	On Easy You can make words with 2 or more letters.<br/>
+            	On Medium You can make words with 3 or more letters.<br/>
+            	On Hard You can only make words with 4 or more letters!<br/>
+                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a>.<br/>
+            	Some place names and peoples names do not count as words.
+            	</p>
+        </div>
+        <div class="clear"></div>
+        <div id="btm">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7026363262140448";
+            /* big h default */
+            google_ad_slot = "3155331752";
+            google_ad_width = 728;
+            google_ad_height = 90;
+            //-->
+            </script>
+            <script type="text/javascript"
+                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+            
+
+        </div>
+    </div>
+		
+    <div class="clear">
+    </div>
+	<div id="footer">
+		<p>
+			<a href="/contact" title="Contact Us">Contact</a> 
+			<a href="/about" title="About Word Smashing">About Us</a>
+			<a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
+		    <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
+		    <span>© 2013 Word Smashing</span>
+            <a href="http://www.facebook.com/WordSmashing" title="Word Smashing on Facebook" target="_blank">
+		        <img src="/img/facebook.jpg" alt="Word Smashing on Facebook" width="144px" height="44px">
+		    </a>
+			<div class="g-plus" data-href="//plus.google.com/116949277834973226564" data-rel="publisher"></div>
+
+			<!-- Place this tag after the last badge tag. -->
+			<script type="text/javascript">
+			  (function() {
+			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			    po.src = 'https://apis.google.com/js/plusone.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			  })();
+			</script><br/>
+		    <a href="https://twitter.com/Wordsmashing" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Wordsmashing</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+		</p>
+	</div>
+	<div class="clear">
+	</div>
+</div>
+
+</body>
+</html>
