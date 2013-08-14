@@ -7,6 +7,7 @@ from ws import ws
 import json
 import os
 import webapp2
+import logging
 import facebook
 from webapp2_extras import sessions
 import utils
@@ -139,6 +140,7 @@ class BaseHandler(webapp2.RequestHandler):
             'HARD':HARD,
             'highscores':highscores
         }
+        #logging.error(highscores)
 
         #self.response.set_cookie('wsuser', , max_age = 15724800)
 
