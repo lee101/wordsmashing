@@ -508,55 +508,38 @@ function gameover(){
     	'<div style="float:right"><button class="btn btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
     	'<div class="clear"></div>'+
 	'</div>'});
-
-	if(! achievements.medium && game.score >= 5000){
-		achievements.medium = true;
-		saveAchievement(1);
-		var firstTime = true;
-		//bind new event to close function
-		var parent = modal.close;
-		modal.close = function(){
-			parent();
-			if(firstTime){
-				modal.open({content: '<div id="changedifficulty">'+
-					'<p class="lead">Congratulations!!</p>'+
-					'<p class="lead">You Have Unlocked Medium Difficulty!</p>'+
-					'<p class="lead">Only Words With 3 or More Letters on Medium!</p>'+
-                    '<button class="btn btn-large btn-primary" onclick="postAchievementToFacebook(MEDIUM)" style="margin:20px;">Post Achievement To Facebook!</button>'+
-			    	'<div style="float:left"><button class="btn btn-large btn-danger" onclick="changeDifficulty(EASY)" type="button">Play Again On Easy!</button></div>'+
-			    	'<div style="float:right"><button class="btn btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button">Play On Medium!</button></div>'+
-			    	'<div class="clear"></div>'+
-				'</div>'});
-				
-				firstTime = false
-			}
-		}
-	}
-	if(! achievements.hard && game.score >= 5000 && difficulty == MEDIUM){
-		achievements.hard = true;
-		saveAchievement(2);
-		var firstTime = true;
-		//bind new event to close function
-		var parent = modal.close;
-		modal.close = function(){
-			parent();
-			if(firstTime){
-				modal.open({content: '<div id="changedifficulty">'+
-					'<p class="lead">Congratulations!!</p>'+
-					'<p class="lead">You Have Unlocked Hard Difficulty!</p>'+
-					'<p class="lead">Only Words With 4 or More Letters on Hard!</p>'+
-                    '<button class="btn btn-large btn-primary" onclick="postAchievementToFacebook(HARD)" style="margin:20px;">Post Achievement To Facebook!</button>'+
-			    	'<div style="float:left"><button class="btn btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button">Play Again On Medium!</button></div>'+
-			    	'<div style="float:right"><button class="btn btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button">Play On Hard!</button></div>'+
-			    	'<div class="clear"></div>'+
-				'</div>'});
-				
-				firstTime = false
-			}
-		}
-	}
 }
-
+function updateAchievements() {
+    if(! achievements.medium && game.score >= 5000){
+        achievements.medium = true;
+        saveAchievement(1);
+        
+        modal.open({content: '<div id="changedifficulty">'+
+            '<p class="lead">Congratulations!!</p>'+
+            '<p class="lead">You Have Unlocked Medium Difficulty!</p>'+
+            '<p class="lead">Only Words With 3 or More Letters on Medium!</p>'+
+            '<button class="btn btn-large btn-primary" onclick="postAchievementToFacebook(MEDIUM)" style="margin:20px;">Post Achievement To Facebook!</button>'+
+            '<div style="float:left"><button class="btn btn-large btn-danger" onclick="modal.close()" type="button">Keep Playing On Easy!</button></div>'+
+            '<div style="float:right"><button class="btn btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button">Play On Medium!</button></div>'+
+            '<div class="clear"></div>'+
+        '</div>'});
+        
+    }
+    if(! achievements.hard && game.score >= 5000 && difficulty == MEDIUM){
+        achievements.hard = true;
+        saveAchievement(2);
+        modal.open({content: '<div id="changedifficulty">'+
+            '<p class="lead">Congratulations!!</p>'+
+            '<p class="lead">You Have Unlocked Hard Difficulty!</p>'+
+            '<p class="lead">Only Words With 4 or More Letters on Hard!</p>'+
+            '<button class="btn btn-large btn-primary" onclick="postAchievementToFacebook(HARD)" style="margin:20px;">Post Achievement To Facebook!</button>'+
+            '<div style="float:left"><button class="btn btn-large btn-danger" onclick="modal.close()" type="button">Keep Playing On Medium!</button></div>'+
+            '<div style="float:right"><button class="btn btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button">Play On Hard!</button></div>'+
+            '<div class="clear"></div>'+
+        '</div>'});
+        
+    }
+}
 var iteration=0;
 function showScore(word, score) {
     iteration++
@@ -568,6 +551,7 @@ function showScore(word, score) {
     $('#showscore'+iteration+' button').animate({top: '-=100px',opacity:0},4000,function(){
         $('#showscore'+definiteit+' button').css({display:'none'})
     })
+    updateAchievements();
     //"<button class=\"" + btnclass + "\" onclick=\"selectWord(this)\" type=\"button\">" + gd.letter + "</button>"
 }
 function showDouble() {
