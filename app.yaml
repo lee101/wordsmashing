@@ -72,3 +72,16 @@ libraries:
 automatic_scaling:
   min_idle_instances: 2
   max_pending_latency: 14.3s
+
+pagespeed:
+
+  url_blacklist:
+  - http://www.wordsmashing.com/music/*
+  enabled_rewriters:
+  - CollapseWhitespace
+  - CombineHeads
+  - ElideAttributes
+  - RemoveComments
+  - RemoveQuotes
+  - MinifyCss
+  - InlineJs
