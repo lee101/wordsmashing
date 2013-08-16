@@ -4,8 +4,10 @@ var game = {
     'height': 9,
     'startwords': 12,
     'growth_rate': 3,
+    'num_blocked': 0,
     score: 0
 };
+var blocked_spaces = {}
 var timedMode = 0;
 var EASY = 2;
 var MEDIUM = 3;
@@ -82,7 +84,7 @@ newGame = function () {
         gamedata.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false});
     }
     //push empty spaces
-    var numspaces = game.width * game.height - game.startwords - game.growth_rate;
+    var numspaces = game.width * game.height - game.startwords - game.growth_rate - game.num_blocked;
     for (var i = 0; i < numspaces; i++) {
         gamedata.push({'selected': false});
     }
@@ -93,8 +95,12 @@ newGame = function () {
     for (var i = 0; i < game.height; i++) {
         gamedata2d.push([]);
         for (var j = 0; j < game.width; j++) {
-
-            gamedata2d[i].push(gamedata[i * game.height + j]);
+            if(blocked_spaces[j+'-'+i]) {
+                gamedata2d[i].push({'blocked':true})
+            }
+            else {
+                gamedata2d[i].push(gamedata[i * game.height + j]);
+            }
         }
     }
     //remove score and game over screen
@@ -102,12 +108,12 @@ newGame = function () {
     comboCounter = 0;
     $('#showscore1').html('<button style="display: none"></button>');
     update();
-}
+};
 function getXIndex(imclicked){
-    return Number(imclicked.id.split('-')[1])
+    return Number(imclicked.id.split('-')[1]);
 }
 function getYIndex(imclicked){
-    return Number(imclicked.id.split('-')[0])
+    return Number(imclicked.id.split('-')[0]);
     /*
     var idx = imclicked.parentElement.parentNode.sectionRowIndex
     if(idx==-1){
@@ -119,8 +125,8 @@ newGame();
 selectedXpos = -1;
 selectedYpos = -1;
 function selectWord(imclicked) {
-    var xPos = getXIndex(imclicked)
-    var yPos = getYIndex(imclicked)
+    var xPos = getXIndex(imclicked);
+    var yPos = getYIndex(imclicked);
 
     //unselect current if there is a current selected
     if (selectedXpos != -1 && selectedYpos != -1) {
@@ -131,7 +137,7 @@ function selectWord(imclicked) {
         if(selectedXpos == xPos && selectedYpos == yPos){
             selectedXpos = -1;
             selectedYpos = -1;
-        	return;        	
+        	return;
         }
         selectedXpos = -1;
         selectedYpos = -1;
@@ -428,20 +434,7 @@ function turnEnd(endPos) {
             showCombo();
         }
     }
-    /*
-     for (var i = 0; i < game.startwords; i++) {
-     gamedata.push({letter: getRandomLetter(), 'selected': false})
-     }
-     for (var i = 0; i < game.growth_rate; i++) {
-     gamedata.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false})
-     }
-     //push empty spaces
-     var numspaces = game.width * game.height - game.startwords - game.growth_rate
-     for (var i = 0; i < numspaces; i++) {
-     gamedata.push({'selected': false})
-     }
-     gamedata.shuffle()
-     */
+
     //deselect / unselect
     gamedata2d[endPos[1]][endPos[0]].selected = false;
     selectedXpos = -1;
@@ -452,7 +445,7 @@ function turnEnd(endPos) {
     for (var i = 0; i < game.height; i++) {
         for (var j = 0; j < game.width; j++) {
 
-            if (!gamedata2d[i][j].letter) {
+            if (!gamedata2d[i][j].letter && !gamedata2d[i][j].blocked) {
                 numspaces++
             }
         }
@@ -463,7 +456,7 @@ function turnEnd(endPos) {
     }
     //generate random 3 letter places
     growers = []
-    for (var i = 0; i < numspaces - game.growth_rate; i++) {
+    for (var i = 0; i < numspaces - game.growth_rate - game.num_blocked; i++) {
         growers.push({'selected': false})
     }
 
@@ -476,7 +469,7 @@ function turnEnd(endPos) {
     for (var i = 0; i < game.height; i++) {
         for (var j = 0; j < game.width; j++) {
 
-            if (!gamedata2d[i][j].letter) {
+            if (!gamedata2d[i][j].letter && !gamedata2d[i][j].blocked) {
                 if (growers[currpos].letter) {
                     gamedata2d[i][j] = growers[currpos]
                 }
@@ -581,6 +574,9 @@ function showCombo(){
 
 function update() {
     function renderGameData(gd,i,j) {
+        if(gd.blocked) {
+            return ''
+        }
         var cssclass = ''
         var val = '<div id="'+i+'-'+j+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>'
         var btnclass = 'btn btn-large btn-danger'
@@ -602,16 +598,22 @@ function update() {
     for (var i = 0; i < game.height; i++) {
         domtable.push("<tr>");
         for (var j = 0; j < game.width; j++) {
-            domtable.push("<td>");
-            domtable.push(renderGameData(gamedata2d[i][j],i,j));
+            var gmedta = gamedata2d[i][j];
+            if(gmedta.blocked) {
+                domtable.push('<td style="background-color:white">');
+            }
+            else {
+                domtable.push("<td>");
+            }
+            domtable.push(renderGameData(gmedta,i,j));
             domtable.push("</td>");
         }
         domtable.push("</tr>");
     }
 
     $(document).ready(function () {
-        $('table').empty()
-        $('table').replaceWith(domtable.join(''))
+        $('#gametable').empty()
+        $('#gametable').replaceWith(domtable.join(''))
         //document.getElementById("score").firstChild.innerHTML = "Score: "+game.score
         $('#score button').html("Score: "+game.score)
     })
@@ -645,7 +647,7 @@ function getpath(start, goal) {
         //find possible moves
         var possibleMoves = []
         //can go left if theres no grown letter
-        if (xpos > 0 && (!gamedata2d[ypos][xpos - 1].letter || gamedata2d[ypos][xpos - 1].halfgrown) && !seen[ypos][xpos - 1]) {
+        if (xpos > 0 && (!gamedata2d[ypos][xpos - 1].letter || gamedata2d[ypos][xpos - 1].halfgrown) && !seen[ypos][xpos - 1] && !gamedata2d[ypos][xpos - 1].blocked) {
             seen[ypos][xpos - 1] = true;
             previous[ypos][xpos - 1] = [xpos, ypos];
             possibleMoves.push([xpos - 1, ypos])
@@ -653,21 +655,21 @@ function getpath(start, goal) {
 
         }
         //can go up if theres no grown letter
-        if (ypos > 0 && (!gamedata2d[ypos - 1][xpos].letter || gamedata2d[ypos - 1][xpos].halfgrown) && !seen[ypos - 1][xpos]) {
+        if (ypos > 0 && (!gamedata2d[ypos - 1][xpos].letter || gamedata2d[ypos - 1][xpos].halfgrown) && !seen[ypos - 1][xpos] && !gamedata2d[ypos - 1][xpos].blocked) {
             seen[ypos - 1][xpos] = true;
             previous[ypos - 1][xpos] = [xpos, ypos];
             possibleMoves.push([xpos, ypos - 1])
 
         }
         //can go right if theres no grown letter
-        if (xpos < game.width - 1 && (!gamedata2d[ypos][xpos + 1].letter || gamedata2d[ypos][xpos + 1].halfgrown) && !seen[ypos][xpos + 1]) {
+        if (xpos < game.width - 1 && (!gamedata2d[ypos][xpos + 1].letter || gamedata2d[ypos][xpos + 1].halfgrown) && !seen[ypos][xpos + 1] && !gamedata2d[ypos][xpos + 1].blocked) {
             seen[ypos][xpos + 1] = true;
             previous[ypos][xpos + 1] = [xpos, ypos];
             possibleMoves.push([xpos + 1, ypos])
 
         }
         //can go down if theres no grown letter
-        if (ypos < game.height - 1 && (!gamedata2d[ypos + 1][xpos].letter || gamedata2d[ypos + 1][xpos].halfgrown) && !seen[ypos + 1][xpos]) {
+        if (ypos < game.height - 1 && (!gamedata2d[ypos + 1][xpos].letter || gamedata2d[ypos + 1][xpos].halfgrown) && !seen[ypos + 1][xpos] && !gamedata2d[ypos + 1][xpos].blocked) {
             seen[ypos + 1][xpos] = true;
             previous[ypos + 1][xpos] = [xpos, ypos];
             possibleMoves.push([xpos, ypos + 1])

@@ -100,5 +100,17 @@ class Achievement(ndb.Model):
         #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         return achievements;
 
-    
+class Level(object):
+
+    blocked_spaces = []
+
+    def __init__(self, blocked_spaces):
+        '''
+        blocked_spaces array of (x,y) pairs
+        '''
+        self.blocked_spaces = blocked_spaces
+        
+LEVELS = [
+Level([(4,0), (4,1), (4,2), (4,3)]),
+]
 

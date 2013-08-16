@@ -82,6 +82,6 @@ pagespeed:
   - CombineHeads
   - ElideAttributes
   - RemoveComments
-  - RemoveQuotes
   - MinifyCss
   - InlineJs
+  - LeftTrimUrls

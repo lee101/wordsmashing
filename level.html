@@ -3,56 +3,31 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Word Smashing - Addicting and Fun Word Puzzle Game</title>
+    <title>Word Smashing Level {{ level }} Addicting and Fun Word Puzzle Game</title>
     <meta name="description"
-          content="Learn English Playing Word Smashing! Play This Addicting New Word Puzzle, For Free!">
+          content="An Utterly Addicting Word Game, Fun For Everyone! Play This Addicting New Word Puzzle, Now For Free!">
 
-    <meta name="keywords" content="learn english, word finder, crossword, free online puzzle games, word puzzle game">
-    <meta property="og:title" content="Word Smashing - Learn English With Word Puzzle Games!">
+    <meta name="keywords" content="puzzle games, word finder, crossword, free online puzzle games, word puzzle game">
+    <meta property="og:title" content="Word Smashing - Addicting and Fun Word Puzzle Game">
     <meta property="og:url" content="http://www.wordsmashing.com">
     <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
     <meta property="og:description"
-          content="Word Smashing! An Utterly Addicting and Fun Word Puzzle and Brain Training Game, For Free!">
+          content="Play Word Smashing! The Utterly Addicting and Fun Word Puzzle Game, Now For Free!">
     <meta property="og:type" content="game">
     <meta property="og:site_name" content="Word Smashing">
     <meta property="fb:admins" content="337972272904903">
 
-
     {{ macros.headers(ws, highscores, achievements) }}
-  <script type="text/javascript">
-    var learnedwords = {};
-    var parent1 = showScore;
-    showScore = function(word, score) {
-      parent1(word, score);
-      learnedwords[word] = true;
-    };
-
-    var parent2 = gameover;
-    gameover = function() {
-      parent2();
-      var firstTime = true;
-      //bind new event to close function
-      var parent = modal.close;
-      modal.close = function() {
-        parent();
-        if(firstTime) {
-            var words = '<p>' + Object.keys(learnedwords).join('</p><p>') + '</p>'
-            modal.open({content: '<div id="changedifficulty">'+
-              '<p class="lead">Congratulations!!</p>'+
-              '<p class="lead">You Got '+Object.keys(learnedwords).length+' Different Words!</p>'+
-              words +
-              '<div style="float:right"><button class="btn btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
-              '<div class="clear"></div>'+
-            '</div>'});
-            
-            firstTime = false;
-            learnedwords = {};
-        }
-      }
-    }
-
-  </script>
-
+    <script type="text/javascript">
+    {% if blocked_spaces %}
+      game.num_blocked = {{ blocked_spaces|length }};
+      {% for pair in blocked_spaces %}
+        {% set bx = level%9-1 %}
+        {% set by = level-1/9 %}
+        blocked_spaces[{{ bx }}-{{ by }}] = true;
+      {% endfor %}
+    {% endif %}
+    </script>
 </head>
 <body>
 <div id="fb-root"></div>
@@ -120,9 +95,8 @@
     <div id="container">
         <div id="main">
         	<div id="logo">
-              <a href="/" title="Word Smashing Word Puzzle">
                 <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
-              </a>
+
 		        <div id="login">
 		        	<fb:login-button autologoutlink="true" scope="publish_stream" width="200" max-rows="1"></fb:login-button>
                     {{ macros.jplayer() }}
@@ -179,21 +153,20 @@
         
         <div id="instructions">
         	
-            <h1>Learn English Playing Word Games!</h1>
-            <p class="lead">
-              <b>Instructions: </b><br/>
-              Make Words for points and to clear space!<br/> 
+            <h1>Word Smashing Campaign Level {{ level }}</h1>
+            <p class="lead"><b>Instructions: </b>Make Words for points and to clear space!<br/> 
             	Click a letter and click on an empty space to move it there.<br/>
             	You will only be able to move if there is a clear path.<br/>
             	Every turn three new letters will grow into the game.<br/> 
             	Its game over when the board is filled with letters!<br/>
-            	Get two words in one turn, get combos and learn new words for bonus points!<br/>
+            	Get two words in one turn and get combos by making words every turn for bonus points.<br/>
             	On Easy You can make words with 2 or more letters.<br/>
             	On Medium You can make words with 3 or more letters.<br/>
             	On Hard You can only make words with 4 or more letters!<br/>
                 Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a>.<br/>
             	Some place names and peoples names do not count as words.
             	</p>
+            <p class="lead">Word smashing is a free online word search puzzle.</p>
         </div>
         <div class="clear"></div>
         <div id="btm">

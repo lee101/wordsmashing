@@ -118,7 +118,7 @@ class BaseHandler(webapp2.RequestHandler):
         """
         return self.session_store.get_session()
 
-    def render(self, view_name):
+    def render(self, view_name, extraParams = {}):
 
         # achievements = Acheivement.all().filter("user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         # if len(achievements) == 0:
@@ -140,6 +140,7 @@ class BaseHandler(webapp2.RequestHandler):
             'HARD':HARD,
             'highscores':highscores
         }
+        template_values.update(extraParams)
         #logging.error(highscores)
 
         #self.response.set_cookie('wsuser', , max_age = 15724800)
@@ -247,6 +248,25 @@ class LearnEnglishHandler(BaseHandler):
     def post(self):
         self.render('learn-english.html')
 
+class CampaignHandler(BaseHandler):
+    def get(self):
+        self.render('campaign.html')
+
+    def post(self):
+        self.render('campaign.html')
+
+class LevelHandler(BaseHandler):
+    def get(self, level):
+        logging.error('here'+ level)
+        logging.error('here'+ level)
+        level_num = int(''+level)
+        logging.error('level:' + LEVELS[level_num].blocked_spaces)
+        self.render('level.html', {'level': level_num, 'blocked_spaces': LEVEL[level_num].blocked_spaces})
+
+    def post(self, level):
+        level_num = int(''+level)        
+        self.render('level.html', {'level': level_num, 'blocked_spaces': LEVEL[level_num].blocked_spaces})
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -271,6 +291,8 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/with-your-friends', FriendsHandler),
     ('/games', GamesHandler),
     ('/learn-english', LearnEnglishHandler),
+    ('/campaign', CampaignHandler),
+    (r'/campaign/level(\d+)', LevelHandler),
 
 
 ], debug=True, config=config))
