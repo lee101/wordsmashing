@@ -4,10 +4,12 @@ var game = {
     'height': 9,
     'startwords': 12,
     'growth_rate': 3,
-    'num_blocked': 0,
-    score: 0
+    'score': 0
 };
-var blocked_spaces = {}
+if (!blocked_spaces) {
+    var blocked_spaces = {};
+    num_blocked = 0;
+}
 var timedMode = 0;
 var EASY = 2;
 var MEDIUM = 3;
@@ -17,52 +19,52 @@ var difficulty = EASY;
  * implementing 5 10 20 combos!
  */
 var comboCounter = 0;
-function showChangeDifficultyDialog(){
-	//TODO fix ui
-	var mediumButton = '<button class="btn btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button" title="Change difficulty to Medium">Medium</button>';
-	if(! achievements.medium){
-		var mediumButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Easy!"><span class="icon-lock"></span>Medium</button>';
-	}
-	
-	var hardButton = '<button class="btn btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button" title="Change difficulty to Hard">Hard</button>';
-	if(! achievements.hard){
-		var hardButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Medium!"><span class="icon-lock"></span>Hard</button>';
-	}
-	
-	modal.open({content: '<div id="changedifficulty">'+
-		'<p class="lead">Change difficulty and start a new game?</p>'+
-    	'<button class="btn btn-large btn-danger" onclick="changeDifficulty(EASY)" type="button" title="Change difficulty to Easy">Easy</button>'+
-    	mediumButton+
-    	hardButton+
-	'</div>'});
-	
-}
 
-
-function changeDifficulty(newDifficulty){
-	modal.close();
-	newGame();
-	difficulty = newDifficulty;
-	var difficultyText = "Medium";
-	if(difficulty == EASY){
-		difficultyText = "Easy";
-	}
-	else if(difficulty == HARD){
-		difficultyText = "Hard";
-	}
-
-	$('#changedifficultybutton').text('Difficulty: ' + difficultyText);
-}
 var gamedata = [];
 var gamedata2d = [];
 currentNumWords = game.startwords + game.growth_rate;
 words = {};
-jQuery.get('js/words.txt', function (data) {
+jQuery.get('/js/words.txt', function (data) {
     wordslist = data.split('\n');
     for (var i = 0; i < wordslist.length; i++) {
         words[wordslist[i]] = 1;
     }
 });
+function showChangeDifficultyDialog(){
+    //TODO fix ui
+    var mediumButton = '<button class="btn btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button" title="Change difficulty to Medium">Medium</button>';
+    if(! achievements.medium){
+        var mediumButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Easy!"><span class="icon-lock"></span>Medium</button>';
+    }
+    
+    var hardButton = '<button class="btn btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button" title="Change difficulty to Hard">Hard</button>';
+    if(! achievements.hard){
+        var hardButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Medium!"><span class="icon-lock"></span>Hard</button>';
+    }
+    
+    modal.open({content: '<div id="changedifficulty">'+
+        '<p class="lead">Change difficulty and start a new game?</p>'+
+        '<button class="btn btn-large btn-danger" onclick="changeDifficulty(EASY)" type="button" title="Change difficulty to Easy">Easy</button>'+
+        mediumButton+
+        hardButton+
+    '</div>'});
+    
+}
+
+function changeDifficulty(newDifficulty){
+    modal.close();
+    newGame();
+    difficulty = newDifficulty;
+    var difficultyText = "Medium";
+    if(difficulty == EASY){
+        difficultyText = "Easy";
+    }
+    else if(difficulty == HARD){
+        difficultyText = "Hard";
+    }
+
+    $('#changedifficultybutton').text('Difficulty: ' + difficultyText);
+}
 
 newGame = function () {
     if(typeof GAMESAPI === 'object') {
@@ -84,7 +86,7 @@ newGame = function () {
         gamedata.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false});
     }
     //push empty spaces
-    var numspaces = game.width * game.height - game.startwords - game.growth_rate - game.num_blocked;
+    var numspaces = game.width * game.height - game.startwords - game.growth_rate - num_blocked;
     for (var i = 0; i < numspaces; i++) {
         gamedata.push({'selected': false});
     }
@@ -92,6 +94,7 @@ newGame = function () {
 
     //wrap into 2d
 
+    var gamedatapos = 0;
     for (var i = 0; i < game.height; i++) {
         gamedata2d.push([]);
         for (var j = 0; j < game.width; j++) {
@@ -99,7 +102,7 @@ newGame = function () {
                 gamedata2d[i].push({'blocked':true})
             }
             else {
-                gamedata2d[i].push(gamedata[i * game.height + j]);
+                gamedata2d[i].push(gamedata[gamedatapos++]);
             }
         }
     }
@@ -456,7 +459,7 @@ function turnEnd(endPos) {
     }
     //generate random 3 letter places
     growers = []
-    for (var i = 0; i < numspaces - game.growth_rate - game.num_blocked; i++) {
+    for (var i = 0; i < numspaces - game.growth_rate; i++) {
         growers.push({'selected': false})
     }
 
@@ -571,11 +574,21 @@ function showCombo(){
         $('#showscore'+definiteit+' button').css({display:'none'})
     })
 }
-
+function unlock(x,y) {
+    var cell = $('#' + y + '-' + x);
+    cell.animate({backgroundColor: 'none'}, 750, function(){
+        cell.css({backgroundColor:'none'})
+        cell.html('<div id="'+y+'-'+x+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>');
+        num_blocked--;
+    });
+}
 function update() {
     function renderGameData(gd,i,j) {
         if(gd.blocked) {
             return ''
+        }
+        if(gd.locked) {
+            return '<span class="icon-lock"></span>'
         }
         var cssclass = ''
         var val = '<div id="'+i+'-'+j+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>'
@@ -600,7 +613,7 @@ function update() {
         for (var j = 0; j < game.width; j++) {
             var gmedta = gamedata2d[i][j];
             if(gmedta.blocked) {
-                domtable.push('<td style="background-color:white">');
+                domtable.push('<td id="' + i + '-' + j+ '" style="background-color:white">');
             }
             else {
                 domtable.push("<td>");

@@ -257,15 +257,13 @@ class CampaignHandler(BaseHandler):
 
 class LevelHandler(BaseHandler):
     def get(self, level):
-        logging.error('here'+ level)
-        logging.error('here'+ level)
-        level_num = int(''+level)
-        logging.error('level:' + LEVELS[level_num].blocked_spaces)
-        self.render('level.html', {'level': level_num, 'blocked_spaces': LEVEL[level_num].blocked_spaces})
+        level_num = int(level)
+
+        self.render('level.html', {'level': level_num, 'blocked_spaces': LEVELS[level_num - 1].blocked_spaces})
 
     def post(self, level):
-        level_num = int(''+level)        
-        self.render('level.html', {'level': level_num, 'blocked_spaces': LEVEL[level_num].blocked_spaces})
+        level_num = int(level)        
+        self.render('level.html', {'level': level_num, 'blocked_spaces': LEVELS[level_num - 1].blocked_spaces})
 
 
 class LogoutHandler(BaseHandler):

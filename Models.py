@@ -16,6 +16,49 @@ UNLOCKED_MEDIUM = 1
 UNLOCKED_HARD = 2
 ACHEIVEMENTS = set([UNLOCKED_MEDIUM, UNLOCKED_HARD])
 
+class Level(object):
+
+    blocked_spaces = []
+
+    def __init__(self, blocked_spaces):
+        '''
+        blocked_spaces array of (x,y) pairs
+        '''
+        self.blocked_spaces = blocked_spaces
+        
+LEVELS = [
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(0,4), (1,4), (4,4), (7,4), (8,4)]),
+    Level([(3,3), (5,3), (3,5), (5,5)]),
+    Level([(4,4), (1,1), (1,7), (7,1), (7,7)]),
+    Level([(4,0), (4,1), (4,2), (4,3), (4,5), (4,6)]),
+    Level([(6,4), (5,5), (4,6), (3,7), (2,8)]),
+    Level([(0,0), (0,8), (8,0), (8,8), (0,1), (1,0), (7,8), (8,7), (7,0), (0,7), (8,1), (1,8)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    #lvl 10
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(0,4), (1,4), (4,4), (7,4), (8,4)]),
+    Level([(3,3), (5,3), (3,5), (5,5)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    #lvl 20
+    Level([(0,4), (1,4), (4,4), (7,4), (8,4)]),
+    Level([(3,3), (5,3), (3,5), (5,5)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+    Level([(4,0), (4,1), (4,2), (4,3)]),
+
+]
+
 class User(ndb.Model):
     id = ndb.StringProperty(required=True)
     cookie_user = ndb.IntegerProperty()
@@ -100,17 +143,4 @@ class Achievement(ndb.Model):
         #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         return achievements;
 
-class Level(object):
-
-    blocked_spaces = []
-
-    def __init__(self, blocked_spaces):
-        '''
-        blocked_spaces array of (x,y) pairs
-        '''
-        self.blocked_spaces = blocked_spaces
-        
-LEVELS = [
-Level([(4,0), (4,1), (4,2), (4,3)]),
-]
 

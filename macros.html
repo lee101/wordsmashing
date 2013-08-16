@@ -44,7 +44,7 @@
 </div>
 {%- endmacro %}
 
-{% macro headers(ws, highscores, achievements) -%}
+{% macro headers(ws, highscores, achievements, blocked_spaces) -%}
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/img/word-smashing-icon-iphone.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="/img/word-smashing-icon-ipad.png" />
@@ -85,6 +85,17 @@
             highscores.hard = {{ score.score }};
         {% endif %}
     {% endfor %}
+
+    {% if blocked_spaces %}
+      num_blocked = {{ blocked_spaces|length }};
+      blocked_spaces = {}
+      {% for pair in blocked_spaces %}
+        {% set bx = pair[0] %}
+        {% set by = pair[1] %}
+        blocked_spaces['{{ bx }}-{{ by }}'] = true;
+      {% endfor %}
+    {% endif %}
+
     </script>
 
     {% if ws.debug %}
