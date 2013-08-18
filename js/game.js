@@ -865,4 +865,3 @@ function showHighScores(){
     	'<p class="lead">Hard: ' + highscores.hard + '</p>'+
 	'</div>'});
 }
-

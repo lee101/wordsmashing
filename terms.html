@@ -80,15 +80,8 @@
             </div>
         </div>
         <div id="gameoptions">
-            <div id="score">
-                <button class="btn-large btn-danger" type="button">Score: 0</button>
-            </div>
-			<div id="newgame">
-            	<button class="btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
-			</div>
-			<div id="difficulty">
-            	<button id="changedifficultybutton" class="btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
-			</div>
+            {{ macros.standardgameoptions() }}
+
         </div>
         <div id="bannerAdd">
             <script type="text/javascript"><!--

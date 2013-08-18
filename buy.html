@@ -26,33 +26,45 @@
     <div id="container">
         <div id="main">
         	<div id="logo">
-                <a href="http://www.wordsmashing.com" title="Word Smashing Word Puzzle Game" target="_blank">
-                  <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
-                </a>
-  		      <div id="login">
-                {% if current_user.name %}
-                <p>Hi, {{ current_user.name }}
-                  {% if current_user.profile_url %}
-                  
-                  {% else %}
-                  <a class="btn btn-danger" href="{{ glogout_url }}">Log Out</a>
-                  
-                  {% endif %}
 
-                </p>
-                {% endif %}
-                {% if current_user.cookie_user %}
-                <button class="btn btn-danger" href="#" onclick="loginmodal()">Log In</button>
-                {% endif %}
-                {{ macros.jplayer() }}
-  			    </div>
+                <a href="http://www.wordsmashing.com" title="Word Smashing Word Puzzle Game">
+                    <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+
+                </a>
+
+		      <div id="login">
+                  {% if current_user.name %}
+                  <p>Hi, {{ current_user.name }}
+                    {% if current_user.profile_url %}
+                    
+                    {% else %}
+                    <a class="btn btn-danger" href="{{ glogout_url }}">Log Out</a>
+                    
+                    {% endif %}
+
+                  </p>
+                  {% endif %}
+                  {% if current_user.cookie_user %}
+                  <button class="btn btn-danger" href="#" onclick="loginmodal()">Log In</button>
+                  {% endif %}
+              
+			     </div>
 	        </div>
             {% if current_user.gold %}
             <table id="gametable" border="1">
             {% else %}
-            <p id="mustsignin" class="lead">Login with your gold account to play!</br>
-            <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
-        <a href="#" onclick="fb_login()" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>
+            <p id="logintobuy" class="lead">
+                {% if current_user %}
+                Hi, {{ current_user.name }} Your purchase will be asscociated with your account!<br/><br/>
+                {% else %}
+                Log in with Facebook or Google!<br/><br/>
+                <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
+                <a href="#" onclick="fb_login()" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>
+                Your purchase will be asscociated with your account.<br/><br/>
+                {% endif %}
+
+            </p>
+            <p style="text-align: center;margin:15px">{{ macros.buybutton() }}</p><br/>
             <table id="gametable" border="1" style="display:none">
             {% endif %}
                 <tr>
@@ -77,57 +89,18 @@
                 <button style="display: none"></button>
             </div>
         </div>
-        <div id="gameoptions">
-            {{ macros.standardgameoptions() }}
-        </div>
-        <div id="bannerAdd">
-            <script type="text/javascript"><!--
-            google_ad_client = "ca-pub-7026363262140448";
-            /* word game vert */
-            google_ad_slot = "3713734958";
-            google_ad_width = 160;
-            google_ad_height = 600;
-            //-->
-            </script>
-            <script type="text/javascript"
-                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-            </script>
-
-        </div>
-        
-        <div id="instructions">
-        	
-            <h1>Word Smashing Campaign Level {{ level }}</h1>
-            <p class="lead"><b>Instructions: </b>Make Words for points and to clear space!<br/> 
-            	Click a letter and click on an empty space to move it there.<br/>
-            	You will only be able to move if there is a clear path.<br/>
-            	Every turn three new letters will grow into the game.<br/> 
-            	Its game over when the board is filled with letters!<br/>
-            	Get two words in one turn and get combos by making words every turn for bonus points.<br/>
-            	On Easy You can make words with 2 or more letters.<br/>
-            	On Medium You can make words with 3 or more letters.<br/>
-            	On Hard You can only make words with 4 or more letters!<br/>
-                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a>.<br/>
-            	Some place names and peoples names do not count as words.
-            	</p>
-            <p class="lead">Word smashing is a free online word search puzzle.</p>
+        <div id="gameoptions" style="display:none">
+            <div id="score" onclick="showHighScores()">
+                <button class="btn btn-large btn-danger" type="button">Score: 0</button>
+            </div>
+			<div id="newgame">
+            	<button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+			</div>
+			<div id="difficulty">
+            	<button id="changedifficultybutton" class="btn btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
+			</div>
         </div>
         <div class="clear"></div>
-        <div id="btm">
-            <script type="text/javascript"><!--
-            google_ad_client = "ca-pub-7026363262140448";
-            /* big h default */
-            google_ad_slot = "3155331752";
-            google_ad_width = 728;
-            google_ad_height = 90;
-            //-->
-            </script>
-            <script type="text/javascript"
-                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-            </script>
-            
-
-        </div>
     </div>
 		
     <div class="clear">

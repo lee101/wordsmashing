@@ -13,6 +13,14 @@ from webapp2_extras import sessions
 import utils
 import jinja2
 
+from cgi import escape
+import time
+import jwt
+
+# application-specific imports
+from sellerinfo import SELLER_ID
+from sellerinfo import SELLER_SECRET
+
 FACEBOOK_APP_ID = "138831849632195"
 FACEBOOK_APP_SECRET = "93986c9cdd240540f70efaea56a9e3f2"
 
@@ -34,6 +42,22 @@ class BaseHandler(webapp2.RequestHandler):
     """
     @property
     def current_user(self):
+        #===== Google Auth
+        user = users.get_current_user()
+        if user:
+            dbUser = User.byId(user.user_id())
+            if dbUser:
+                return dbUser
+            else:
+                logging.error("here!!!!")
+                dbUser = User()
+                dbUser.id = user.user_id()
+                dbUser.name = user.nickname()
+                dbUser.email = user.email().lower()
+                dbUser.put()
+                return dbUser
+
+        #===== End Google Auth
         if self.session.get("user"):
             # User is logged in
             return self.session.get("user")
@@ -128,7 +152,29 @@ class BaseHandler(webapp2.RequestHandler):
 
         achievements = achievements.get_result()
         highscores = highscores.get_result()
+
+        curr_time = int(time.time())
+        exp_time = curr_time + 3600
+
+        request_info = {'currencyCode': 'USD',
+                        'sellerData': 'Custom Data'}
+        jwt_info = {'iss': SELLER_ID,
+                    'aud': 'Google',
+                    'typ': 'google/payments/inapp/item/v1',
+                    'iat': curr_time,
+                    'exp': exp_time,
+                    'request': request_info}
+
+        # create JWT for first item
+        request_info.update({'name': 'Word Smashing Gold', 'price': '3.99'})
+        token_1 = jwt.encode(jwt_info, SELLER_SECRET)
+
+        # create JWT for second item
+        # request_info.update({'name': 'Golden Gate Bridge Poster', 'price': '25.00'})
+        # token_2 = jwt.encode(jwt_info, SELLER_SECRET)
+
         template_values = {
+            'jwt': token_1,
             'ws': ws,
             'facebook_app_id': FACEBOOK_APP_ID,
             'current_user': self.current_user,
@@ -138,7 +184,10 @@ class BaseHandler(webapp2.RequestHandler):
             'MEDIUM':MEDIUM,
             'EASY':EASY,
             'HARD':HARD,
-            'highscores':highscores
+            'highscores':highscores,
+            'glogin_url': users.create_login_url(self.request.uri),
+            'glogout_url': users.create_logout_url(self.request.uri),
+            'url':self.request.uri
         }
         template_values.update(extraParams)
         #logging.error(highscores)
@@ -164,7 +213,7 @@ class ScoresHandler(BaseHandler):
         userscore.put()
         HighScore.updateHighScoreFor(self.current_user, userscore.score, userscore.difficulty, userscore.timedMode)
 
-        self.response.out.write('success!')
+        self.response.out.write('success')
 class AchievementsHandler(BaseHandler):
     def get(self):
         acheive = Achievement()
@@ -176,7 +225,15 @@ class AchievementsHandler(BaseHandler):
             acheive.user = self.current_user.key
         acheive.put()
         #graph = facebook.GraphAPI(self.current_user['access_token'])
-        self.response.out.write('success!')
+        self.response.out.write('success')
+
+class IsGoldHandler(BaseHandler):
+    def get(self):
+        
+        token = int(self.request.get('access_token'))
+        user = User.byToken(token)
+        if user.gold:
+            self.response.out.write('success')
 
 class MainHandler(BaseHandler):
     def get(self):
@@ -255,6 +312,13 @@ class CampaignHandler(BaseHandler):
     def post(self):
         self.render('campaign.html')
 
+class BuyHandler(BaseHandler):
+    def get(self):
+        self.render('buy.html')
+
+    def post(self):
+        self.render('buy.html')
+
 class LevelHandler(BaseHandler):
     def get(self, level):
         level_num = int(level)
@@ -273,7 +337,31 @@ class LogoutHandler(BaseHandler):
 
         self.redirect('/')
 
+class PostbackHandler(webapp.RequestHandler):
+  """Handles server postback - received at /postback"""
 
+  def post(self):
+    """Handles post request."""
+    encoded_jwt = self.request.get('jwt', None)
+    if encoded_jwt is not None:
+      # jwt.decode won't accept unicode, cast to str
+      # http://github.com/progrium/pyjwt/issues/4
+      decoded_jwt = jwt.decode(str(encoded_jwt), SELLER_SECRET)
+
+      # validate the payment request and respond back to Google
+      if decoded_jwt['iss'] == 'Google' and decoded_jwt['aud'] == SELLER_ID:
+        if ('response' in decoded_jwt and
+            'orderId' in decoded_jwt['response'] and
+            'request' in decoded_jwt):
+          order_id = decoded_jwt['response']['orderId']
+          request_info = decoded_jwt['request']
+          if ('currencyCode' in request_info and 'sellerData' in request_info
+              and 'name' in request_info and 'price' in request_info):
+            # optional - update local database
+            
+            User.buyFor(self.current_user)
+            # respond back to complete payment
+            self.response.out.write(order_id)
 
 app = ndb.toplevel(webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -291,6 +379,8 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/learn-english', LearnEnglishHandler),
     ('/campaign', CampaignHandler),
     (r'/campaign/level(\d+)', LevelHandler),
+    ('/postback', PostbackHandler),
+    ('/buy', BuyHandler),
 
 
 ], debug=True, config=config))

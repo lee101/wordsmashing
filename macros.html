@@ -61,6 +61,44 @@
     <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
     <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
     <link type="text/css" href="/jplayerskin/jplayer.pink.flag.css" rel="stylesheet" />
+    {% if ws.debug %}
+    <script src="https://sandbox.google.com/checkout/inapp/lib/buy.js"></script>
+    {% endif %}
+    {% if not ws.debug %}
+    <script src="https://wallet.google.com/inapp/lib/buy.js"></script>
+    {% endif %}
+    <script type="text/javascript">
+
+      // Success handler
+      var successHandler = function(status){
+        if (window.console != undefined) {
+          console.log("Purchase completed successfully: ", status);
+          window.location.href = "http://www.wordsmashing.com/campaign";
+        }
+      }
+
+      // Failure handler
+      var failureHandler = function(status){
+        if (window.console != undefined) {
+          console.log("Purchase failed ", status);
+        }
+      }
+
+      function purchase(item) {
+        var generated_jwt;
+        if (item == "Gold") {
+          generated_jwt = "{{ jwt }}";
+        } else {
+          return;
+        }
+
+        google.payments.inapp.buy({
+          'jwt'     : generated_jwt,
+          'success' : successHandler,
+          'failure' : failureHandler
+        });
+      }
+    </script>
 
     <script>
     var achievements = {};
@@ -96,6 +134,14 @@
       {% endfor %}
     {% endif %}
 
+function loginmodal(){
+    modal.open({content: 
+        '<p class="lead">Log in with Facebook or Google</p>'+
+        '<p style="text-align: center;"><a style="margin:10px;" href="{{ glogin_url }}"" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>' +
+        '<a href="#" onclick="fb_login()" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>'
+
+    });
+}
     </script>
 
     {% if ws.debug %}
@@ -170,4 +216,162 @@
   <li class="plusone" title="Share link on Google+">Google+</li>
   <li class="pinterest" title="Share image on Pinterest" data-media="{{ url }}">Pinterest</li>
 </ul>
+{%- endmacro %}
+
+{%- macro fbstuff() %}
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '138831849632195',                        // App ID from the app dashboard
+    channelUrl : '//wordsmashing.appspot.com/channel.html', // Channel file for x-domain comms
+    oauth: true,
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+  });
+
+  // Here we subscribe to the auth.authResponseChange JavaScript event. This event is fired
+  // for any authentication related change, such as login, logout or session refresh. This means that
+  // whenever someone who was previously logged out tries to log in again, the correct case below 
+  // will be handled. 
+  FB.Event.subscribe('auth.authResponseChange', function(response) {
+    // Here we specify what we do with the response anytime this event occurs. 
+    if (response.status === 'connected') {
+      // The response object is returned with a status field that lets the app know the current
+      // login status of the person. In this case, we're handling the situation where they 
+      // have logged in to the app.
+      user_name = response.name;
+      //add logout button
+      $('#login').prepend('<p>Hi, '+ user_name + '<a class="btn btn-danger" onclick="fb_logout();">Log Out</a></p>');       
+      //only for buy page
+      $('#logintobuy').html('Hi, '+user_name+ ' Your purchase will be asscociated with your Facebook account!')
+      $.ajax( {
+        "url":  "/isgold",
+        "data": {"access_token":response.authResponse.accessToken},
+        "success": function (text) {
+          if(text=="success") {
+            $('#mustsignin').css({'display':'none'});
+            $('#gametable').css({'display':'block'});
+          }
+        },
+        "type": "GET",
+        "cache": false,
+        "error": function (xhr, error, thrown) {
+            if ( error == "parsererror" ) {
+                console.log( "JSON data from "+
+                    "server could not be parsed. This is caused by a JSON formatting error." );
+            }
+        }
+    } );
+
+
+      console.log(response);
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // In this case, the person is logged into Facebook, but not into the app, so we call
+      // FB.login() to prompt them to do so. 
+      // In real-life usage, you wouldn't want to immediately prompt someone to login 
+      // like this, for two reasons:
+      // (1) JavaScript created popup windows are blocked by most browsers unless they 
+      // result from direct interaction from people using the app (such as a mouse click)
+      // (2) it is a bad experience to be continually prompted to login upon page load.
+      FB.login();
+    } else {
+      // In this case, the person is not logged into Facebook, so we call the login() 
+      // function to prompt them to do so. Note that at this stage there is no indication
+      // of whether they are logged into the app. If they aren't then they'll see the Login
+      // dialog right after they log in to Facebook. 
+      // The same caveats as above apply to the FB.login() call here.
+      FB.login();
+    }
+  });
+  };
+
+function fb_login(){
+  FB.login(function(response) {
+
+      if (response.authResponse) {
+          console.log('Welcome!  Fetching your information.... ');
+          //console.log(response); // dump complete info
+          access_token = response.authResponse.accessToken; //get access token
+          user_id = response.authResponse.userID; //get FB UID
+
+          FB.api('/me', function(response) {
+              user_email = response.email; //get user email
+          });
+
+      } else {
+          //user hit cancel button
+          console.log('User cancelled login or did not fully authorize.');
+
+      }
+  }, {
+      scope: 'publish_stream,email'
+  });
+}
+function fb_logout(){
+
+  FB.logout(function(response) {
+    // user is now logged out
+  });
+}
+
+  // Load the SDK asynchronously
+  (function(d){
+   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement('script'); js.id = id; js.async = true;
+   js.src = "//connect.facebook.net/en_US/all.js";
+   ref.parentNode.insertBefore(js, ref);
+  }(document));
+
+  // Here we run a very simple test of the Graph API after login is successful. 
+  // This testAPI() function is only called in those cases. 
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Good to see you, ' + response.name + '.');
+    });
+  }
+</script>
+{%- endmacro %}
+
+{%- macro buybutton() %}
+<div id="buy">
+  <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button">Buy $3.99!</button>
+</div>
+{%- endmacro %}
+
+{%- macro buyLink() %}
+<div id="buy">
+  <a id="buybutton" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" type="button">Buy Full Game $3.99!</a>
+</div>
+{%- endmacro %}
+
+{%- macro standardgameoptions() %}
+<div id="score">
+  <button class="btn-large btn-danger" type="button">Score: 0</button>
+</div>
+<div id="newgame">
+  <button class="btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+</div>
+<div id="difficulty">
+  <button id="changedifficultybutton" class="btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
+</div>
+{% if 'timed' not in url %}
+<div id="timedlink">
+    <a id="timedlinkbutton" href="/timed" class="btn btn-large btn-danger" title="Play Word Smashing Timed!">Timed Mode!</a>
+</div>
+{% endif %}
+{% if current_user.gold %}
+  {% if 'campaign' not in url %}
+  <div id="campaign">
+      <a id="campaignbutton" href="/campaign" class="btn btn-large btn-warning">Campaign!</a>
+  </div>
+  {% endif %}
+{% else %}
+    {{ buyLink() }}
+{% endif %}
+</div>
 {%- endmacro %}

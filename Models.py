@@ -62,16 +62,26 @@ LEVELS = [
 class User(ndb.Model):
     id = ndb.StringProperty(required=True)
     cookie_user = ndb.IntegerProperty()
+    gold = ndb.IntegerProperty()
 
     created = ndb.DateTimeProperty(auto_now_add=True)
     updated = ndb.DateTimeProperty(auto_now=True)
 
+    email = ndb.StringProperty()
     name = ndb.StringProperty()
     profile_url = ndb.StringProperty()
     access_token = ndb.StringProperty()
     @classmethod
     def byId(self,id):
         return self.query(self.id == id).get()
+    @classmethod
+    def buyFor(self,user):
+        dbuser = User.byId(user.id)
+        dbuser.gold = 1
+        dbuser.put()
+    @classmethod
+    def byToken(self,token):
+        return self.query(self.access_token == token).get()
 
 class Score(ndb.Model):
     time = ndb.DateTimeProperty(auto_now_add=True)
