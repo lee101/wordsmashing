@@ -349,6 +349,20 @@ function fb_logout(){
 </div>
 {%- endmacro %}
 
+{%- macro loginoutbutton() %}
+{% if current_user.name %}
+<p>Hi, {{ current_user.name }}
+  {% if current_user.profile_url %}
+  {% else %}
+    <a class="btn btn-danger" href="{{ glogout_url }}">Log Out</a>
+  {% endif %}
+</p>
+{% endif %}
+{% if current_user.cookie_user %}
+<button class="btn btn-danger" href="#" onclick="loginmodal()">Log In</button>
+{% endif %}
+{%- endmacro %}
+
 {%- macro standardgameoptions() %}
 <div id="score">
   <button class="btn-large btn-danger" type="button">Score: 0</button>
@@ -373,5 +387,4 @@ function fb_logout(){
 {% else %}
     {{ buyLink() }}
 {% endif %}
-</div>
 {%- endmacro %}

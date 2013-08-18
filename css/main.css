@@ -165,6 +165,7 @@ body {
     max-width: 754px;
     margin-top: 5px;
     position: relative;
+    margin-left:20px;
 }
 #btm{
     float: left;
