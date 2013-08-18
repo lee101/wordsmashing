@@ -49,7 +49,7 @@ class BaseHandler(webapp2.RequestHandler):
             if dbUser:
                 return dbUser
             else:
-                logging.error("here!!!!")
+                
                 dbUser = User()
                 dbUser.id = user.user_id()
                 dbUser.name = user.nickname()
@@ -60,7 +60,7 @@ class BaseHandler(webapp2.RequestHandler):
         #===== End Google Auth
         if self.session.get("user"):
             # User is logged in
-            return self.session.get("user")
+            return User.byId(self.session.get("user").id)
         else:
             # Either used just logged in or just saw the first page
             # We'll see here
@@ -93,7 +93,7 @@ class BaseHandler(webapp2.RequestHandler):
                     id=user.id,
                     access_token=user.access_token
                 )
-                return self.session.get("user")
+                return user
         # use session cookie user
         anonymous_cookie = self.request.cookies.get('wsuser', None)
         if anonymous_cookie is None:
@@ -155,9 +155,10 @@ class BaseHandler(webapp2.RequestHandler):
 
         curr_time = int(time.time())
         exp_time = curr_time + 3600
-
+        logging.error("HERE!1")
         request_info = {'currencyCode': 'USD',
-                        'sellerData': 'Custom Data'}
+                        'sellerData': self.current_user.id}
+        logging.error("HERE!1")
         jwt_info = {'iss': SELLER_ID,
                     'aud': 'Google',
                     'typ': 'google/payments/inapp/item/v1',
@@ -322,7 +323,6 @@ class BuyHandler(BaseHandler):
 class LevelHandler(BaseHandler):
     def get(self, level):
         level_num = int(level)
-
         self.render('level.html', {'level': level_num, 'blocked_spaces': LEVELS[level_num - 1].blocked_spaces})
 
     def post(self, level):
@@ -337,7 +337,13 @@ class LogoutHandler(BaseHandler):
 
         self.redirect('/')
 
-class PostbackHandler(webapp.RequestHandler):
+class makeGoldHandler(BaseHandler):
+    def get(self):
+        User.buyFor(self.current_user.id)
+        self.response.out.write('success')
+
+
+class PostbackHandler(BaseHandler):
   """Handles server postback - received at /postback"""
 
   def post(self):
@@ -358,8 +364,26 @@ class PostbackHandler(webapp.RequestHandler):
           if ('currencyCode' in request_info and 'sellerData' in request_info
               and 'name' in request_info and 'price' in request_info):
             # optional - update local database
-            
-            User.buyFor(self.current_user)
+            # orderId = decoded_jwt['response']['orderId']
+
+            pb = Postback()
+            pb.jwtPostback = encoded_jwt
+            pb.orderId = order_id
+            # pb.itemName = request_info.get('name')
+            # pb.saleType = decoded_jwt['typ']
+
+            if (decoded_jwt['typ'] == 'google/payments/inapp/item/v1/postback/buy'):
+                pb.price = request_info['price']
+                pb.currencyCode = request_info['currencyCode']
+            elif (decoded_jwt['typ'] == 'google/payments/inapp/subscription/v1/postback/buy'):
+                pb.price = request_info['initialPayment']['price']
+                pb.currencyCode = request_info['initialPayment']['currencyCode']
+                # pb.recurrencePrice = request_info['recurrence']['price']
+                # pb.recurrenceFrequency = request_info['recurrence']['frequency']
+
+            pb.put()
+            sellerData = request_info.get('sellerData')
+            User.buyFor(sellerData)
             # respond back to complete payment
             self.response.out.write(order_id)
 
@@ -381,6 +405,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     (r'/campaign/level(\d+)', LevelHandler),
     ('/postback', PostbackHandler),
     ('/buy', BuyHandler),
+    ('/makegold', makeGoldHandler),
 
 
 ], debug=True, config=config))

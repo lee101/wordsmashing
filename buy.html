@@ -18,7 +18,14 @@
     <meta property="fb:admins" content="337972272904903">
 
     {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
+    <script type="text/javascript">
+    {% if current_user.name %}
+    var needsRefresh = false;
+    {% else %}
+    var needsRefresh = true;
 
+    {% endif %}
+    </script>
 </head>
 <body>
   {{ macros.fbstuff() }}
@@ -40,12 +47,12 @@
             <table id="gametable" border="1">
             {% else %}
             <p id="logintobuy" class="lead">
-                {% if current_user %}
+                {% if current_user.name %}
                 Hi, {{ current_user.name }} Your purchase will be asscociated with your account!<br/><br/>
                 {% else %}
                 Log in with Facebook or Google!<br/><br/>
                 <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
-                <a href="#" onclick="fb_login()" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>
+                <a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>
                 Your purchase will be asscociated with your account.<br/><br/>
                 {% endif %}
 

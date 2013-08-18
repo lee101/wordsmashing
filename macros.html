@@ -133,14 +133,21 @@
         blocked_spaces['{{ bx }}-{{ by }}'] = true;
       {% endfor %}
     {% endif %}
-
+var loginModalIsOpen = false;
 function loginmodal(){
+  loginModalIsOpen= true;
     modal.open({content: 
         '<p class="lead">Log in with Facebook or Google</p>'+
         '<p style="text-align: center;"><a style="margin:10px;" href="{{ glogin_url }}"" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>' +
-        '<a href="#" onclick="fb_login()" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>'
+        '<a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>'
 
     });
+    var parentfunc = modal.close;
+
+    modal.close = function(){
+      parentfunc();
+      loginModalIsOpen = false;
+    }
 }
     </script>
 
@@ -241,33 +248,50 @@ function loginmodal(){
       // The response object is returned with a status field that lets the app know the current
       // login status of the person. In this case, we're handling the situation where they 
       // have logged in to the app.
-      user_name = response.name;
-      //add logout button
-      $('#login').prepend('<p>Hi, '+ user_name + '<a class="btn btn-danger" onclick="fb_logout();">Log Out</a></p>');       
-      //only for buy page
-      $('#logintobuy').html('Hi, '+user_name+ ' Your purchase will be asscociated with your Facebook account!')
-      $.ajax( {
-        "url":  "/isgold",
-        "data": {"access_token":response.authResponse.accessToken},
-        "success": function (text) {
-          if(text=="success") {
-            $('#mustsignin').css({'display':'none'});
-            $('#gametable').css({'display':'block'});
+      
+      if (response.authResponse) {
+          access_token = response.authResponse.accessToken; //get access token
+          user_id = response.authResponse.userID; //get FB UID
+      }
+      FB.api('/me', function(resp) {
+          console.log('Good to see you, ' + resp.name + '.');
+          user_name = resp.name;
+          //add logout button
+          $('#loginlogout').html('<p>Hi, '+ user_name + '<a class="btn btn-danger" onclick="fb_logout();">Log Out</a></p>');
+
+          if(loginModalIsOpen) {
+            modal.close();
           }
-        },
-        "type": "GET",
-        "cache": false,
-        "error": function (xhr, error, thrown) {
-            if ( error == "parsererror" ) {
-                console.log( "JSON data from "+
-                    "server could not be parsed. This is caused by a JSON formatting error." );
-            }
-        }
-    } );
+
+          //only for buy page
+          if(needsRefresh) {
+            window.location.reload();
+          }
+          $('#logintobuy').html('Hi, '+user_name+ ' Your purchase will be asscociated with your Facebook account!')
+          $('#buybutton').prop('disabled', false);
+          
+          $.ajax( {
+            "url":  "/isgold",
+            "data": {"access_token":access_token},
+            "success": function (text) {
+              if(text=="success") {
+                $('#mustsignin').css({'display':'none'});
+                $('#gametable').css({'display':'block'});
+              }
+            },
+            "type": "GET",
+            "cache": false,
+            "error": function (xhr, error, thrown) {
+                if ( error == "parsererror" ) {
+                    console.log( "JSON data from "+
+                        "server could not be parsed. This is caused by a JSON formatting error." );
+                }
+          }
+          } );
+      });
 
 
       console.log(response);
-      testAPI();
     } else if (response.status === 'not_authorized') {
       // In this case, the person is logged into Facebook, but not into the app, so we call
       // FB.login() to prompt them to do so. 
@@ -314,6 +338,14 @@ function fb_logout(){
 
   FB.logout(function(response) {
     // user is now logged out
+    $('#loginlogout').html('<button class="btn btn-danger" onclick="loginmodal()" type="button">Log In</button>');
+    //only for buy page
+    $('#logintobuy').html('Log in with Facebook or Google!<br/><br/>'+
+                '<a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>'+
+                '<a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>'+
+                'Your purchase will be asscociated with your account.<br/><br/>');
+    $('#buybutton').prop('disabled', true);
+
   });
 }
 
@@ -339,17 +371,22 @@ function fb_logout(){
 
 {%- macro buybutton() %}
 <div id="buy">
+  {% if current_user.name %}
   <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button">Buy $3.99!</button>
+  {% else %}
+  <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button" disabled>Buy $3.99!</button>
+  {% endif %}
 </div>
 {%- endmacro %}
 
 {%- macro buyLink() %}
 <div id="buy">
-  <a id="buybutton" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" type="button">Buy Full Game $3.99!</a>
+  <a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" type="button">Buy Full Game $3.99!</a>
 </div>
 {%- endmacro %}
 
 {%- macro loginoutbutton() %}
+<div id="loginlogout">
 {% if current_user.name %}
 <p>Hi, {{ current_user.name }}
   {% if current_user.profile_url %}
@@ -359,19 +396,20 @@ function fb_logout(){
 </p>
 {% endif %}
 {% if current_user.cookie_user %}
-<button class="btn btn-danger" href="#" onclick="loginmodal()">Log In</button>
+<button class="btn btn-danger" onclick="loginmodal()" tpye="button">Log In</button>
 {% endif %}
+</div>
 {%- endmacro %}
 
 {%- macro standardgameoptions() %}
 <div id="score">
-  <button class="btn-large btn-danger" type="button">Score: 0</button>
+  <button class="btn btn-large btn-danger" type="button">Score: 0</button>
 </div>
 <div id="newgame">
-  <button class="btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+  <button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
 </div>
 <div id="difficulty">
-  <button id="changedifficultybutton" class="btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
+  <button id="changedifficultybutton" class="btn btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
 </div>
 {% if 'timed' not in url %}
 <div id="timedlink">
