@@ -44,7 +44,8 @@
 			  </div>
 	        </div>
             {% if current_user.gold %}
-                <table id="gametable" border="1">
+                <p>You already have Word Smashing! <a href="/campaign" title="Play Word Smashing">Play Campaign!</a></p>
+
             {% else %}
                 <p id="logintobuy" class="lead">
                     {% if current_user.name %}
@@ -58,8 +59,8 @@
 
                 </p>
                 <p style="text-align: center;margin:15px">{{ macros.buybutton() }}</p><br/>
-                <table id="gametable" border="1" style="display:none">
             {% endif %}
+                <table id="gametable" border="1" style="display:none">
                 <tr>
                     <td>
 

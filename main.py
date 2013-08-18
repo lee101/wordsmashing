@@ -341,6 +341,13 @@ class makeGoldHandler(BaseHandler):
         User.buyFor(self.current_user.id)
         self.response.out.write('success')
 
+class SaveVolumeHandler(BaseHandler):
+    def get(self):
+        user = self.current_user
+        user.volume = float(self.request.get('volume', None))
+        user.put()
+        self.response.out.write('success')
+
 
 class PostbackHandler(BaseHandler):
   """Handles server postback - received at /postback"""
@@ -405,6 +412,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/postback', PostbackHandler),
     ('/buy', BuyHandler),
     ('/makegold', makeGoldHandler),
+    ('/savevolume', SaveVolumeHandler),
 
 
 ], debug=True, config=config))

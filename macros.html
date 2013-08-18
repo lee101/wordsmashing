@@ -178,6 +178,25 @@ function loginmodal(){
             ended: function() { // The $.jPlayer.event.ended event
                 $(this).jPlayer("play"); // Repeat the media
             },
+            volumechange: function (event) {
+                var myVol = event.jPlayer.options.volume;
+                // myMuted = event.jPlayer.options.muted;
+                $.ajax( {
+                  "url":  "/savevolume",
+                  "data": {"volume":myVol},
+                  "success": function (text) {
+                  },
+                  "type": "GET",
+                  "cache": false,
+                  "error": function (xhr, error, thrown) {
+                  }
+                });
+            },
+            {% if current_user.volume %}
+            volume: {{ current_user.volume }},
+            {% else %}
+            volume: 0.5,
+            {% endif %}
             swfPath: "/js",
             supplied: "mp3, oga"
         });
@@ -237,6 +256,13 @@ function loginmodal(){
     xfbml      : true  // parse XFBML
   });
 
+    //Fetch the status so that we can log out.
+    //You must have the login status before you can logout,
+    //and if you authenticated via oAuth (server side), this is necessary.
+    //If you logged in via the JavaScript SDK, you can simply call FB.logout()
+    //once the login status is fetched, call handleSessionResponse
+    FB.getLoginStatus();
+
   // Here we subscribe to the auth.authResponseChange JavaScript event. This event is fired
   // for any authentication related change, such as login, logout or session refresh. This means that
   // whenever someone who was previously logged out tries to log in again, the correct case below 
@@ -263,7 +289,7 @@ function loginmodal(){
           }
 
           //only for buy page
-          if(needsRefresh) {
+          if(typeof needsRefresh == 'object') {
             window.location.reload();
           }
           $('#logintobuy').html('Hi, '+user_name+ ' Your purchase will be asscociated with your Facebook account!')
@@ -310,7 +336,7 @@ function loginmodal(){
     }
   });
   };
-
+access_token=0;
 function fb_login(){
   FB.login(function(response) {
 
@@ -334,18 +360,33 @@ function fb_login(){
   });
 }
 function fb_logout(){
+FB.getLoginStatus(function(ret) {
+    /// are they currently logged into Facebook?
+    if(ret.authResponse) {
+        //they were authed so do the logout
+        FB.logout(function(response) {
+        // user is now logged out
+        $('#loginlogout').html('<button class="btn btn-danger" onclick="loginmodal()" type="button">Log In</button>');
+        //only for buy page
+        $('#logintobuy').html('Log in with Facebook or Google!<br/><br/>'+
+                    '<a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>'+
+                    '<a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>'+
+                    'Your purchase will be asscociated with your account.<br/><br/>');
+        $('#buybutton').prop('disabled', true);
 
-  FB.logout(function(response) {
-    // user is now logged out
-    $('#loginlogout').html('<button class="btn btn-danger" onclick="loginmodal()" type="button">Log In</button>');
-    //only for buy page
-    $('#logintobuy').html('Log in with Facebook or Google!<br/><br/>'+
-                '<a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>'+
-                '<a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>'+
-                'Your purchase will be asscociated with your account.<br/><br/>');
-    $('#buybutton').prop('disabled', true);
-
-  });
+        });
+    } else {
+       ///do something if they aren't logged in
+       //or just get rid of this if you don't need to do something if they weren't logged in
+        fb_login();
+    }
+});
+  // if (access_token){
+  //   window.location.href = 'https://www.facebook.com/logout.php?next={{ url }}&access_token='+access_token;
+  // }
+  // else {
+  //   window.location.href = 'https://www.facebook.com/logout.php?next={{ url }}&access_token={{ current_user.access_token }}';
+  // }
 }
 
   // Load the SDK asynchronously
