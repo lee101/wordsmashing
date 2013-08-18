@@ -232,7 +232,6 @@ function loginmodal(){
   FB.init({
     appId      : '138831849632195',                        // App ID from the app dashboard
     channelUrl : '//wordsmashing.appspot.com/channel.html', // Channel file for x-domain comms
-    oauth: true,
     status     : true, // check login status
     cookie     : true, // enable cookies to allow the server to access the session
     xfbml      : true  // parse XFBML
@@ -269,7 +268,7 @@ function loginmodal(){
           }
           $('#logintobuy').html('Hi, '+user_name+ ' Your purchase will be asscociated with your Facebook account!')
           $('#buybutton').prop('disabled', false);
-          
+
           $.ajax( {
             "url":  "/isgold",
             "data": {"access_token":access_token},
@@ -390,6 +389,7 @@ function fb_logout(){
 {% if current_user.name %}
 <p>Hi, {{ current_user.name }}
   {% if current_user.profile_url %}
+  <a class="btn btn-danger" onclick="fb_logout();">Log Out</a>
   {% else %}
     <a class="btn btn-danger" href="{{ glogout_url }}">Log Out</a>
   {% endif %}

@@ -57,10 +57,10 @@ class BaseHandler(webapp2.RequestHandler):
                 dbUser.put()
                 return dbUser
 
-        #===== End Google Auth
+        #===== FACEBOOK Auth
         if self.session.get("user"):
             # User is logged in
-            return User.byId(self.session.get("user").id)
+            return User.byId(self.session.get("user")["id"])
         else:
             # Either used just logged in or just saw the first page
             # We'll see here
@@ -70,7 +70,7 @@ class BaseHandler(webapp2.RequestHandler):
             if fbcookie:
                 # Okay so user logged in.
                 # Now, check to see if existing user
-                user = User.get_by_key_name(fbcookie["uid"])
+                user = User.byId(fbcookie["uid"])
                 if not user:
                     # Not an existing user so get user info
                     graph = facebook.GraphAPI(fbcookie["access_token"])
@@ -94,7 +94,7 @@ class BaseHandler(webapp2.RequestHandler):
                     access_token=user.access_token
                 )
                 return user
-        # use session cookie user
+        #======== use session cookie user
         anonymous_cookie = self.request.cookies.get('wsuser', None)
         if anonymous_cookie is None:
             cookie_value = utils.random_string()
@@ -147,18 +147,17 @@ class BaseHandler(webapp2.RequestHandler):
         # achievements = Acheivement.all().filter("user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         # if len(achievements) == 0:
         #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
-        achievements = Achievement.getUserAchievements(self.current_user)
-        highscores = HighScore.getHighScores(self.current_user)
+        currentUser = self.current_user
+        achievements = Achievement.getUserAchievements(currentUser)
+        highscores = HighScore.getHighScores(currentUser)
 
         achievements = achievements.get_result()
         highscores = highscores.get_result()
 
         curr_time = int(time.time())
         exp_time = curr_time + 3600
-        logging.error("HERE!1")
         request_info = {'currencyCode': 'USD',
-                        'sellerData': self.current_user.id}
-        logging.error("HERE!1")
+                        'sellerData': currentUser.id}
         jwt_info = {'iss': SELLER_ID,
                     'aud': 'Google',
                     'typ': 'google/payments/inapp/item/v1',
@@ -178,7 +177,7 @@ class BaseHandler(webapp2.RequestHandler):
             'jwt': token_1,
             'ws': ws,
             'facebook_app_id': FACEBOOK_APP_ID,
-            'current_user': self.current_user,
+            'current_user': currentUser,
             'achievements': achievements,
             'UNLOCKED_MEDIUM':UNLOCKED_MEDIUM,
             'UNLOCKED_HARD':UNLOCKED_HARD,

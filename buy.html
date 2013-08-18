@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Word Smashing Level {{ level }} Addicting and Fun Word Puzzle Game</title>
+    <title>Buy Word Smashing!</title>
     <meta name="description"
           content="An Utterly Addicting Word Game, Fun For Everyone! Play This Addicting New Word Puzzle, Now For Free!">
 
@@ -44,21 +44,21 @@
 			  </div>
 	        </div>
             {% if current_user.gold %}
-            <table id="gametable" border="1">
+                <table id="gametable" border="1">
             {% else %}
-            <p id="logintobuy" class="lead">
-                {% if current_user.name %}
-                Hi, {{ current_user.name }} Your purchase will be asscociated with your account!<br/><br/>
-                {% else %}
-                Log in with Facebook or Google!<br/><br/>
-                <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
-                <a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>
-                Your purchase will be asscociated with your account.<br/><br/>
-                {% endif %}
+                <p id="logintobuy" class="lead">
+                    {% if current_user.name %}
+                        Hi, {{ current_user.name }} Your purchase will be asscociated with your {% if current_user.profile_url %}Facebook{% else %}Google{% endif %} account!<br/><br/>
+                    {% else %}
+                        Log in with Facebook or Google!<br/><br/>
+                        <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
+                        <a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>
+                        Your purchase will be asscociated with your account.<br/><br/>
+                    {% endif %}
 
-            </p>
-            <p style="text-align: center;margin:15px">{{ macros.buybutton() }}</p><br/>
-            <table id="gametable" border="1" style="display:none">
+                </p>
+                <p style="text-align: center;margin:15px">{{ macros.buybutton() }}</p><br/>
+                <table id="gametable" border="1" style="display:none">
             {% endif %}
                 <tr>
                     <td>
@@ -100,10 +100,10 @@
     </div>
 	<div id="footer">
 		<p>
-			<a href="/contact" title="Contact Us">Contact</a> 
-			<a href="/about" title="About Word Smashing">About Us</a>
-			<a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
-		    <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
+			<a href="http://www.wordsmashing.com/contact" title="Contact Us">Contact</a> 
+			<a href="http://www.wordsmashing.com/about" title="About Word Smashing">About Us</a>
+			<a href="http://www.wordsmashing.com/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
+		    <a href="http://www.wordsmashing.com/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
 		    <span>© 2013 Word Smashing</span>
             <a href="http://www.facebook.com/WordSmashing" title="Word Smashing on Facebook" target="_blank">
 		        <img src="/img/facebook.jpg" alt="Word Smashing on Facebook" width="144px" height="44px">

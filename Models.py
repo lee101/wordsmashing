@@ -75,8 +75,8 @@ class User(ndb.Model):
     def byId(self,id):
         return self.query(self.id == id).get()
     @classmethod
-    def buyFor(self,user):
-        dbuser = User.byId(user.id)
+    def buyFor(self,userid):
+        dbuser = User.byId(userid)
         dbuser.gold = 1
         dbuser.put()
     @classmethod
