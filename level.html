@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Word Smashing Level {{ level }} Addicting and Fun Word Puzzle Game</title>
+    <title>Word Smashing Level {{ level_num }} Addicting and Fun Word Puzzle Game</title>
     <meta name="description"
           content="An Utterly Addicting Word Game, Fun For Everyone! Play This Addicting New Word Puzzle, Now For Free!">
 
@@ -17,7 +17,7 @@
     <meta property="og:site_name" content="Word Smashing">
     <meta property="fb:admins" content="337972272904903">
 
-    {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
+    {{ macros.headers(ws, highscores, achievements, level) }}
 
 </head>
 <body>
@@ -84,7 +84,7 @@
         
         <div id="instructions">
         	
-            <h1>Word Smashing Campaign Level {{ level }}</h1>
+            <h1>Word Smashing Campaign Level {{ level_num }}</h1>
             <p class="lead"><b>Instructions: </b>Make Words for points and to clear space!<br/> 
             	Click a letter and click on an empty space to move it there.<br/>
             	You will only be able to move if there is a clear path.<br/>

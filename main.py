@@ -322,11 +322,11 @@ class BuyHandler(BaseHandler):
 class LevelHandler(BaseHandler):
     def get(self, level):
         level_num = int(level)
-        self.render('level.html', {'level': level_num, 'blocked_spaces': LEVELS[level_num - 1].blocked_spaces})
+        self.render('level.html', {'level_num': level_num, 'level': LEVELS[level_num - 1]})
 
     def post(self, level):
         level_num = int(level)        
-        self.render('level.html', {'level': level_num, 'blocked_spaces': LEVELS[level_num - 1].blocked_spaces})
+        self.render('level.html', {'level_num': level_num, 'level': LEVELS[level_num - 1]})
 
 
 class LogoutHandler(BaseHandler):

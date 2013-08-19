@@ -10,6 +10,10 @@ if (!blocked_spaces) {
     var blocked_spaces = {};
     num_blocked = 0;
 }
+if (!locked_spaces) {
+    var locked_spaces = {};
+    num_locked = 0;
+}
 var timedMode = 0;
 var EASY = 2;
 var MEDIUM = 3;
@@ -98,8 +102,12 @@ newGame = function () {
     for (var i = 0; i < game.height; i++) {
         gamedata2d.push([]);
         for (var j = 0; j < game.width; j++) {
-            if(blocked_spaces[j+'-'+i]) {
-                gamedata2d[i].push({'blocked':true})
+            if(locked_spaces[j+'-'+i]) {
+                gamedata2d[i].push({'blocked':true, 'locked':true});
+
+            }
+            else if(blocked_spaces[j+'-'+i]) {
+                gamedata2d[i].push({'blocked':true});
             }
             else {
                 gamedata2d[i].push(gamedata[gamedatapos++]);
@@ -112,6 +120,45 @@ newGame = function () {
     $('#showscore1').html('<button style="display: none"></button>');
     update();
 };
+
+function unlock(x,y) {
+    if(x < 0 || x >= game.width) {
+        return;
+    }
+    if(y < 0 || y >= game.height) {
+        return;
+    }
+    if(!gamedata2d[y][x].locked) {
+        return
+    }
+    gamedata2d[y][x] = {'selected':false};
+    var cell = $('#' + y + '-' + x);
+    cell.removeAttr('style');
+    cell.removeAttr('id');
+    cell.html('<div id="'+y+'-'+x+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>');
+    num_blocked--;
+    num_locked--;
+}
+function unlockHWord(startpos, endpos) {
+    //unlocks a horizontal word takes two xy coordinate pairs
+    //try left and right
+    unlock(startpos[0]-1,startpos[1]);
+    unlock(endpos[0]+1,endpos[1]);
+    for (var i = startpos[0]; i <= endpos[0]; i++) {
+        unlock(i,startpos[1]+1);
+        unlock(i,endpos[1]-1);
+    };
+}
+function unlockVWord(startpos, endpos) {
+    //unlocks a horizontal word takes two xy coordinate pairs
+    //try left and right
+    unlock(startpos[0],startpos[1]-1);
+    unlock(endpos[0],endpos[1]+1);
+    for (var i = startpos[1]; i <= endpos[1]; i++) {
+        unlock(startpos[0]+1, i);
+        unlock(startpos[0]-1, i);
+    };
+}
 function getXIndex(imclicked){
     return Number(imclicked.id.split('-')[1]);
 }
@@ -333,7 +380,6 @@ function turnEnd(endPos) {
                     game.score += scores;
                     removeTheHword=true
                     showScore(possibleword, scoreWord(possibleword))
-                    break hfinder;
                 }
                 else if (words[possibleword.reverse()]) {
                     //scoreword
@@ -342,6 +388,9 @@ function turnEnd(endPos) {
                     game.score += scores;
                     removeTheHword=true
                     showScore(possibleword.reverse(), scoreWord(possibleword))
+                }
+                if(matches >= 1) {
+                    unlockHWord([leftStart, endPos[1]], [rightStart, endPos[1]])
                     break hfinder;
                 }
             }
@@ -404,7 +453,6 @@ function turnEnd(endPos) {
                     game.score += scoreWord(possibleword)
                     removeVword(topStart, bottomStart)
                     showScore(possibleword, scoreWord(possibleword))
-                    break vfinder;
                 }
                 else if (words[possibleword.reverse()]) {
                     //scoreword
@@ -413,6 +461,9 @@ function turnEnd(endPos) {
                     game.score += scoreWord(possibleword)
                     removeVword(topStart, bottomStart)
                     showScore(possibleword.reverse(), scoreWord(possibleword))
+                }
+                if(matches >= 1) {
+                    unlockVWord([endPos[0], topStart], [endPos[0], bottomStart])
                     break vfinder;
                 }
             }
@@ -574,21 +625,14 @@ function showCombo(){
         $('#showscore'+definiteit+' button').css({display:'none'})
     })
 }
-function unlock(x,y) {
-    var cell = $('#' + y + '-' + x);
-    cell.animate({backgroundColor: 'none'}, 750, function(){
-        cell.css({backgroundColor:'none'})
-        cell.html('<div id="'+y+'-'+x+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>');
-        num_blocked--;
-    });
-}
+
 function update() {
     function renderGameData(gd,i,j) {
-        if(gd.blocked) {
-            return ''
-        }
         if(gd.locked) {
             return '<span class="icon-lock"></span>'
+        }
+        if(gd.blocked) {
+            return ''
         }
         var cssclass = ''
         var val = '<div id="'+i+'-'+j+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>'
