@@ -18,7 +18,31 @@
     <meta property="fb:admins" content="337972272904903">
 
     {{ macros.headers(ws, highscores, achievements, level) }}
-
+    <script type="text/javascript">
+    {% if level_num == 1 %}
+        $(function(){
+            modal.open({content:
+                '<p class="lead">Tiles can now be blocked!<br/><br/>'+
+                'But don\'t worry! Tiles with locks can be unlocked by scoring a word nearby!<br/><br/>'+
+                'Break all the locks to win!</p>'+
+                '<button class="btn btn-large btn-success" onclick="modal.close()" title="Play Next Level" type="button">Okay !</button>'
+            });
+        });
+    {% endif %}
+    function winViaBreakingAllLocks() {
+        extraContent = ''
+        if(difficulty == EASY) {
+            extraContent = '<br/><br/><a class="btn btn-large btn-success" onclick="changeDifficulty(MEDIUM)" title="Play On Medium">Play Again On Medium!</a>'
+        }
+        if(difficulty == MEDIUM) {
+            extraContent = '<br/><br/><button class="btn btn-large btn-success" onclick="changeDifficulty(HARD)" title="Play On Hard">Play Again On Hard!</button>'
+        }
+        modal.open({content:
+            '<p class="lead">Congratulations you won by breaking all the locks!</p>'+
+            '<a class="btn btn-large btn-success" href="/campaign/level{{ level_num + 1 }}" title="Play Next Level">Next Level!</a>' + extraContent
+        });
+    }
+    </script>
 </head>
 <body>
   {{ macros.fbstuff() }}

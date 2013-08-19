@@ -129,7 +129,7 @@ function unlock(x,y) {
         return;
     }
     if(!gamedata2d[y][x].locked) {
-        return
+        return;
     }
     gamedata2d[y][x] = {'selected':false};
     var cell = $('#' + y + '-' + x);
@@ -138,6 +138,11 @@ function unlock(x,y) {
     cell.html('<div id="'+y+'-'+x+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>');
     num_blocked--;
     num_locked--;
+    if(num_locked <= 0) {
+        if(typeof winViaBreakingAllLocks == "function") {
+            winViaBreakingAllLocks();
+        }
+    }
 }
 function unlockHWord(startpos, endpos) {
     //unlocks a horizontal word takes two xy coordinate pairs
@@ -147,7 +152,7 @@ function unlockHWord(startpos, endpos) {
     for (var i = startpos[0]; i <= endpos[0]; i++) {
         unlock(i,startpos[1]+1);
         unlock(i,endpos[1]-1);
-    };
+    }
 }
 function unlockVWord(startpos, endpos) {
     //unlocks a horizontal word takes two xy coordinate pairs
@@ -157,7 +162,7 @@ function unlockVWord(startpos, endpos) {
     for (var i = startpos[1]; i <= endpos[1]; i++) {
         unlock(startpos[0]+1, i);
         unlock(startpos[0]-1, i);
-    };
+    }
 }
 function getXIndex(imclicked){
     return Number(imclicked.id.split('-')[1]);
