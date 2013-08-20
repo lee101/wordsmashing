@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Word Smashing - Addicting and Fun Word Puzzle Game</title>
+    <title>Word Smashing Campaign - Addicting and Fun Word Puzzle Game</title>
     <meta name="description"
           content="An Utterly Addicting Word Game, Fun For Everyone! Play This Addicting New Word Puzzle, Now For Free!">
 
@@ -46,7 +46,10 @@
                   {% for col in dimentions %}
                     <td>
                       {% set level = col + ((row-1) * 9) %}
-                      <a class="btn btn-large btn-danger level-btn" href="/campaign/level{{ level }}" type=\"button\">{{ level }}</a>
+                      {% if num_levels < level %}
+                      {% else %}
+                      <a class="btn btn-large btn-danger level-btn" href="/campaign/level{{ level }}">{{ level }}</a>
+                      {% endif %}
                     </td>
                   {% endfor %}
                 </tr>

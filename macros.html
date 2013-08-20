@@ -182,8 +182,14 @@ function loginmodal(){
         $("#jquery_jplayer_1").jPlayer({
             ready: function () {
                 $(this).jPlayer("setMedia", {
+                  {% if ws.debug %}
                     mp3: "/music/ws-theme.mp3",
                     oga: "/music/ws-theme.ogg"
+                  {% endif %}
+                  {% if not ws.debug %}
+                    mp3: "http://commondatastorage.googleapis.com/wordsmashing%2Fws-theme.mp3",
+                    oga: "http://commondatastorage.googleapis.com/wordsmashing%2Fws-theme.ogg"
+                  {% endif %}
                 });
                 $(this).jPlayer("option", "loop",true);
                 $(this).jPlayer("play");

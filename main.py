@@ -187,7 +187,8 @@ class BaseHandler(webapp2.RequestHandler):
             'highscores':highscores,
             'glogin_url': users.create_login_url(self.request.uri),
             'glogout_url': users.create_logout_url(self.request.uri),
-            'url':self.request.uri
+            'url':self.request.uri,
+            'num_levels': len(LEVELS)
         }
         template_values.update(extraParams)
         #logging.error(highscores)

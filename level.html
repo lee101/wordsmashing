@@ -31,15 +31,21 @@
     {% endif %}
     function winViaBreakingAllLocks() {
         extraContent = ''
+        {% if level_num < num_levels %}
+            extraContent += '<a class="btn btn-large btn-success" href="/campaign/level{{ level_num + 1 }}" title="Play Next Level">Next Level!</a>'
+        {% else %}
+            extraContent += '<p class="lead">Congratulations!! You have finished the final level!!</p>'
+        {% endif %}
+
         if(difficulty == EASY) {
-            extraContent = '<br/><br/><a class="btn btn-large btn-success" onclick="changeDifficulty(MEDIUM)" title="Play On Medium">Play Again On Medium!</a>'
+            extraContent += '<br/><br/><a class="btn btn-large btn-success" onclick="changeDifficulty(MEDIUM)" title="Play On Medium">Play Again On Medium!</a>'
         }
         if(difficulty == MEDIUM) {
-            extraContent = '<br/><br/><button class="btn btn-large btn-success" onclick="changeDifficulty(HARD)" title="Play On Hard">Play Again On Hard!</button>'
+            extraContent += '<br/><br/><button class="btn btn-large btn-success" onclick="changeDifficulty(HARD)" title="Play On Hard">Play Again On Hard!</button>'
         }
         modal.open({content:
             '<p class="lead">Congratulations you won by breaking all the locks!</p>'+
-            '<a class="btn btn-large btn-success" href="/campaign/level{{ level_num + 1 }}" title="Play Next Level">Next Level!</a>' + extraContent
+             extraContent
         });
     }
     </script>
