@@ -18,7 +18,9 @@ var timedMode = 0;
 var EASY = 2;
 var MEDIUM = 3;
 var HARD = 4;
-var difficulty = EASY;
+if(!difficulty) {
+    var difficulty = EASY;
+}
 /**
  * implementing 5 10 20 combos!
  */
@@ -66,6 +68,20 @@ function changeDifficulty(newDifficulty){
     else if(difficulty == HARD){
         difficultyText = "Hard";
     }
+
+    $.ajax( {
+        "url":  "/savedifficulty",
+        "data": {"difficulty":difficulty},
+        "success": function (text) {
+
+        },
+        "type": "GET",
+        "cache": false,
+        "error": function (xhr, error, thrown) {
+            if ( error == "parsererror" ) {
+            }
+        }
+    } );
 
     $('#changedifficultybutton').text('Difficulty: ' + difficultyText);
 }

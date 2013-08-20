@@ -126,16 +126,19 @@ LEVELS = [
 class User(ndb.Model):
     id = ndb.StringProperty(required=True)
     cookie_user = ndb.IntegerProperty()
+    name = ndb.StringProperty()
+    email = ndb.StringProperty()
+
     gold = ndb.IntegerProperty()
+    difficulty = ndb.IntegerProperty()
     volume = ndb.FloatProperty()
 
     created = ndb.DateTimeProperty(auto_now_add=True)
     updated = ndb.DateTimeProperty(auto_now=True)
 
-    email = ndb.StringProperty()
-    name = ndb.StringProperty()
     profile_url = ndb.StringProperty()
     access_token = ndb.StringProperty()
+    
     @classmethod
     def byId(self,id):
         return self.query(self.id == id).get()

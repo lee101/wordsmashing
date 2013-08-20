@@ -348,6 +348,12 @@ class SaveVolumeHandler(BaseHandler):
         user.volume = float(self.request.get('volume', None))
         user.put()
         self.response.out.write('success')
+class SaveDifficultyHandler(BaseHandler):
+    def get(self):
+        user = self.current_user
+        user.difficulty = int(self.request.get('difficulty', None))
+        user.put()
+        self.response.out.write('success')
 
 
 class PostbackHandler(BaseHandler):
@@ -414,6 +420,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/buy', BuyHandler),
     ('/makegold', makeGoldHandler),
     ('/savevolume', SaveVolumeHandler),
+    ('/savedifficulty', SaveDifficultyHandler),
 
 
 ], debug=True, config=config))
