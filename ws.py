@@ -1,5 +1,5 @@
+import os
 
 class ws(object):
-    debug = True
-    version = 1.001
+    debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Development/')
 

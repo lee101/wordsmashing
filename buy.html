@@ -44,7 +44,7 @@
 			  </div>
 	        </div>
             {% if current_user.gold %}
-                <p>You already have Word Smashing! <a href="/campaign" title="Play Word Smashing">Play Campaign!</a></p>
+                <p class="lead">You already have Word Smashing! <a href="/campaign" title="Play Word Smashing">Play Campaign!</a></p>
 
             {% else %}
                 <p id="logintobuy" class="lead">
@@ -59,7 +59,9 @@
 
                 </p>
                 <p style="text-align: center;margin:15px">{{ macros.buybutton() }}</p><br/>
+                {{ macros.paypalbuyform() }}
             {% endif %}
+
                 <table id="gametable" border="1" style="display:none">
                 <tr>
                     <td>
@@ -126,6 +128,5 @@
 	<div class="clear">
 	</div>
 </div>
-
 </body>
 </html>

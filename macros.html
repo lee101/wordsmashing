@@ -51,55 +51,50 @@
     <link rel="apple-touch-icon" sizes="114x114" href="/img/word-smashing-icon-iphone-retina.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="/img/word-smashing-icon-ipad-retina.png" />
     <link rel="stylesheet" href="/css/social-likes.css">
-    {% if ws.debug %}
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="/css/main.css"/>
-    {% endif %}
-    {% if not ws.debug %}
-    <link type="text/css" rel="stylesheet" href="{{ ws.css }}"/>
-    {% endif %}
     <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
     <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
     <link type="text/css" href="/jplayerskin/jplayer.pink.flag.css" rel="stylesheet" />
-    {% if ws.debug %}
-    <script src="https://sandbox.google.com/checkout/inapp/lib/buy.js"></script>
-    {% endif %}
-    {% if not ws.debug %}
-    <script src="https://wallet.google.com/inapp/lib/buy.js"></script>
-    {% endif %}
-    <script type="text/javascript">
+      {% if ws.debug %}
+      <script src="https://sandbox.google.com/checkout/inapp/lib/buy.js"></script>
+      {% endif %}
+      {% if not ws.debug %}
+      <script src="https://sandbox.google.com/checkout/inapp/lib/buy.js"></script>
+      <!--<script src="https://wallet.google.com/inapp/lib/buy.js"></script>-->
+      {% endif %}
+      <script type="text/javascript">
 
-      // Success handler
-      var successHandler = function(status){
-        if (window.console != undefined) {
-          console.log("Purchase completed successfully: ", status);
-          window.location.href = "http://www.wordsmashing.com/campaign";
-        }
-      }
-
-      // Failure handler
-      var failureHandler = function(status){
-        if (window.console != undefined) {
-          console.log("Purchase failed ", status);
-        }
-      }
-
-      function purchase(item) {
-        var generated_jwt;
-        if (item == "Gold") {
-          generated_jwt = "{{ jwt }}";
-        } else {
-          return;
+        // Success handler
+        var successHandler = function(status){
+          if (window.console != undefined) {
+            console.log("Purchase completed successfully: ", status);
+            window.location.href = "http://www.wordsmashing.com/campaign";
+          }
         }
 
-        google.payments.inapp.buy({
-          'jwt'     : generated_jwt,
-          'success' : successHandler,
-          'failure' : failureHandler
-        });
-      }
-    </script>
+        // Failure handler
+        var failureHandler = function(status){
+          if (window.console != undefined) {
+            console.log("Purchase failed ", status);
+          }
+        }
 
+        function purchase(item) {
+          var generated_jwt;
+          if (item == "Gold") {
+            generated_jwt = "{{ jwt }}";
+          } else {
+            return;
+          }
+
+          google.payments.inapp.buy({
+            'jwt'     : generated_jwt,
+            'success' : successHandler,
+            'failure' : failureHandler
+          });
+        }
+      </script>
     <script>
     var achievements = {};
     {% for achievement in achievements %}
@@ -124,10 +119,6 @@
         {% endif %}
     {% endfor %}
 
-    {% if current_user.difficulty != 0 %}
-    var difficulty = {{ current_user.difficulty }};
-    {% endif %}
-
     {% if level %}
       num_blocked = {{ level.blocked_spaces|length }} + {{ level.locked_spaces|length }};
       {% if level.blocked_spaces %}
@@ -150,6 +141,10 @@
       {% endif %}
     {% endif %}
 
+    {% if current_user.difficulty != 0 and current_user.difficulty != None %}
+    var difficulty = {{ current_user.difficulty }};
+    {% endif %}
+
 var loginModalIsOpen = false;
 function loginmodal(){
   loginModalIsOpen= true;
@@ -168,16 +163,11 @@ function loginmodal(){
 }
     </script>
 
-    {% if ws.debug %}
     <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="/js/wordutils.js"></script>
     <script type="text/javascript" src="/js/game.js"></script>
-    {% endif %}
-    {% if not ws.debug %}
-    <script type="text/javascript" src="{{ ws.js }}"></script>
 
-    {% endif %}
     <script src="/js/social-likes.min.js"></script>
 
     <script type="text/javascript" src="/js/jquery.jplayer.min.js"></script>
@@ -490,3 +480,53 @@ FB.getLoginStatus(function(ret) {
     {{ buyLink() }}
 {% endif %}
 {%- endmacro %}
+
+{%- macro paypalbuyform() %}
+<script src="/js/paypal-button.min.js?merchant=P43U2BDEMJJXL" 
+    data-button="buynow" 
+    data-name="Word Smashing" 
+    data-quantity="1" 
+    data-amount="3.99" 
+    data-shipping="0" 
+    data-tax="0" 
+    data-callback="http://www.wordsmashing.com/ipn/{{ current_user.id }}" 
+    data-return="http://www.wordsmashing.com/campaign"
+    {% if ws.debug %}
+    data-env="sandbox"
+    {% endif %}
+></script>
+<!--<form action="https://api-3t.sandbox.paypal.com/nvp" method="post">
+  <p>
+    <input id="submitBtn" type="submit"
+    value="Pay with PayPal" />
+    <input type="hidden" name="success_url"
+    value="https://wordsmashing.appspot.com/buy" />
+    <input type="hidden" name="cancel_url"
+    value="https://wordsmashing.appspot.com/buy">
+  </p>
+</form>
+ <form action="checkout.php" METHOD="POST">
+  <input type="image" name="paypal_submit" id="paypal_submit" src="https://www.paypal.com/en_US/i/btn/btn_dg_pay_w_paypal.gif" border="0" align="top" alt="Pay with PayPal"/>
+</form> -->
+{%- endmacro %}
+
+{%- macro paypalincludes() %}
+      <script src="https://www.paypalobjects.com/js/external/dg.js"></script>
+      <script>
+      var dg = new PAYPAL.apps.DGFlow({
+      // the HTML ID of the form submit button which calls setEC
+      trigger: 'submitBtn'
+      // the experience type: instant or mini
+      expType: 'instant'
+      });
+      </script>
+      <script>
+      if (window.opener){
+      window.close();
+      }
+      else if (top.dg.isOpen() == true){
+      top.dg.closeFlow();
+      }
+      </script>
+{%- endmacro %}
+

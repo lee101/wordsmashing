@@ -13,6 +13,9 @@ from webapp2_extras import sessions
 import utils
 import jinja2
 
+from paypal import IPNHandler
+
+
 from cgi import escape
 import time
 import jwt
@@ -231,7 +234,7 @@ class AchievementsHandler(BaseHandler):
 class IsGoldHandler(BaseHandler):
     def get(self):
         
-        token = int(self.request.get('access_token'))
+        token = self.request.get('access_token')
         user = User.byToken(token)
         if user.gold:
             self.response.out.write('success')
@@ -315,6 +318,12 @@ class CampaignHandler(BaseHandler):
 
 class BuyHandler(BaseHandler):
     def get(self):
+
+        # paymentAmount = "3.99"
+        # CURRENCYCODE = "USD"
+        # RETURNURL = "https://wordsmashing.appspot.com/buy"
+        # CANCELURL = "https://wordsmashing.appspot.com/buy"
+
         self.render('buy.html')
 
     def post(self):
@@ -421,6 +430,6 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/makegold', makeGoldHandler),
     ('/savevolume', SaveVolumeHandler),
     ('/savedifficulty', SaveDifficultyHandler),
+    (r'/ipn/(.*)', IPNHandler),
 
-
-], debug=True, config=config))
+], debug=ws.debug, config=config))
