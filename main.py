@@ -348,8 +348,15 @@ class LogoutHandler(BaseHandler):
 
 class makeGoldHandler(BaseHandler):
     def get(self):
-        User.buyFor(self.current_user.id)
-        self.response.out.write('success')
+        if self.request.get('reverse', None):
+            user = self.current_user
+            user.gold=0
+            user.put()
+            self.response.out.write('success')
+        else:
+            User.buyFor(self.current_user.id)
+            self.redirect("/campaign")
+
 
 class SaveVolumeHandler(BaseHandler):
     def get(self):

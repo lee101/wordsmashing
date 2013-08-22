@@ -5,7 +5,7 @@ import urllib2
 import wsgiref.handlers
 
 import webapp2
-import ws
+from ws import ws
 from Models import User
 
 
@@ -37,24 +37,24 @@ class IPNHandler(webapp2.RequestHandler):
 
 
         # If not verified
-        if not status == "VERIFIED":
+        if not status == "Verified":
             return False
 
 
 
-        # if not the correct receiver ID
-        if not ws.debug and data['txn_type'] == 'subscr_payment': #and not data["receiver_id"] == RECEIVER_ID:
-            logging.info('Incorrect receiver_id')
-            logging.info(data['receiver_id'])
-            return False
+        # # if not the correct receiver ID
+        # if not ws.debug and data['txn_type'] == 'subscr_payment': #and not data["receiver_id"] == RECEIVER_ID:
+        #     logging.info('Incorrect receiver_id')
+        #     logging.info(data['receiver_id'])
+        #     return False
 
 
 
-        # if not the correct receiver email
-        if not ws.debug and data['txn_type'] != 'subscr_payment':# and not data["receiver_email"] == RECEIVER_EMAIL:
-            logging.info('Incorrect receiver_email')
-            logging.info(data['receiver_email'])
-            return False
+        # # if not the correct receiver email
+        # if not ws.debug and data['txn_type'] != 'subscr_payment':# and not data["receiver_email"] == RECEIVER_EMAIL:
+        #     logging.info('Incorrect receiver_email')
+        #     logging.info(data['receiver_email'])
+        #     return False
 
 
 
@@ -122,29 +122,30 @@ class IPNHandler(webapp2.RequestHandler):
 
     def post(self, user_id):
         data = {}
-        logging.error(userid + ' HERE')
+        
         # the values in request.arguments are stored as single value lists
         # we need to extract their string values
-        for arg in self.request.arguments:
-            data[arg] = self.request.arguments[arg][0]
+        for arg in self.request.arguments():
+            data[arg] = self.request.get(arg)
 
         # If there is no txn_id in the received arguments don't proceed
         if data['txn_type'] == 'subscr_payment' and not 'txn_id' in data:
             logging.info('IPN: No Parameters')
             return
 
+        User.buyFor(user_id)
         # Verify the data received with Paypal
         if not self.request.host.split(':')[0] == 'localhost' and not self.verify_ipn(data):
             logging.info('IPN: Unable to verify')
             return
 
         logging.info('IPN: Verified!')
+        logging.info(data)
 
 
         # Now do something with the IPN data
-        if data['txn_type'] == 'express_checkout':
-            #======== BUY  ===== !!!!
-            User.buyFor(user_id)
+        # if data['txn_type'] == 'express_checkout' or data['txn_type'] == 'web_accept':
+        #     #======== BUY  ===== !!!!
 
         elif data['txn_type'] == 'subscr_signup':
             # initial subscription
