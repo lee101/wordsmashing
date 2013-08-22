@@ -147,7 +147,7 @@ class IPNHandler(webapp2.RequestHandler):
         # if data['txn_type'] == 'express_checkout' or data['txn_type'] == 'web_accept':
         #     #======== BUY  ===== !!!!
 
-        elif data['txn_type'] == 'subscr_signup':
+        if data['txn_type'] == 'subscr_signup':
             # initial subscription
             self.subscr_signup(data)
         elif data['txn_type'] == 'subscr_payment':

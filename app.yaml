@@ -77,14 +77,15 @@ pagespeed:
 
   url_blacklist:
   - http://www.wordsmashing.com/music/*
-  enabled_rewriters:
-  - CollapseWhitespace
-  - CombineHeads
-  - ElideAttributes
-  - RemoveComments
-  - MinifyCss
-  - InlineJs
-  - LeftTrimUrls
+  - https://wordsmashing.appspot.com/buy
+  # enabled_rewriters:
+  # - CollapseWhitespace
+  # - CombineHeads
+  # - ElideAttributes
+  # - RemoveComments
+  # - MinifyCss
+  # - InlineJs
+  # - LeftTrimUrls
 
 inbound_services:
 - warmup

@@ -302,8 +302,11 @@ function loginmodal(){
           }
           {% if 'buy' in url or 'campaign' in url %}
           //only for buy page
-          if(typeof needsRefresh == 'object') {
-            window.location.reload();
+          
+          //window.location.reload();
+          buybtn = $('#paypalbuyform')
+          if(buybtn) {
+            buybtn.attr('data-callback', 'http://www.wordsmashing.com/ipn/' + user_id)
           }
           $('#logintobuy').html('Hi, '+user_name+ ' Your purchase will be asscociated with your Facebook account!')
           $('#buybutton').prop('disabled', false);
@@ -484,7 +487,7 @@ FB.getLoginStatus(function(ret) {
 {%- endmacro %}
 
 {%- macro paypalbuyform() %}
-<script src="/js/paypal-button.min.js?merchant=P43U2BDEMJJXL" 
+<script id="paypalbuyform" src="/js/paypal-button.min.js?merchant=P43U2BDEMJJXL" 
     data-button="buynow" 
     data-name="Word Smashing" 
     data-quantity="1" 
