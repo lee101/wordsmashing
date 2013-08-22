@@ -14,6 +14,9 @@ if (!locked_spaces) {
     var locked_spaces = {};
     num_locked = 0;
 }
+if (!current_user) {
+    var current_user = {};
+}
 var timedMode = 0;
 var EASY = 2;
 var MEDIUM = 3;
@@ -576,6 +579,25 @@ function gameover(){
     	'<div style="float:right"><button class="btn btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
     	'<div class="clear"></div>'+
 	'</div>'});
+    if(! current_user.has_bought) {
+        gameoverbuymodal = true;
+    }
+}
+gameoverbuymodal = false;
+if(! current_user.has_bought) {
+    parentfunc = modal.close;
+
+    modal.close = function() {
+        parentfunc()
+        if(gameoverbuymodal) {
+            modal.open({content: '<p class="lead">Please help me do what i love!</p>' +
+            '<p class="lead">Youll get heaps of levels filled with smashable locks!</p>' +
+            '<a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" type="button">Buy Full Game $3.99!</a>'
+            })
+
+            gameoverbuymodal = false;
+        }
+    }
 }
 function updateAchievements() {
     if(! achievements.medium && game.score >= 5000){

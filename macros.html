@@ -145,6 +145,11 @@
     var difficulty = {{ current_user.difficulty }};
     {% endif %}
 
+    var current_user = {};
+    {% if current_user.gold %}
+    current_user.has_bought = true;
+    {% endif %}
+
 var loginModalIsOpen = false;
 function loginmodal(){
   loginModalIsOpen= true;
