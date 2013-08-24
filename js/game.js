@@ -592,7 +592,7 @@ if(! current_user.has_bought) {
         if(gameoverbuymodal) {
             modal.open({content: '<p class="lead">Please help me do what i love!</p>' +
             '<p class="lead">Youll get heaps of levels filled with smashable locks!</p>' +
-            '<a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" target="_blank">Buy Full Game $3.99!</a>'
+            '<a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" target="_blank">Buy Full Game $0.97!</a>'
             })
 
             gameoverbuymodal = false;

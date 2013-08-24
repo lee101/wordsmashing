@@ -435,16 +435,16 @@ FB.getLoginStatus(function(ret) {
 {%- macro buybutton() %}
 <div id="buy">
   {% if current_user.name %}
-  <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button">Buy $3.99!</button>
+  <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button">Buy $0.97!</button>
   {% else %}
-  <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button" disabled>Buy $3.99!</button>
+  <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button" disabled>Buy $0.97!</button>
   {% endif %}
 </div>
 {%- endmacro %}
 
 {%- macro buyLink() %}
 <div id="buy">
-  <a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" target="_blank">Buy Full Game $3.99!</a>
+  <a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" target="_blank">Buy Full Game $0.97!</a>
 </div>
 {%- endmacro %}
 
@@ -496,7 +496,7 @@ FB.getLoginStatus(function(ret) {
     data-button="buynow" 
     data-name="Word Smashing" 
     data-quantity="1" 
-    data-amount="3.99" 
+    data-amount="0.97" 
     data-shipping="0" 
     data-tax="0" 
     data-callback="http://www.wordsmashing.com/ipn/{{ current_user.id }}" 

@@ -169,7 +169,7 @@ class BaseHandler(webapp2.RequestHandler):
                     'request': request_info}
 
         # create JWT for first item
-        request_info.update({'name': 'Word Smashing Gold', 'price': '3.99'})
+        request_info.update({'name': 'Word Smashing Gold', 'price': '0.97'})
         token_1 = jwt.encode(jwt_info, SELLER_SECRET)
 
         # create JWT for second item

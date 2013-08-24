@@ -1,0 +1,25 @@
+{
+    "name": "Word Smashing",
+    "description": "Word search puzzle with a twist",
+    "version": "4",
+    "manifest_version": 2,
+    "app": {
+        "urls": [
+            "*://www.wordsmashing.com/"
+        ],
+        "launch": {
+            "web_url": "http://www.wordsmashing.com/"
+        }
+    },
+    "icons": {
+        "128": "/img/woredsmashing_icon128.png"
+    },
+    "developer": {
+        "name": "Word Smashing",
+        "url": "http://www.wordsmashing.com"
+    },
+    "permissions": [
+        "unlimitedStorage",
+        "notifications"
+    ]
+}
