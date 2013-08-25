@@ -36,6 +36,12 @@ handlers:
   static_files: channel.html
   upload: channel.html
   expiration: "300d"
+- url: /manifest.webapp
+  static_files: manifest/manifest.json
+  upload: manifest/manifest.json
+  http_headers:
+    Vary: Accept-Encoding
+    Content-Type: application/x-web-app-manifest+json
 # - url: /(.*)html
   # static_files: \1html
   # upload: \1html

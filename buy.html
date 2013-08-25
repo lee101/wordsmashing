@@ -58,8 +58,12 @@
                     {% endif %}
 
                 </p>
-                <p style="text-align: center;margin:15px">{{ macros.paypalbuyform() }}</p><br/>
-                
+                {% if current_user.name %}
+                <p id="ppbuy" style="margin:20px;">{{ macros.paypalbuyform() }}</p><br/>
+                {% else %}
+                <p id="ppbuy" style="margin:20px;display: none;">{{ macros.paypalbuyform() }}</p><br/>
+                {% endif %}
+
             {% endif %}
 
                 <table id="gametable" border="1" style="display:none">
