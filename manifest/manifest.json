@@ -12,14 +12,12 @@
         }
     },
     "icons": {
-        "128": "/img/woredsmashing_icon128.png"
+        "128": "/img/wordsmashing_icon128.png",
+        "60": "/img/wordsmashing_icon60.png"
     },
+    "fullscreen": true,
     "developer": {
         "name": "Word Smashing",
         "url": "http://www.wordsmashing.com"
-    },
-    "permissions": [
-        "unlimitedStorage",
-        "notifications"
-    ]
+    }
 }

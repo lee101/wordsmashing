@@ -40,7 +40,6 @@ handlers:
   static_files: manifest/manifest.json
   upload: manifest/manifest.json
   http_headers:
-    Vary: Accept-Encoding
     Content-Type: application/x-web-app-manifest+json
 # - url: /(.*)html
   # static_files: \1html
@@ -83,6 +82,7 @@ pagespeed:
 
   url_blacklist:
   - http://www.wordsmashing.com/music/*
+  - http://www.wordsmashing.com/manifest.webapp
   - https://wordsmashing.appspot.com/buy
   # enabled_rewriters:
   # - CollapseWhitespace

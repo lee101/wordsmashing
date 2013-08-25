@@ -137,6 +137,10 @@ newGame = function () {
     game.score = 0;
     comboCounter = 0;
     $('#showscore1').html('<button style="display: none"></button>');
+    // reset num_locked and num_blocked
+    //locked_spaces 
+    num_blocked = Object.keys(blocked_spaces).length;
+    num_locked = Object.keys(locked_spaces).length + num_blocked;
     update();
 };
 
