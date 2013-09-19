@@ -23,6 +23,13 @@
 	background:#fff;
 	padding:20px;
 }
+.lead {
+    font-size: 18px;
+    line-height: 32px;
+}
+#help {
+    margin: 10px;
+}
 
 #close {
 	position:absolute;
@@ -169,7 +176,8 @@ body {
 }
 #btm{
     float: left;
-    height: 150px;
+    height: 95px;
+    margin-top: 20px;
     position: relative;
 }
 #footer {
