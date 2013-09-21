@@ -195,6 +195,22 @@ body {
 	margin: 0 11px;
 	color: Gray;
 }
+#sharearea {
+    margin: 10px;
+    padding: 55px;
+    height: 0;
+    margin-top: -120px;
+    z-index: 10000;
+}
+
+#sharestuff {
+    border-color: #fadf98;
+    border-width: 1px;
+    border-style: solid;
+    margin: 10px;
+    padding: 10px;
+}
+
 .clear{
 	clear:both;
 }

@@ -594,8 +594,16 @@ if(! current_user.has_bought) {
     modal.close = function() {
         parentfunc()
         if(gameoverbuymodal) {
+            var isEmbed = window != window.parent;
+            var buytarget = '';
+            if(isEmbed) {
+                buytarget = 'target="_blank"';
+            }
+
             modal.open({content: '<p class="lead">Buy The Full Game Now!</p>' +
-            '<a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" target="_blank">Buy Full Game $0.97!</a>'
+            '<a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" target="_blank">Buy Full Game $0.97!</a>' +
+            '<p class="lead" style="margin-top: 12px;">Or get it for Free For a Limited Time! Just Tell Your Friends!</p>' +
+            '<a id="buylink" href="http://www.wordsmashing.com/campaign/level1" class="btn btn-large btn-warning" '+ buytarget +'>Get Full Game Free!</a>'
             })
 
             gameoverbuymodal = false;
@@ -954,4 +962,29 @@ function showHighScores(){
     	'<p class="lead">Medium: ' + highscores.medium + '</p>'+
     	'<p class="lead">Hard: ' + highscores.hard + '</p>'+
 	'</div>'});
+}
+
+function showdonesharingbtn() {
+    window.setTimeout(function() {
+        $('#donesharing').removeAttr('disabled');
+    }, 4000);
+}
+window.setTimeout(showdonesharingbtn, 6000);
+function makegold() {
+    $.blockUI({ message: ''})
+    $.ajax( {
+        "url":  "/makegold",
+        "success": function (text) {
+
+            window.setTimeout(function() {
+                window.location.reload();
+            }, 2000);
+        },
+        "type": "GET",
+        "cache": false,
+        "error": function (xhr, error, thrown) {
+            if ( error == "parsererror" ) {
+            }
+        }
+    } );
 }

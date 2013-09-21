@@ -9,10 +9,10 @@
 
     <meta name="keywords" content="fun puzzle games, fun, crossword, fun online puzzle games, word puzzle game">
     <meta property="og:title" content="Level {{ level_num }} Word Smashing- Addicting and Fun Word Puzzle Game">
-    <meta property="og:url" content="http://www.wordsmashing.com">
+    <meta property="og:url" content="{{ url }}">
     <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
     <meta property="og:description"
-          content="Play Word Smashing! Crazy Fun Word Puzzle Game, Play For Free!">
+          content="Get Word Smashing Free! Just Share This Link! Limited Time Only!">
     <meta property="og:type" content="game">
     <meta property="og:site_name" content="Word Smashing">
     <meta property="fb:admins" content="337972272904903">
@@ -21,12 +21,14 @@
     <script type="text/javascript">
     {% if level_num == 1 %}
         $(function(){
+            {% if current_user.gold %}
             modal.open({content:
                 '<p class="lead">Tiles can now be blocked!<br/><br/>'+
                 'But don\'t worry! Tiles with locks can be unlocked by scoring a word nearby!<br/><br/>'+
                 'Break all the locks to win!</p>'+
                 '<button class="btn btn-large btn-success" onclick="modal.close()" title="Play Next Level" type="button">Okay !</button>'
             });
+            {% endif %}
         });
     {% endif %}
     function winViaBreakingAllLocks() {
@@ -79,8 +81,18 @@
 
                 </tr>
             </table>
+            {% if not current_user.gold %}
+            <p class="lead">Or get Word Smashing Campaign for Free! <br/>Just click below to share us and click done!</p>
+            {% endif %}
+            <div id="sharestuff">
             <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></span>
             {{ macros.shareBtnsHorizontal() }}
+            </div>
+            <div id="sharearea" onclick="showdonesharingbtn()">
+            </div>
+            {% if not current_user.gold %}
+            <button id="donesharing" class="btn btn-large btn-warning" disabled="disabled" onclick="makegold()">Done!</button>
+            {% endif %}
             <div id="showscore0">
                 <button style="display: none"></button>
             </div>

@@ -253,12 +253,15 @@ function loginmodal(){
     <img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" />
 </a>
 {%- endmacro %}
-{%- macro shareBtnsHorizontal(url) %}
-<ul class="social-likes">
+{%- macro shareBtnsHorizontal(differenturl) %}
+{% if not differenturl %}
+{% set differenturl = url %}
+{% endif %}
+<ul class="social-likes" data-url="{{ differenturl }}">
   <li class="facebook" title="Share link on Facebook">Facebook</li>
   <li class="twitter" title="Share link on Twitter">Twitter</li>
   <li class="plusone" title="Share link on Google+">Google+</li>
-  <li class="pinterest" title="Share image on Pinterest" data-media="{{ url }}">Pinterest</li>
+  <li class="pinterest" title="Share image on Pinterest" data-media="{{ differenturl }}">Pinterest</li>
 </ul>
 {%- endmacro %}
 
