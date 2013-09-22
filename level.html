@@ -71,7 +71,7 @@
             {% else %}
             <p id="mustsignin" class="lead">Login with your gold account to play!</br>
             <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
-        <a href="#" onclick="fb_login()" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>
+        <a href="#" onclick="fb_login();return false;" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>
             <table id="gametable" border="1" style="display:none">
             {% endif %}
                 <tr>
