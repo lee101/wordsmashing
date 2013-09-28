@@ -171,7 +171,11 @@ function loginmodal(){
     <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="/js/wordutils.js"></script>
-    <script type="text/javascript" src="/js/game.js"></script>
+    {% if 'with-your-friends' in url %}
+      <script type="text/javascript" src="/js/game-with-friends.js"></script>
+    {% else %}
+      <script type="text/javascript" src="/js/game.js"></script>
+    {% endif %}
 
     <script src="/js/social-likes.min.js"></script>
 
@@ -259,7 +263,7 @@ function loginmodal(){
 {% endif %}
 <ul class="social-likes" data-url="{{ differenturl }}">
   <li class="facebook" title="Share link on Facebook">Facebook</li>
-  <li class="twitter" title="Share link on Twitter">Twitter</li>
+  <li class="twitter" data-via="Wordsmashing" data-related="Wordsmashing:Word Smashing Tweeting About Puzzles and Games" title="Share link on Twitter">Twitter</li>
   <li class="plusone" title="Share link on Google+">Google+</li>
   <li class="pinterest" title="Share image on Pinterest" data-media="{{ differenturl }}">Pinterest</li>
 </ul>

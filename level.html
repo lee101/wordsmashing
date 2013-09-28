@@ -28,6 +28,10 @@
                 'Break all the locks to win!</p>'+
                 '<button class="btn btn-large btn-success" onclick="modal.close()" title="Play Next Level" type="button">Okay !</button>'
             });
+            {% else %}
+            // modal.open({
+            //     'content': $('#calltoactionpopup').html()
+            // });
             {% endif %}
         });
     {% endif %}
@@ -69,10 +73,15 @@
             {% if current_user.gold %}
             <table id="gametable" border="1">
             {% else %}
-            <p id="mustsignin" class="lead">Login with your gold account to play!</br>
-            <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
-        <a href="#" onclick="fb_login();return false;" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>
-            <table id="gametable" border="1" style="display:none">
+            <div id="calltoactionpopup">
+                {% if current_user.name %}
+                    {{ macros.buyLink() }}
+                {% else %}
+                <p id="mustsignin" class="lead">Login with your gold account to play!</br>
+                <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
+                <a href="#" onclick="fb_login();return false;" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>
+                {% endif %}
+                <table id="gametable" border="1" style="display:none">
             {% endif %}
                 <tr>
                     <td>
@@ -82,7 +91,7 @@
                 </tr>
             </table>
             {% if not current_user.gold %}
-            <p class="lead">Or get Word Smashing Campaign for Free! <br/>Just click below to share us and click done!</p>
+                <p class="lead">Or get Word Smashing Campaign for Free! <br/>Just click below to share us and click done!</p>
             {% endif %}
             <div id="sharestuff">
             <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></span>
@@ -91,7 +100,8 @@
             <div id="sharearea" onclick="showdonesharingbtn()">
             </div>
             {% if not current_user.gold %}
-            <button id="donesharing" class="btn btn-large btn-warning" disabled="disabled" onclick="makegold()">Done!</button>
+                <button id="donesharing" class="btn btn-large btn-warning" disabled="disabled" onclick="makegold()">Done!</button>
+            </div>
             {% endif %}
             <div id="showscore0">
                 <button style="display: none"></button>

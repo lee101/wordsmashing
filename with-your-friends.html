@@ -1,9 +1,10 @@
+
 {% import "macros.html" as macros with context %}
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Word Smashing With Your Friends - Word Puzzle Game With Your Friends!</title>
+        <title>Word Smashing With Your Friends - Word Puzzle Game With Your Friends!</title>
     <meta name="description"
           content="An Utterly Addicting Word Game, Play This Addicting New Word Puzzle, Now with Friends!">
 
@@ -17,76 +18,30 @@
     <meta property="og:site_name" content="Word Smashing">
     <meta property="fb:admins" content="337972272904903">
 
-
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/main.css"/>
-    <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
-    <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
-    
-    <script>
-    var achievements = {};
-    {% for achievement in achievements %}
-    {% if achievement.type = UNLOCKED_MEDIUM %}
-    achievements.medium = true;
-    {% endif %}
-    {% if achievement.type = UNLOCKED_HARD %}
-    achievements.hard = true;
-    {% endif %}
-    {% endfor %}
-
-    var highscores = {};
-    {% for score in highscores %}
-        {% if score.difficulty = MEDIUM %}
-            highscores.medium = {{ score.score }};
-        {% endif %}
-        {% if score.difficulty = EASY %}
-            highscores.easy = {{ score.score }};
-        {% endif %}
-        {% if score.difficulty = HARD %}
-            highscores.hard = {{ score.score }};
-        {% endif %}
-    {% endfor %}
+    {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
+    <script type="text/javascript">
+      function showHelp(){
+          modal.open({content: $('#instructions').html()});
+      }
+      $(function(){
+        showHelp();
+        $('#closehelpbtn').html("Continue");  
+      });
     </script>
-
-    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="js/wordutils.js"></script>
-    <script type="text/javascript" src="js/game-with-friends.js"></script>
-
-    <script>
-        game.growth_rate = 2;
-        game.height=8;
-        game.width=8;
-        game.startwords = 20;
-    </script>
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-	  ga('create', 'UA-41301467-1', 'wordsmashing.com');
-	  ga('send', 'pageview');
-
-	</script>
-
 </head>
 <body>
-  {{ macros.fbstuff() }}
-  <div id="pagebody">
+    {{ macros.fbstuff() }}
+<div id="pagebody">
     <div id="container">
         <div id="main">
-        	<div id="logo">
-                <a href="/" title="Word Smashing Puzzle Game">
-                    <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
-                </a>
-		        <div id="login">
+            <div id="logo">
+                <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+
+                <div id="login">
                 {{ macros.loginoutbutton() }}
                     {{ macros.jplayer() }}
-			    </div>
-	        </div>
-            <div class="time"><p class="lead">5:00</p></div>
+                </div>
+            </div>
             <table id="gametable" border="1">
                 <tr>
                     <td>
@@ -95,7 +50,7 @@
 
                 </tr>
             </table>
-            <div class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></div>
+            <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></span>
             {{ macros.shareBtnsHorizontal() }}
             <div id="showscore0">
                 <button style="display: none"></button>
@@ -112,6 +67,9 @@
         </div>
         <div id="gameoptions">
             {{ macros.standardgameoptions() }}
+            <div id="help">
+                <button class="btn btn-large btn-danger" onclick="showHelp()" type="button">?</button>
+            </div>
         </div>
         <div id="bannerAdd">
             <script type="text/javascript"><!--
@@ -128,22 +86,21 @@
 
         </div>
         
-        <div id="instructions">
-        	
-            <h1>Word Smashing With Your Friends</h1>
-            <p class="lead"><b>Instructions: </b>Make Words for points and to clear space!<br/> 
-            	Click a letter and click on an empty space to move it there.<br/>
-            	You will only be able to move if there is a clear path.<br/>
-            	Every turn three new letters will grow into the game.<br/> 
-            	Its game over when the board is filled with letters or you run out of time!<br/>
-            	Get two words in one turn and get combos by making words every turn for bonus points.<br/>
-            	On Easy You can make words with 2 or more letters.<br/>
-            	On Medium You can make words with 3 or more letters.<br/>
-            	On Hard You can only make words with 4 or more letters!<br/>
-                Want something more relaxed? <a href="/" title="Play Word Smashing Classic">Play Word Smashing Classic</a>.<br/>
-            	Some place names and peoples names do not count as words.
-            	</p>
-            <p class="lead">Word smashing is a free online word search puzzle.</p>
+        <div id="instructions" style="display:none">
+            <h1 style="display:none">Word Smashing</h1>
+            <p class="lead" style="display:none">Word smashing is a free online word search puzzle.</p>
+            <p class="lead"><b>Instructions:</b><br/>
+                Make words! lots of words! two at once or heaps in a row for bonus points!<br/>
+                Get words up, down, forward and backwards!<br/>
+                On easy, get words with 2+ letters, on medium 3+, Hard 4+!<br/>
+                To move, click a letter and click a space!<br/>
+                You can move if theres a clear path!<br/>
+                Each turn 3 more letters appear, when the board fills up its game over!<br/>
+                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a>.<br/>
+                Some people &amp; place names don't count!<br/>
+            </p>
+            <button id="closehelpbtn" style="float:left" class="btn btn-large btn-success" onclick="modal.close()" type="button">Play Now!</button>
+            <div class="clear"></div>
         </div>
         <div class="clear"></div>
         <div id="btm">
@@ -158,39 +115,38 @@
             <script type="text/javascript"
                     src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
             </script>
-            
-
         </div>
     </div>
-		
+        
     <div class="clear">
     </div>
-	<div id="footer">
-		<p>
-			<a href="/contact" title="Contact Us">Contact</a> 
-			<a href="/about" title="About Word Smashing">About Us</a>
-			<a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
-		    <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
-		    <span>© 2013 Word Smashing</span>
+    <div id="footer">
+        <p>
+            <a href="/contact" title="Contact Us">Contact</a> 
+            <a href="/about" title="About Word Smashing">About Us</a>
+            <a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
+            <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
+            <span>© 2013 Word Smashing</span>
             <a href="http://www.facebook.com/WordSmashing" title="Word Smashing on Facebook" target="_blank">
-		        <img src="/img/facebook.jpg" alt="Word Smashing on Facebook" width="144px" height="44px">
-		    </a>
-			<div class="g-plus" data-href="//plus.google.com/116949277834973226564" data-rel="publisher"></div>
+                <img src="/img/facebook.jpg" alt="Word Smashing on Facebook" width="144px" height="44px">
+            </a>
+            <div class="g-plus" data-href="//plus.google.com/116949277834973226564" data-rel="publisher"></div>
 
-			<!-- Place this tag after the last badge tag. -->
-			<script type="text/javascript">
-			  (function() {
-			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-			    po.src = 'https://apis.google.com/js/plusone.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-			  })();
-			</script><br/>
-		    <a href="https://twitter.com/Wordsmashing" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Wordsmashing</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-		</p>
-	</div>
-	<div class="clear">
-	</div>
+            <!-- Place this tag after the last badge tag. -->
+            <script type="text/javascript">
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            </script><br/>
+            <a href="https://twitter.com/Wordsmashing" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Wordsmashing</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </p>
+    </div>
+    <div class="clear">
+    </div>
 </div>
+
 </body>
 </html>
