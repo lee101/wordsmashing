@@ -91,6 +91,15 @@ function changeDifficulty(newDifficulty){
     $('#changedifficultybutton').text('Difficulty: ' + difficultyText);
 }
 
+function addGrowersTo(gamedatalist) {
+    for (var i = 0; i < game.growth_rate; i++) {
+        var isRed = true;
+        if (i >= game.growth_rate/2) {
+            isRed = false;
+        }
+        gamedatalist.push({'letter': getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false, 'isRed': isRed });
+    }
+}
 newGame = function () {
     if(typeof GAMESAPI === 'object') {
         GAMESAPI.beginGameSession(
@@ -109,16 +118,10 @@ newGame = function () {
         if(i >= game.startwords/2){
             isRed = false;
         }
-        gamedata.push({letter: getRandomLetter(), 'selected': false, 'isRed': isRed});
-        // gamedata.push({letter: getRandomLetter(), 'selected': false});
+        gamedata.push({'letter': getRandomLetter(), 'selected': false, 'isRed': isRed});
+        // gamedata.push({'letter': getRandomLetter(), 'selected': false});
     }
-    for (var i = 0; i < game.growth_rate; i++) {
-        var isRed = true;
-        if (i >= game.growth_rate/2) {
-            isRed = false;
-        }
-        gamedata.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false});
-    }
+    addGrowersTo(gamedata);
     //push empty spaces
     var numspaces = game.width * game.height - game.startwords - game.growth_rate - num_blocked;
     for (var i = 0; i < numspaces; i++) {
@@ -557,10 +560,8 @@ function turnEnd(endPos) {
     for (var i = 0; i < numspaces - game.growth_rate; i++) {
         growers.push({'selected': false})
     }
-
-    growers.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false})
-    growers.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false})
-    growers.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false})
+    addGrowersTo(growers);
+    
     growers.shuffle()
     //place them
     currpos = 0
@@ -722,7 +723,7 @@ function update() {
                 addedClass = 'btn-danger';
             }
             val = '<div id="'+i+'-'+j+'" onclick="moveTo(this)" class="btn-link swap" style="height: 36px;padding-top: 10px;" >'+
-            '<button class="btn btn-small disabled '+  +' swap grower" type="button" >' + gd.letter + "</button></div>"
+            '<button class="btn btn-small disabled '+ addedClass +' swap grower" type="button" >' + gd.letter + "</button></div>"
         }
         return val
     }
