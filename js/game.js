@@ -532,7 +532,6 @@ function turnEnd(endPos) {
             }
         }
     }
-    //if 0 or less apaces then you loose
     if (numspaces <= 0) {
         gameover()
     }

@@ -476,9 +476,11 @@ FB.getLoginStatus(function(ret) {
 <div id="score" onclick="showHighScores()">
   <button class="btn btn-large btn-danger" type="button">Score: 0</button>
 </div>
+{% if 'with-your-friends' in url %}
 <div id="score2" onclick="showHighScores()">
   <button class="btn btn-large btn-primary" type="button">Score: 0</button>
 </div>
+{% endif %}
 <div id="newgame">
   <button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
 </div>

@@ -5,7 +5,8 @@ var game = {
     'startwords': 14,
     'growth_rate': 4,
     'score': 0,
-    'score2': 0
+    'score2': 0,
+    'players_turn': 1
 };
 if (!blocked_spaces) {
     var blocked_spaces = {};
@@ -149,7 +150,9 @@ newGame = function () {
     }
     //remove score and game over screen
     game.score = 0;
+    game.score2 = 0;
     comboCounter = 0;
+    comboCounter2 = 0;
     $('#showscore1').html('<button style="display: none"></button>');
     // reset num_locked and num_blocked
     //locked_spaces 
@@ -340,7 +343,14 @@ function moveTo(imclicked) {
     handleAnimation();
 }
 
-
+function addToScore(newScore) {
+    if (game.players_turn == 1) {
+        game.score += newScore;
+    }
+    else {
+        game.score2 += newScore;
+    }
+}
 function turnEnd(endPos) {
     function removeHword(start, end) {
         for (var k = start; k <= end; k++) {
@@ -424,16 +434,16 @@ function turnEnd(endPos) {
                     //scoreword
                     matches = 1;
                     scores = scoreWord(possibleword)
-                    game.score += scores;
-                    removeTheHword=true
+                    addToScore(scores)
+                    removeTheHword = true
                     showScore(possibleword, scoreWord(possibleword))
                 }
                 else if (words[possibleword.reverse()]) {
                     //scoreword
                     matches = 1;
                     scores = scoreWord(possibleword)
-                    game.score += scores;
-                    removeTheHword=true
+                    addToScore(scores)
+                    removeTheHword = true
                     showScore(possibleword.reverse(), scoreWord(possibleword))
                 }
                 if(matches >= 1) {
@@ -496,18 +506,20 @@ function turnEnd(endPos) {
                 if (words[possibleword]) {
                     //scoreword
                     matches++;
-                    scores += scoreWord(possibleword)
-                    game.score += scoreWord(possibleword)
+                    var currentWordsScore = scoreWord(possibleword)
+                    scores += currentWordsScore
+                    addToScore(currentWordsScore)
                     removeVword(topStart, bottomStart)
-                    showScore(possibleword, scoreWord(possibleword))
+                    showScore(possibleword, currentWordsScore)
                 }
                 else if (words[possibleword.reverse()]) {
                     //scoreword
                     matches++;
-                    scores += scoreWord(possibleword);
-                    game.score += scoreWord(possibleword)
+                    var currentWordsScore = scoreWord(possibleword)
+                    scores += currentWordsScore;
+                    addToScore(currentWordsScore)
                     removeVword(topStart, bottomStart)
-                    showScore(possibleword.reverse(), scoreWord(possibleword))
+                    showScore(possibleword.reverse(), currentWordsScore)
                 }
                 if(matches >= 1) {
                     unlockVWord([endPos[0], topStart], [endPos[0], bottomStart])
@@ -524,7 +536,7 @@ function turnEnd(endPos) {
     
     if(matches == 2){
         showDouble();
-        game.score += scores;
+        addToScore(scores);
     }
     if(matches == 0){
         comboCounter = 0;
@@ -561,7 +573,7 @@ function turnEnd(endPos) {
         growers.push({'selected': false})
     }
     addGrowersTo(growers);
-    
+
     growers.shuffle()
     //place them
     currpos = 0
@@ -575,6 +587,12 @@ function turnEnd(endPos) {
                 currpos++
             }
         }
+    }
+    if (game.players_turn == 1) {
+        game.players_turn = 2;
+    }
+    else {
+        game.players_turn = 1;
     }
 }
 function gameover(){
@@ -685,8 +703,7 @@ function showDouble() {
 function showCombo(){
 
     var bonusPoints = comboCounter*10;
-
-    game.score += bonusPoints;
+    addToScore(bonusPoints);
     iteration++
     iteration = iteration%4;
     $('#showscore'+iteration+' button').empty()
@@ -750,6 +767,7 @@ function update() {
         $('#gametable').replaceWith(domtable.join(''))
         //document.getElementById("score").firstChild.innerHTML = "Score: "+game.score
         $('#score button').html("Score: "+game.score)
+        $('#score2 button').html("Score: "+game.score2)
     })
 }
 
