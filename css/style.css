@@ -134,6 +134,9 @@ body {
     height: 0;
 }
 #score{
+    margin: 40px 0 30px 10px;
+}
+#score2{
 	margin: 40px 0 30px 10px;
 }
 #newgame{

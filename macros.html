@@ -52,7 +52,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/img/word-smashing-icon-ipad-retina.png" />
     <link rel="stylesheet" href="/css/social-likes.css">
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/main.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/style.css"/>
     <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
     <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
     <link type="text/css" href="/jplayerskin/jplayer.pink.flag.css" rel="stylesheet" />
@@ -475,6 +475,9 @@ FB.getLoginStatus(function(ret) {
 {%- macro standardgameoptions() %}
 <div id="score" onclick="showHighScores()">
   <button class="btn btn-large btn-danger" type="button">Score: 0</button>
+</div>
+<div id="score2" onclick="showHighScores()">
+  <button class="btn btn-large btn-primary" type="button">Score: 0</button>
 </div>
 <div id="newgame">
   <button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
