@@ -98,7 +98,7 @@ function addGrowersTo(gamedatalist) {
         if (i >= game.growth_rate/2) {
             isRed = false;
         }
-        gamedatalist.push({'letter': getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false, 'isRed': isRed });
+        gamedatalist.push({'letter': getRandomLetter(), 'halfgrown': true, 'selected': false, 'isRed': isRed });
     }
 }
 newGame = function () {
@@ -252,15 +252,9 @@ function selectWord(imclicked) {
     $("#"+yPos+'-'+xPos).removeClass('btn-danger');
     $("#"+yPos+'-'+xPos).addClass('btn-warning');
 }
-/*
- animate along path
- //dont worry about blocking input for now. TODO later
- */
-function moveTo(imclicked) {
-    var start = [selectedXpos, selectedYpos]
-    var xPos = getXIndex(imclicked)
-    var yPos = getYIndex(imclicked)
-    var goal = [xPos, yPos]
+function moveFromTo(start, goal) {
+    var xPos = goal[0]
+    var yPos = goal[1]
     var path;
     try {
         path = getpath(start, goal)
@@ -324,10 +318,10 @@ function moveTo(imclicked) {
                 })
 
                 var tmp = gamedata2d[yPos][xPos];
-                gamedata2d[yPos][xPos] = gamedata2d[selectedYpos][selectedXpos]
-                gamedata2d[selectedYpos][selectedXpos] = tmp
+                gamedata2d[yPos][xPos] = gamedata2d[selectedYpos][selectedXpos];
+                gamedata2d[selectedYpos][selectedXpos] = tmp;
                 //turn end
-                turnEnd([xPos, yPos])
+                turnEnd([xPos, yPos]);
 
                 update();
                 //TODO unblock ui
@@ -342,13 +336,318 @@ function moveTo(imclicked) {
 
     handleAnimation();
 }
+/*
+ animate along path
+ //dont worry about blocking input for now. TODO later
+ */
+function moveTo(imclicked) {
+    var start = [selectedXpos, selectedYpos]
+    var xPos = getXIndex(imclicked)
+    var yPos = getYIndex(imclicked)
+    var goal = [xPos, yPos]
+    moveFromTo(start, goal);
+}
+function getAllMovesFrom(yxpos) {
+    //seen nodes and back pointers
+    var seen = [];
+    for (var i = 0; i < game.height; i++) {
+        seen.push([])
+        for (var j = 0; j < game.width; j++) {
+            seen[i].push(false)
+        }
+    }
+    seen[yxpos[0]][yxpos[1]] = true;
+    var availableMoves = [];
 
+    var stack = [yxpos],
+        next = yxpos;
+    while (next) {
+        xpos = next[0];
+        ypos = next[1];
+        //find possible moves
+        var possibleMoves = [];
+        //can go left if theres no grown letter
+        if (xpos > 0 && (!gamedata2d[ypos][xpos - 1].letter || gamedata2d[ypos][xpos - 1].halfgrown) && !seen[ypos][xpos - 1] && !gamedata2d[ypos][xpos - 1].blocked) {
+            seen[ypos][xpos - 1] = true;
+            possibleMoves.push([xpos - 1, ypos]);
+        }
+        //can go up if theres no grown letter
+        if (ypos > 0 && (!gamedata2d[ypos - 1][xpos].letter || gamedata2d[ypos - 1][xpos].halfgrown) && !seen[ypos - 1][xpos] && !gamedata2d[ypos - 1][xpos].blocked) {
+            seen[ypos - 1][xpos] = true;
+            possibleMoves.push([xpos, ypos - 1]);
+        }
+        //can go right if theres no grown letter
+        if (xpos < game.width - 1 && (!gamedata2d[ypos][xpos + 1].letter || gamedata2d[ypos][xpos + 1].halfgrown) && !seen[ypos][xpos + 1] && !gamedata2d[ypos][xpos + 1].blocked) {
+            seen[ypos][xpos + 1] = true;
+            possibleMoves.push([xpos + 1, ypos]);
+        }
+        //can go down if theres no grown letter
+        if (ypos < game.height - 1 && (!gamedata2d[ypos + 1][xpos].letter || gamedata2d[ypos + 1][xpos].halfgrown) && !seen[ypos + 1][xpos] && !gamedata2d[ypos + 1][xpos].blocked) {
+            seen[ypos + 1][xpos] = true;
+            possibleMoves.push([xpos, ypos + 1]);
+        }
+
+        if (possibleMoves.length != 0) {
+            $.each(possibleMoves, function (i, possibleMove) {
+                stack.push(possibleMove);
+                availableMoves.push(possibleMove);
+            });
+        }
+
+        next = stack.pop();
+    }
+
+    return availableMoves;
+}
+function scoreMove(startPos, endPos) {
+    var xPos = endPos[0];
+    var yPos = endPos[1];
+    var startX = startPos[0];
+    var startY = startPos[1];
+
+    // == 1 simulate move on the board
+
+    var tmp = gamedata2d[yPos][xPos];
+    gamedata2d[yPos][xPos] = gamedata2d[startY][startX];
+    gamedata2d[startY][startX] = tmp;
+    growTiles();
+
+
+    // == 2 score the move
+    var currentMovesScore = 0;
+    ///////////////////////////////////
+    var matches = 0;
+    var scores = 0;
+    ////////////////check horzontally then vertically
+    numLeft = 0
+    numRight = 0
+    x = endPos[0]
+    while (x > 0) {
+        x--;
+        if (!gamedata2d[endPos[1]][x].letter) {
+            break;
+        }
+        numLeft++
+    }
+    x = endPos[0]
+    while (x < game.width - 1) {
+        x++;
+        if (!gamedata2d[endPos[1]][x].letter) {
+            break;
+        }
+        numRight++
+    }
+    startlen = numRight + numLeft + 1
+    maxlen = startlen
+
+    //try all lengths down to difficulty (2 3 or 4)
+    //
+    //drag leftStart and rightStart alongto consider all possibilities
+    hfinder:
+        while (startlen >= difficulty ) {
+            //try options
+            //go as far left as pos while still including endPos[0]
+            leftStart = endPos[0]
+            for (var i = 0; i < startlen - 1 && leftStart - 1 >= 0; i++) {
+                if (!gamedata2d[endPos[1]][leftStart - 1].letter) {
+                    break;
+                }
+                leftStart--
+            }
+            rightStart = leftStart + startlen -1
+            //consider all options from leftStart
+            iterationnumber = (maxlen - startlen) + 1
+
+            for (; leftStart <= endPos[0] &&  rightStart <= numRight +endPos[0]; leftStart++,rightStart++) {
+
+                //take startlen characters starting at leftStart+i
+                possibleword = ""
+                for (var j = leftStart; j <= rightStart; j++) {
+                    possibleword += gamedata2d[endPos[1]][j].letter
+                }
+                possibleword = possibleword.toLowerCase();
+                
+                if (words[possibleword]) {
+                    //scoreword
+                    matches = 1;
+                    scores = scoreWord(possibleword)
+                    currentMovesScore += scores;
+                }
+                else if (words[possibleword.reverse()]) {
+                    //scoreword
+                    matches = 1;
+                    scores = scoreWord(possibleword)
+                    currentMovesScore += scores;
+                }
+                if(matches >= 1) {
+                    break hfinder;
+                }
+            }
+
+            startlen--
+        }
+    ////////// Vertical check
+    numTop = 0
+    numBottom = 0
+    y = endPos[1]
+    while (y > 0) {
+        y--;
+        if (!gamedata2d[y][endPos[0]].letter) {
+            break;
+        }
+        numTop++
+    }
+    y = endPos[1]
+    while (y < game.height - 1) {
+        y++;
+        if (!gamedata2d[y][endPos[0]].letter) {
+            break;
+        }
+        numBottom++
+    }
+    startlen = numBottom + numTop + 1
+    maxlen = startlen
+
+    //try all lengths down to 3
+    //
+    //drag topStart and bottomStart alongto consider all possibilities
+    vfinder:
+        while (startlen >= difficulty ) {
+            //try options
+            //go as far left as pos while still including endPos[0]
+            topStart = endPos[1]
+            for (var i = 0; i < startlen - 1 && topStart - 1 >= 0; i++) {
+                if (!gamedata2d[topStart - 1][endPos[0]].letter) {
+                    break;
+                }
+                topStart--
+            }
+            bottomStart = topStart + startlen -1
+            //consider all options from topStart
+            iterationnumber = (maxlen - startlen) + 1
+
+            for (; topStart <= endPos[1] &&  bottomStart <= numBottom +endPos[1]; topStart++,bottomStart++) {
+
+                possibleword = ""
+                for (var j = topStart; j <= bottomStart; j++) {
+                    possibleword += gamedata2d[j][endPos[0]].letter
+                }
+                possibleword = possibleword.toLowerCase()
+                if (words[possibleword]) {
+                    //scoreword
+                    matches++;
+                    var currentWordsScore = scoreWord(possibleword)
+                    scores += currentWordsScore
+                    currentMovesScore += currentWordsScore;
+                }
+                else if (words[possibleword.reverse()]) {
+                    //scoreword
+                    matches++;
+                    var currentWordsScore = scoreWord(possibleword)
+                    scores += currentWordsScore;
+                    currentMovesScore += currentWordsScore;
+                }
+                if(matches >= 1) {
+                    break vfinder;
+                }
+            }
+
+            startlen--
+        }
+    //getdouble
+    if(matches == 2){
+        currentMovesScore += scores;
+    }
+    if(matches == 0){
+
+    }
+    else {
+        currentMovesScore += getComboScore(comboCounter2);
+    }
+
+    ///////////////////////////////////
+    // == 3 rollback the board
+    var tmp = gamedata2d[yPos][xPos];
+    gamedata2d[yPos][xPos] = gamedata2d[startY][startX];
+    gamedata2d[startY][startX] = tmp;
+    unGrowTiles();
+
+    return currentMovesScore
+}
+function makeAiMove() {
+    //TODO figure out if people can move!
+    $.blockUI({ message: ''});
+
+    //find a place to move to
+    // - find all blue movables
+    var blueTiles = [];
+    for (var i = 0; i < game.height; i++) {
+        for (var j = 0; j < game.width; j++) {
+            var currentTile = gamedata2d[i][j];
+            if( currentTile.isRed == false &&
+                currentTile.letter &&
+                !currentTile.grower) {
+
+                blueTiles.push([i,j]);
+            }
+        }
+    }
+    //get the move with best score
+    var maxScoreMove = [[0,0], [0,0]];
+    var maxScore = 0;
+    var totalNumMovesFound = 0;
+    for (var i = 0; i < blueTiles.length; i++) {
+        var allMovesFrom = getAllMovesFrom(blueTiles[i]);
+        totalNumMovesFound += allMovesFrom.length;
+        for (var j = 0; j < allMovesFrom.length; j++) {
+            currentMovesScore = scoreMove(blueTiles[i], allMovesFrom[j]);
+            if (currentMovesScore >= maxScore) {
+                maxScore = currentMovesScore;
+                maxScoreMove = [blueTiles[i], allMovesFrom[j]];
+            }
+        };
+    };
+    if (totalNumMovesFound == 0) {
+        //no moves! TODO something
+        gameover();
+    }
+
+
+    //move there
+    moveFromTo(maxScoreMove[0], maxScoreMove[1]);
+    $.unblockUI();
+}
 function addToScore(newScore) {
     if (game.players_turn == 1) {
         game.score += newScore;
     }
     else {
         game.score2 += newScore;
+    }
+}
+function growTiles() {
+    for (var i = 0; i < game.height; i++) {
+        for (var j = 0; j < game.width; j++) {
+            currentTile = gamedata2d[i][j];
+            currentTile.justgrown = false;
+            if (currentTile.halfgrown) {
+                currentTile.halfgrown = false;
+                currentTile.justgrown = true;
+            }
+        }
+    }
+}
+//ungrows tiles which just grew (only works once)
+function unGrowTiles() {
+    for (var i = 0; i < game.height; i++) {
+        for (var j = 0; j < game.width; j++) {
+            currentTile = gamedata2d[i][j];
+            currentTile.justgrown = false;
+            if (currentTile.justgrown) {
+                currentTile.halfgrown = true;
+                currentTile.justgrown = false;
+            }
+        }
     }
 }
 function turnEnd(endPos) {
@@ -368,15 +667,7 @@ function turnEnd(endPos) {
     
     var removeTheHword=false
 
-    //grow tiles
-    for (var i = 0; i < game.height; i++) {
-        for (var j = 0; j < game.width; j++) {
-
-            if (gamedata2d[i][j].halfgrown) {
-                gamedata2d[i][j].halfgrown = false;
-            }
-        }
-    }
+    growTiles()
     //check for good words.
 
     ////////////////check horzontally then vertically
@@ -401,7 +692,7 @@ function turnEnd(endPos) {
     startlen = numRight + numLeft + 1
     maxlen = startlen
 
-    //try all lengths down to 3//EDIT difficulty 2 3 or 4
+    //try all lengths down to difficulty (2 3 or 4)
     //
     //drag leftStart and rightStart alongto consider all possibilities
     hfinder:
@@ -539,12 +830,25 @@ function turnEnd(endPos) {
         addToScore(scores);
     }
     if(matches == 0){
-        comboCounter = 0;
+        if (game.players_turn == 1) {
+            comboCounter = 0;
+        }
+        else {
+            comboCounter2 = 0;
+        }
     }
     else{
-        comboCounter++;
-        if(comboCounter >= 2){
-            showCombo();
+        if(game.players_turn == 1) {
+            comboCounter++;
+            if(comboCounter >= 2){
+                showCombo(comboCounter);
+            }
+        }
+        else {
+            comboCounter2++;
+            if(comboCounter2 >= 2){
+                showCombo(comboCounter2);
+            }
         }
     }
 
@@ -590,6 +894,7 @@ function turnEnd(endPos) {
     }
     if (game.players_turn == 1) {
         game.players_turn = 2;
+        makeAiMove();
     }
     else {
         game.players_turn = 1;
@@ -607,12 +912,19 @@ function gameover(){
            }
        );
     }
-    var congratsMessage = 'Congratulations! Your Score: ' + game.score + '!';
+    var congratsMessage = '';
     if(isHighScore){
         congratsMessage = 'Thats A New Best! Your New High Score: ' + game.score + '!';
     }
+    if (game.score > game.score2) {
+        congratsMessage += '<br/>Congratulations! You Won!!! Your Score: ' + game.score + '! Opponents score: ' 
+            + game.score2 + '! <br/>You Won By ' + (game.score - game.score2) + '!';
+    }
+    else if (game.score2 > game.score) {
+        congratsMessage += '<br/>You Lost. Your Score: ' + game.score + ' Opponents score: ' 
+            + game.score2;
+    }
     modal.open({content: '<div id="changedifficulty">'+
-        '<p class="lead">Smashed It!</p>'+
         '<p class="lead">' + congratsMessage + '</p>'+
         '<div style="float:left"><button class="btn btn-large btn-primary" onclick="postHighScoreToFacebook()">Post High Score To Facebook!</button></div>'+
         '<div style="float:right"><button class="btn btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
@@ -700,14 +1012,17 @@ function showDouble() {
         $('#showscore'+definiteit+' button').css({display:'none'})
     })
 }
-function showCombo(){
+function getComboScore(comboCount) {
+    return comboCount*10;
+}
+function showCombo(comboCount){
 
-    var bonusPoints = comboCounter*10;
+    var bonusPoints = getComboScore(comboCount);
     addToScore(bonusPoints);
     iteration++
     iteration = iteration%4;
     $('#showscore'+iteration+' button').empty()
-    $('#showscore'+iteration+' button').replaceWith("<button class=\"btn btn-large btn-success\" type=\"button\">"+comboCounter+"X Combo "+bonusPoints+" Points!</button>")
+    $('#showscore'+iteration+' button').replaceWith("<button class=\"btn btn-large btn-success\" type=\"button\">"+comboCount+"X Combo "+bonusPoints+" Points!</button>")
     var definiteit=iteration
     $('#showscore'+iteration+' button').animate({top: '-=100px',opacity:0},4000,function(){
         $('#showscore'+definiteit+' button').css({display:'none'})
