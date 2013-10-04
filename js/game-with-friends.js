@@ -222,7 +222,14 @@ selectedYpos = -1;
 function selectWord(imclicked) {
     var xPos = getXIndex(imclicked);
     var yPos = getYIndex(imclicked);
-
+    updateSelectedView(yPos, xPos);
+}
+function updateSelectedView(yPos, xPos) {
+    if(game.players_turn == 1) {
+        if(gamedata2d[yPos][xPos].isRed == false) {
+            return;
+        }
+    }
     //unselect current if there is a current selected
     if (selectedXpos != -1 && selectedYpos != -1) {
         gamedata2d[selectedYpos][selectedXpos].selected = false;
@@ -253,8 +260,8 @@ function selectWord(imclicked) {
     $("#"+yPos+'-'+xPos).addClass('btn-warning');
 }
 function moveFromTo(start, goal) {
-    var xPos = goal[0]
-    var yPos = goal[1]
+    var xPos = goal[1]
+    var yPos = goal[0]
     var path;
     try {
         path = getpath(start, goal)
@@ -263,7 +270,11 @@ function moveFromTo(start, goal) {
         return;
     }
 
-    var timescalled = 0
+    var timescalled = 0;
+    var animationSpeed = 200;
+    if (game.players_turn == 2) {
+        animationSpeed = 400;
+    }
 
     function handleAnimation() {
         //custom animation followed by update
@@ -275,25 +286,25 @@ function moveFromTo(start, goal) {
         var nextpos = end - 1
         var direction
         //60x57
-        if (path[end][0] > path[nextpos][0]) {
+        if (path[end][1] > path[nextpos][1]) {
             direction = 'left'
             var newcss = {
                 left: '-=60px'
             }
         }
-        if (path[end][0] < path[nextpos][0]) {
+        if (path[end][1] < path[nextpos][1]) {
             direction = 'right'
             var newcss = {
                 left: '+=60px'
             }
         }
-        if (path[end][1] > path[nextpos][1]) {
+        if (path[end][0] > path[nextpos][0]) {
             direction = 'up'
             var newcss = {
                 top: '-=57px'
             }
         }
-        if (path[end][1] < path[nextpos][1]) {
+        if (path[end][0] < path[nextpos][0]) {
             direction = 'down'
             var newcss = {
                 top: '+=57px'
@@ -302,15 +313,15 @@ function moveFromTo(start, goal) {
         timescalled++;
         var stopping = timescalled >= path.length - 1
 
-        var $cell = $('#'+selectedYpos+'-'+selectedXpos); // Now it's a jQuery object.
+        var $cell = $('#'+start[0]+'-'+start[1]); // Now it's a jQuery object.
         if (!stopping) {
 
-            $cell.animate(newcss, 200, handleAnimation);
+            $cell.animate(newcss, animationSpeed, handleAnimation);
         }
 
         if (stopping) {
             //last time
-            $cell.animate(newcss, 200, function () {
+            $cell.animate(newcss, animationSpeed, function () {
                 //stop animation
                 $cell.css({
                     left: '0px',
@@ -318,8 +329,8 @@ function moveFromTo(start, goal) {
                 })
 
                 var tmp = gamedata2d[yPos][xPos];
-                gamedata2d[yPos][xPos] = gamedata2d[selectedYpos][selectedXpos];
-                gamedata2d[selectedYpos][selectedXpos] = tmp;
+                gamedata2d[yPos][xPos] = gamedata2d[start[0]][start[1]];
+                gamedata2d[start[0]][start[1]] = tmp;
                 //turn end
                 turnEnd([xPos, yPos]);
 
@@ -341,10 +352,10 @@ function moveFromTo(start, goal) {
  //dont worry about blocking input for now. TODO later
  */
 function moveTo(imclicked) {
-    var start = [selectedXpos, selectedYpos]
+    var start = [selectedYpos, selectedXpos]
     var xPos = getXIndex(imclicked)
     var yPos = getYIndex(imclicked)
-    var goal = [xPos, yPos]
+    var goal = [yPos, xPos]
     moveFromTo(start, goal);
 }
 function getAllMovesFrom(yxpos) {
@@ -353,38 +364,39 @@ function getAllMovesFrom(yxpos) {
     for (var i = 0; i < game.height; i++) {
         seen.push([])
         for (var j = 0; j < game.width; j++) {
-            seen[i].push(false)
+            seen[i].push(false);
         }
     }
-    seen[yxpos[0]][yxpos[1]] = true;
+    seen[yxpos[1]][yxpos[0]] = true;
     var availableMoves = [];
 
     var stack = [yxpos],
         next = yxpos;
     while (next) {
-        xpos = next[0];
-        ypos = next[1];
+        xpos = next[1];
+        ypos = next[0];
         //find possible moves
         var possibleMoves = [];
         //can go left if theres no grown letter
         if (xpos > 0 && (!gamedata2d[ypos][xpos - 1].letter || gamedata2d[ypos][xpos - 1].halfgrown) && !seen[ypos][xpos - 1] && !gamedata2d[ypos][xpos - 1].blocked) {
             seen[ypos][xpos - 1] = true;
-            possibleMoves.push([xpos - 1, ypos]);
+            //TODO flip!!!!!!!!
+            possibleMoves.push([ypos, xpos - 1]);
         }
         //can go up if theres no grown letter
         if (ypos > 0 && (!gamedata2d[ypos - 1][xpos].letter || gamedata2d[ypos - 1][xpos].halfgrown) && !seen[ypos - 1][xpos] && !gamedata2d[ypos - 1][xpos].blocked) {
             seen[ypos - 1][xpos] = true;
-            possibleMoves.push([xpos, ypos - 1]);
+            possibleMoves.push([ypos - 1, xpos]);
         }
         //can go right if theres no grown letter
         if (xpos < game.width - 1 && (!gamedata2d[ypos][xpos + 1].letter || gamedata2d[ypos][xpos + 1].halfgrown) && !seen[ypos][xpos + 1] && !gamedata2d[ypos][xpos + 1].blocked) {
             seen[ypos][xpos + 1] = true;
-            possibleMoves.push([xpos + 1, ypos]);
+            possibleMoves.push([ypos, xpos + 1]);
         }
         //can go down if theres no grown letter
         if (ypos < game.height - 1 && (!gamedata2d[ypos + 1][xpos].letter || gamedata2d[ypos + 1][xpos].halfgrown) && !seen[ypos + 1][xpos] && !gamedata2d[ypos + 1][xpos].blocked) {
             seen[ypos + 1][xpos] = true;
-            possibleMoves.push([xpos, ypos + 1]);
+            possibleMoves.push([ypos + 1, xpos]);
         }
 
         if (possibleMoves.length != 0) {
@@ -400,10 +412,10 @@ function getAllMovesFrom(yxpos) {
     return availableMoves;
 }
 function scoreMove(startPos, endPos) {
-    var xPos = endPos[0];
-    var yPos = endPos[1];
-    var startX = startPos[0];
-    var startY = startPos[1];
+    var xPos = endPos[1];
+    var yPos = endPos[0];
+    var startX = startPos[1];
+    var startY = startPos[0];
 
     // == 1 simulate move on the board
 
@@ -586,9 +598,9 @@ function makeAiMove() {
             var currentTile = gamedata2d[i][j];
             if( currentTile.isRed == false &&
                 currentTile.letter &&
-                !currentTile.grower) {
+                !currentTile.halfgrown) {
 
-                blueTiles.push([i,j]);
+                blueTiles.push([i, j]);
             }
         }
     }
@@ -612,10 +624,20 @@ function makeAiMove() {
         gameover();
     }
 
+    // var tmpSelectedX = selectedXpos;
+    // var tmpSelectedY = selectedYpos;
+    // selectedXpos = maxScoreMove[0][1];
+    // selectedYpos = maxScoreMove[0][0];
+    //update view
+    updateSelectedView(maxScoreMove[0][0], maxScoreMove[0][1]);
+    setTimeout(function() {
+        //move there
+        moveFromTo(maxScoreMove[0], maxScoreMove[1]);
+        $.unblockUI();
+        selectedYpos = -1;
+        selectedXpos = -1;
+    }, 800);
 
-    //move there
-    moveFromTo(maxScoreMove[0], maxScoreMove[1]);
-    $.unblockUI();
 }
 function addToScore(newScore) {
     if (game.players_turn == 1) {
@@ -642,9 +664,11 @@ function unGrowTiles() {
     for (var i = 0; i < game.height; i++) {
         for (var j = 0; j < game.width; j++) {
             currentTile = gamedata2d[i][j];
-            currentTile.justgrown = false;
             if (currentTile.justgrown) {
                 currentTile.halfgrown = true;
+                currentTile.justgrown = false;
+            }
+            else {
                 currentTile.justgrown = false;
             }
         }
@@ -1104,42 +1128,42 @@ function getpath(start, goal) {
             previous[i].push([])
         }
     }
-    seen[start[1]][start[0]] = true;
+    seen[start[0]][start[1]] = true;
 
     var queue = [start],
         next = start;
     while (next) {
-        xpos = next[0];
-        ypos = next[1];
+        xpos = next[1];
+        ypos = next[0];
         //find possible moves
         var possibleMoves = []
         //can go left if theres no grown letter
         if (xpos > 0 && (!gamedata2d[ypos][xpos - 1].letter || gamedata2d[ypos][xpos - 1].halfgrown) && !seen[ypos][xpos - 1] && !gamedata2d[ypos][xpos - 1].blocked) {
             seen[ypos][xpos - 1] = true;
-            previous[ypos][xpos - 1] = [xpos, ypos];
-            possibleMoves.push([xpos - 1, ypos])
+            previous[ypos][xpos - 1] = [ypos, xpos];
+            possibleMoves.push([ypos, xpos - 1])
 
 
         }
         //can go up if theres no grown letter
         if (ypos > 0 && (!gamedata2d[ypos - 1][xpos].letter || gamedata2d[ypos - 1][xpos].halfgrown) && !seen[ypos - 1][xpos] && !gamedata2d[ypos - 1][xpos].blocked) {
             seen[ypos - 1][xpos] = true;
-            previous[ypos - 1][xpos] = [xpos, ypos];
-            possibleMoves.push([xpos, ypos - 1])
+            previous[ypos - 1][xpos] = [ypos, xpos];
+            possibleMoves.push([ypos - 1, xpos])
 
         }
         //can go right if theres no grown letter
         if (xpos < game.width - 1 && (!gamedata2d[ypos][xpos + 1].letter || gamedata2d[ypos][xpos + 1].halfgrown) && !seen[ypos][xpos + 1] && !gamedata2d[ypos][xpos + 1].blocked) {
             seen[ypos][xpos + 1] = true;
-            previous[ypos][xpos + 1] = [xpos, ypos];
-            possibleMoves.push([xpos + 1, ypos])
+            previous[ypos][xpos + 1] = [ypos, xpos];
+            possibleMoves.push([ypos, xpos + 1])
 
         }
         //can go down if theres no grown letter
         if (ypos < game.height - 1 && (!gamedata2d[ypos + 1][xpos].letter || gamedata2d[ypos + 1][xpos].halfgrown) && !seen[ypos + 1][xpos] && !gamedata2d[ypos + 1][xpos].blocked) {
             seen[ypos + 1][xpos] = true;
-            previous[ypos + 1][xpos] = [xpos, ypos];
-            possibleMoves.push([xpos, ypos + 1])
+            previous[ypos + 1][xpos] = [ypos, xpos];
+            possibleMoves.push([ypos + 1, xpos])
 
         }
 
@@ -1156,7 +1180,7 @@ function getpath(start, goal) {
             backtrace = [next]
             current = next
             while (!(current[0] == start[0] && current[1] == start[1])) {
-                current = previous[current[1]][current[0]]
+                current = previous[current[0]][current[1]]
                 backtrace.push(current)
             }
             return backtrace;
