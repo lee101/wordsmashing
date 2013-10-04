@@ -290,10 +290,10 @@ class TimedHandler(BaseHandler):
 
 class FriendsHandler(BaseHandler):
     def get(self):
-        self.render('with-your-friends.html')
+        self.render('multiplayer.html')
 
     def post(self):
-        self.render('with-your-friends.html')
+        self.render('multiplayer.html')
 
 class GamesHandler(BaseHandler):
     def get(self):
@@ -427,7 +427,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/about', AboutHandler),
     ('/contact', ContactHandler),
     ('/timed', TimedHandler),
-    ('/with-your-friends', FriendsHandler),
+    ('/multiplayer', FriendsHandler),
     ('/games', GamesHandler),
     ('/learn-english', LearnEnglishHandler),
     ('/campaign', CampaignHandler),

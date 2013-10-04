@@ -148,6 +148,9 @@ body {
 #timedlink {
     margin: 40px 0 30px 10px;
 }
+#multiplayerlink {
+    margin: 40px 0 30px 10px;
+}
 #main {
     margin: 10px 0 0;
     position: relative;

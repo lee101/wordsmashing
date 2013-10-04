@@ -171,7 +171,7 @@ function loginmodal(){
     <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="/js/wordutils.js"></script>
-    {% if 'with-your-friends' in url %}
+    {% if 'multiplayer' in url %}
       <script type="text/javascript" src="/js/game-with-friends.js"></script>
     {% else %}
       <script type="text/javascript" src="/js/game.js"></script>
@@ -476,7 +476,7 @@ FB.getLoginStatus(function(ret) {
 <div id="score" onclick="showHighScores()">
   <button class="btn btn-large btn-danger" type="button">Score: 0</button>
 </div>
-{% if 'with-your-friends' in url %}
+{% if 'multiplayer' in url %}
 <div id="score2" onclick="showHighScores()">
   <button class="btn btn-large btn-primary" type="button">Score: 0</button>
 </div>
@@ -492,6 +492,12 @@ FB.getLoginStatus(function(ret) {
     <a id="timedlinkbutton" href="/timed" class="btn btn-large btn-danger" title="Play Word Smashing Timed!">Timed Mode!</a>
 </div>
 {% endif %}
+{% if 'multiplayer' not in url %}
+<div id="multiplayerlink">
+    <a id="multiplayerlinkbutton" href="/multiplayer" class="btn btn-large btn-danger" title="Play Word Smashing Multiplayer!">Multiplayer Mode!</a>
+</div>
+{% endif %}
+
 {% if current_user.gold %}
   {% if 'campaign' not in url %}
   <div id="campaign">
