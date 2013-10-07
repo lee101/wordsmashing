@@ -364,6 +364,13 @@ class SaveVolumeHandler(BaseHandler):
         user.volume = float(self.request.get('volume', None))
         user.put()
         self.response.out.write('success')
+class SaveMuteHandler(BaseHandler):
+    def get(self):
+        user = self.current_user
+        user.muted = int(self.request.get('muted', None))
+        user.put()
+        self.response.out.write('success')
+
 class SaveDifficultyHandler(BaseHandler):
     def get(self):
         user = self.current_user
@@ -436,6 +443,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/buy', BuyHandler),
     ('/makegold', makeGoldHandler),
     ('/savevolume', SaveVolumeHandler),
+    ('/savemute', SaveMuteHandler),
     ('/savedifficulty', SaveDifficultyHandler),
     (r'/ipn/(.*)', IPNHandler),
 

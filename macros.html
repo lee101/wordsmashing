@@ -8,8 +8,8 @@
       <!--<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>-->
       <!--<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>-->
       <!--<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>-->
-      <li><a href="javascript:;" class="jp-mute btn btn-small btn-danger" tabindex="1" title="mute"><span class="icon-volume-off"></span></a></li>
-      <li><a href="javascript:;" class="jp-unmute btn btn-small btn-danger" tabindex="1" title="unmute"><span class="icon-volume-up"></span></a></li>
+      <li><a href="javascript:;" class="jp-mute btn btn-small btn-danger" tabindex="1" title="mute" onclick="mute()"><span class="icon-volume-off"></span></a></li>
+      <li><a href="javascript:;" class="jp-unmute btn btn-small btn-danger" tabindex="1" title="unmute" onclick="unmute()"><span class="icon-volume-up"></span></a></li>
       <!--<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>-->
     </ul>
     <!--<div class="jp-progress">-->
@@ -45,12 +45,12 @@
 {%- endmacro %}
 
 {% macro headers(ws, highscores, achievements, level) -%}
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="apple-touch-icon" href="/img/word-smashing-icon-iphone.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="/img/word-smashing-icon-ipad.png" />
     <link rel="apple-touch-icon" sizes="114x114" href="/img/word-smashing-icon-iphone-retina.png" />
     <link rel="apple-touch-icon" sizes="144x144" href="/img/word-smashing-icon-ipad-retina.png" />
-    <link rel="stylesheet" href="/css/social-likes.css">
+    <link rel="stylesheet" rel="stylesheet" href="/css/social-likes.css"/>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="/css/style.css"/>
     <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
@@ -219,10 +219,38 @@ function loginmodal(){
             {% else %}
             volume: 0.5,
             {% endif %}
+            {% if current_user.muted %}
+            muted: 1,
+            {% endif %}
+            
             swfPath: "/js",
             supplied: "mp3, oga"
         });
     });
+    function mute () {
+        $.ajax( {
+            "url":  "/savemute",
+            "data": {"muted":1},
+            "success": function (text) {
+            },
+            "type": "GET",
+            "cache": false,
+            "error": function (xhr, error, thrown) {
+            }
+        });
+    }
+    function unmute () {
+        $.ajax( {
+            "url":  "/savemute",
+            "data": {"muted":0},
+            "success": function (text) {
+            },
+            "type": "GET",
+            "cache": false,
+            "error": function (xhr, error, thrown) {
+            }
+        });
+    }
 </script>
 
     <script type="text/javascript">

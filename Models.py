@@ -130,6 +130,7 @@ class User(ndb.Model):
     email = ndb.StringProperty()
 
     gold = ndb.IntegerProperty()
+    muted = ndb.IntegerProperty()
     difficulty = ndb.IntegerProperty()
     volume = ndb.FloatProperty()
 
