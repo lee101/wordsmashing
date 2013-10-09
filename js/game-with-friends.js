@@ -1282,9 +1282,9 @@ function postHighScoreToFacebook(){
             {
                 method: 'feed',
                 name: 'Word Smashing',
-                link: 'http://apps.facebook.com/wordsmashing',
+                link: 'http://www.wordsmashing.com/multiplayer',
                 picture: 'http://www.wordsmashing.com/img/wordsmashing_logo155x100.png',
-                caption: 'Got a High Score of ' + game.score + '!',
+                caption: 'Got a High Score of ' + game.score + ' On Multiplayer!',
                 description: 'Come play the challenging new word puzzle at WordSmashing.com!'
             },
             function(response) {
@@ -1311,9 +1311,9 @@ function postAchievementToFacebook(achievementnumber) {
             {
                 method: 'feed',
                 name: 'Word Smashing',
-                link: 'http://apps.facebook.com/wordsmashing',
+                link: 'http://www.wordsmashing.com/multiplayer',
                 picture: 'http://www.wordsmashing.com/img/wordsmashing_logo155x100.png',
-                caption: 'Unlocked ' + achievementname + ' Difficulty on Word Smashing!',
+                caption: 'Unlocked ' + achievementname + ' Difficulty on Word Smashing Multiplayer!',
                 description: 'Come Play the Challenging new Word Puzzle at WordSmashing.com!'
             },
             function(response) {
@@ -1367,4 +1367,8 @@ function makegold() {
             }
         }
     } );
+
+}
+function showMenu() {
+    modal.open({content: $('#menustuff').html() });    
 }

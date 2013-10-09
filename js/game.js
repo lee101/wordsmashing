@@ -896,14 +896,22 @@ function saveAchievement(achievement_number){
         });
 }
 function postHighScoreToFacebook(){
+    var extraDifficulty = "";
+    if(difficulty == HARD) {
+        extraDifficulty = ' On Hard';
+    }
+    else if (difficulty == MEDIUM) {
+        extraDifficulty = ' On Medium';
+
+    }
     if(window.FB)
         FB.ui(
             {
                 method: 'feed',
                 name: 'Word Smashing',
-                link: 'http://apps.facebook.com/wordsmashing',
+                link: 'http://www.wordsmashing.com',
                 picture: 'http://www.wordsmashing.com/img/wordsmashing_logo155x100.png',
-                caption: 'Got a High Score of ' + game.score + '!',
+                caption: 'Got a High Score of ' + game.score + extraDifficulty +'!',
                 description: 'Come play the challenging new word puzzle at WordSmashing.com!'
             },
             function(response) {
@@ -930,7 +938,7 @@ function postAchievementToFacebook(achievementnumber) {
             {
                 method: 'feed',
                 name: 'Word Smashing',
-                link: 'http://apps.facebook.com/wordsmashing',
+                link: 'http://www.wordsmashing.com',
                 picture: 'http://www.wordsmashing.com/img/wordsmashing_logo155x100.png',
                 caption: 'Unlocked ' + achievementname + ' Difficulty on Word Smashing!',
                 description: 'Come Play the Challenging new Word Puzzle at WordSmashing.com!'
