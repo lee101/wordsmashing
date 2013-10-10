@@ -359,6 +359,7 @@ class makeGoldHandler(BaseHandler):
             self.response.out.write('success')
         else:
             User.buyFor(self.current_user.id)
+            ##TODOFIX
             self.redirect("/campaign")
 
 
