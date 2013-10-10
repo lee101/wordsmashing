@@ -32,6 +32,8 @@ handlers:
     Vary: Accept-Encoding
 - url: /bootstrap/*
   static_dir: bootstrap
+  http_headers:
+    Vary: Accept-Encoding
 - url: /channel.html
   static_files: channel.html
   upload: channel.html

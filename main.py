@@ -2,12 +2,9 @@
 
 from Models import *
 from google.appengine.api import users
-from google.appengine.ext.webapp import template
 from ws import ws
-import json
 import os
 import webapp2
-import logging
 import facebook
 from webapp2_extras import sessions
 import utils
@@ -16,7 +13,6 @@ import jinja2
 from paypal import IPNHandler
 
 
-from cgi import escape
 import time
 import jwt
 
