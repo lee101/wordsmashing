@@ -207,11 +207,11 @@ class ScoresHandler(BaseHandler):
         if userscore.difficulty not in DIFFICULTIES:
             raise Exception("unknown difficulty: " + userscore.difficulty)
 
-
-        if self.current_user:
-            userscore.user = self.current_user.key
+        currentUser = self.current_user
+        if currentUser:
+            userscore.user = currentUser.key
         userscore.put()
-        HighScore.updateHighScoreFor(self.current_user, userscore.score, userscore.difficulty, userscore.timedMode)
+        HighScore.updateHighScoreFor(currentUser, userscore.score, userscore.difficulty, userscore.timedMode)
 
         self.response.out.write('success')
 class AchievementsHandler(BaseHandler):
@@ -220,9 +220,10 @@ class AchievementsHandler(BaseHandler):
         acheive.type = int(self.request.get('achievement'))
         if acheive.type not in ACHEIVEMENTS:
             raise Exception("unknown achievement: " + acheive.type)
-        if self.current_user:
+        currentUser = self.current_user
+        if currentUser:
 
-            acheive.user = self.current_user.key
+            acheive.user = currentUser.key
         acheive.put()
         #graph = facebook.GraphAPI(self.current_user['access_token'])
         self.response.out.write('success')
