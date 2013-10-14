@@ -51,9 +51,8 @@
                     {% if current_user.name %}
                         Hi, {{ current_user.name }} Your purchase will be asscociated with your {% if current_user.profile_url %}Facebook{% else %}Google{% endif %} account!<br/><br/>
                     {% else %}
-                        Log in with Facebook or Google!<br/><br/>
-                        <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>
-                        <a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>
+                        Log in with Google!<br/><br/>
+                        <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a><br/><br/>
                         Your purchase will be asscociated with your account.<br/><br/>
                     {% endif %}
 
