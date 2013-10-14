@@ -146,9 +146,9 @@ class BaseHandler(webapp2.RequestHandler):
         # achievements = Acheivement.all().filter("user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         # if len(achievements) == 0:
         #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
+        currentUser = self.current_user
         achievements = Achievement.getUserAchievements(currentUser)
         highscores = HighScore.getHighScores(currentUser)
-        currentUser = self.current_user
 
         achievements = achievements.get_result()
         highscores = highscores.get_result()
@@ -451,6 +451,6 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/savevolume', SaveVolumeHandler),
     ('/savemute', SaveMuteHandler),
     ('/savedifficulty', SaveDifficultyHandler),
-    (r'/ipn/(.*)', IPNHandler),
+    # (r'/ipn/(.*)', IPNHandler),
 
 ], debug=ws.debug, config=config))

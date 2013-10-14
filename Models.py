@@ -199,9 +199,6 @@ class HighScore(ndb.Model):
             return True
         return False
 
-
-    
-    
     #title = ndb.StringProperty(required=True)
 
 class Achievement(ndb.Model):
