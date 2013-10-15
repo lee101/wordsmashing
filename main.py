@@ -230,7 +230,6 @@ class AchievementsHandler(BaseHandler):
 
 class IsGoldHandler(BaseHandler):
     def get(self):
-        
         token = self.request.get('access_token')
         user = User.byToken(token)
         if user.gold:
@@ -448,9 +447,10 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/postback', PostbackHandler),
     ('/buy', BuyHandler),
     ('/makegold', makeGoldHandler),
+    ('/isgold', IsGoldHandler),
     ('/savevolume', SaveVolumeHandler),
     ('/savemute', SaveMuteHandler),
     ('/savedifficulty', SaveDifficultyHandler),
-    # (r'/ipn/(.*)', IPNHandler),
+    (r'/ipn/(.*)', IPNHandler),
 
 ], debug=ws.debug, config=config))
