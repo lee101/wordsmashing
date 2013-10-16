@@ -230,9 +230,8 @@ class AchievementsHandler(BaseHandler):
 
 class IsGoldHandler(BaseHandler):
     def get(self):
-        token = self.request.get('access_token')
-        user = User.byToken(token)
-        if user.gold:
+        currentUser = self.current_user
+        if currentUser.gold:
             self.response.out.write('success')
 
 class MainHandler(BaseHandler):
