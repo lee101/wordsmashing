@@ -154,9 +154,9 @@ var loginModalIsOpen = false;
 function loginmodal(){
   loginModalIsOpen= true;
     modal.open({content: 
-        '<p class="lead">Log in with Google</p>'+
+        '<p class="lead">Log in with Facebook or Google</p>'+
         '<p style="text-align: center;"><a style="margin:10px;" href="{{ glogin_url }}"" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>' +
-        '</p>'
+        '<a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>'
 
     });
     var parentfunc = modal.close;
