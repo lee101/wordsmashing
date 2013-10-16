@@ -356,8 +356,12 @@ function loginmodal(){
             "data": {"access_token":access_token},
             "success": function (text) {
               if(text=="success") {
-                $('#mustsignin').css({'display':'none'});
-                $('#gametable').css({'display':'block'});
+                $('#mustsignin').css({'display': 'none'});
+                $('#donesharing').css({'display': 'none'});
+                $('#gametable').css({'display': 'block'});
+              } else {
+                $('#mustsignin').css({'display': 'none'});
+                $('#campaign-for-free').html('Get Word Smashing Campaign for Free! <br/>Just click below to share us and click done!');
               }
             },
             "type": "GET",
