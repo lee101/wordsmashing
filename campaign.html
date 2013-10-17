@@ -40,6 +40,10 @@
 			       </div>
 	        </div>
             <table border="1">
+                {% set levels_unlocked = 0 %}
+                {% if current_user.levels_unlocked is defined and current_user.levels_unlocked %}
+                    {% set levels_unlocked = current_user.levels_unlocked %}
+                {% endif %}
               {% set dimentions = [1,2,3,4,5,6,7,8,9] %}
               {% for row in dimentions %}
                 <tr>
@@ -48,7 +52,14 @@
                       {% set level = col + ((row-1) * 9) %}
                       {% if num_levels < level %}
                       {% else %}
-                      <a class="btn btn-large btn-danger level-btn" href="/campaign/level{{ level }}">{{ level }}</a>
+                        {% if levels_unlocked > level - 1 %}
+                        <a class="btn btn-large btn-success level-btn" href="/campaign/level{{ level }}">{{ level }}</a>
+                        {% elif levels_unlocked == level - 1 %}
+                        <a class="btn btn-large btn-danger level-btn" href="/campaign/level{{ level }}">{{ level }}</a>
+
+                        {% else %}
+                        <button class="btn btn-large btn-danger level-btn" style="width: 54px;" type="button" disabled="disabled"><span class="icon-lock"></span></button>
+                        {% endif %}
                       {% endif %}
                     </td>
                   {% endfor %}

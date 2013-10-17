@@ -506,29 +506,34 @@ FB.getLoginStatus(function(ret) {
 {%- endmacro %}
 
 {%- macro standardgameoptions() %}
-<div id="score" onclick="showHighScores()">
-  <button class="btn btn-large btn-danger" type="button">Score: 0</button>
-</div>
-{% if 'multiplayer' in url %}
-<div id="score2" onclick="showHighScores()">
-  <button class="btn btn-large btn-primary" type="button">Score: 0</button>
-</div>
-{% endif %}
-<div id="newgame">
-  <button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
-</div>
-<div id="difficulty">
-  <button id="changedifficultybutton" class="btn btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: {% if current_user.difficulty==MEDIUM %}Medium{% else %}{% if current_user.difficulty == HARD %}Hard{% else %}Easy{% endif %}{% endif %}</button>
-</div>
-{% if 'timed' not in url %}
-<div id="timedlink">
-    <a id="timedlinkbutton" href="/timed" class="btn btn-large btn-danger" title="Play Word Smashing Timed!">Timed Mode!</a>
-</div>
-{% endif %}
-{% if 'multiplayer' not in url %}
-<div id="multiplayerlink">
-    <a id="multiplayerlinkbutton" href="/multiplayer" class="btn btn-large btn-primary" title="Play Word Smashing Multiplayer!">Multiplayer Mode!</a>
-</div>
+  {% if 'campaign/level' in url %}
+  <div class="gameoption">
+    <a class="btn btn-large btn-danger" href="/campaign" title="Word Smashing Campaign Game Levels">Menu</a>
+  </div>
+  {% endif %}
+  <div id="score" onclick="showHighScores()">
+    <button class="btn btn-large btn-danger" type="button">Score: 0</button>
+  </div>
+  {% if 'multiplayer' in url %}
+  <div id="score2" onclick="showHighScores()">
+    <button class="btn btn-large btn-primary" type="button">Score: 0</button>
+  </div>
+  {% endif %}
+  <div id="newgame">
+    <button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+  </div>
+  <div id="difficulty">
+    <button id="changedifficultybutton" class="btn btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: {% if current_user.difficulty==MEDIUM %}Medium{% else %}{% if current_user.difficulty == HARD %}Hard{% else %}Easy{% endif %}{% endif %}</button>
+  </div>
+  {% if 'timed' not in url %}
+  <div id="timedlink">
+      <a id="timedlinkbutton" href="/timed" class="btn btn-large btn-danger" title="Play Word Smashing Timed!">Timed Mode!</a>
+  </div>
+  {% endif %}
+  {% if 'multiplayer' not in url %}
+  <div id="multiplayerlink">
+      <a id="multiplayerlinkbutton" href="/multiplayer" class="btn btn-large btn-primary" title="Play Word Smashing Multiplayer!">Multiplayer Mode!</a>
+  </div>
 {% endif %}
 
 {% if current_user.gold %}

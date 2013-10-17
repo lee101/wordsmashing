@@ -133,6 +133,8 @@ class User(ndb.Model):
     muted = ndb.IntegerProperty()
     difficulty = ndb.IntegerProperty()
     volume = ndb.FloatProperty()
+    levels_unlocked = ndb.IntegerProperty(default=0)
+
 
     created = ndb.DateTimeProperty(auto_now_add=True)
     updated = ndb.DateTimeProperty(auto_now=True)

@@ -36,6 +36,18 @@
         });
     {% endif %}
     function winViaBreakingAllLocks() {
+        $.ajax( {
+        "url":  "/savelevelsunlocked",
+        "data": {"levels_unlocked":{{ level_num }}},
+        "success": function (text) {
+        },
+        "type": "GET",
+        "cache": false,
+        "error": function (xhr, error, thrown) {
+            if ( error == "parsererror" ) {
+            }
+        }
+        } );
         extraContent = ''
         {% if level_num < num_levels %}
             extraContent += '<a class="btn btn-large btn-success" href="/campaign/level{{ level_num + 1 }}" title="Play Next Level">Next Level!</a>'

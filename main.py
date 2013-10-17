@@ -374,6 +374,13 @@ class SaveMuteHandler(BaseHandler):
         user.put()
         self.response.out.write('success')
 
+class SaveLevelsUnlockedHandler(BaseHandler):
+    def get(self):
+        user = self.current_user
+        user.levels_unlocked = int(self.request.get('levels_unlocked', None))
+        user.put()
+        self.response.out.write('success')
+
 class SaveDifficultyHandler(BaseHandler):
     def get(self):
         user = self.current_user
@@ -449,6 +456,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/isgold', IsGoldHandler),
     ('/savevolume', SaveVolumeHandler),
     ('/savemute', SaveMuteHandler),
+    ('/savelevelsunlocked', SaveLevelsUnlockedHandler),
     ('/savedifficulty', SaveDifficultyHandler),
     (r'/ipn/(.*)', IPNHandler),
 
