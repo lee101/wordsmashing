@@ -488,21 +488,27 @@ FB.getLoginStatus(function(ret) {
 </div>
 {%- endmacro %}
 
-{%- macro loginoutbutton() %}
-<div id="loginlogout">
-{% if current_user.name %}
-<p>Hi, {{ current_user.name }}
-  {% if current_user.profile_url %}
-  <a class="btn btn-danger" onclick="fb_logout();">Log Out</a>
-  {% else %}
-    <a class="btn btn-danger" href="{{ glogout_url }}">Log Out</a>
-  {% endif %}
-</p>
-{% endif %}
-{% if current_user.cookie_user %}
-<button class="btn btn-danger" onclick="loginmodal()" tpye="button">Log In</button>
-{% endif %}
+{%- macro campaignLink() %}
+<div id="buy">
+  <a id="buylink" href="/campaign/level1" class="btn btn-large btn-warning">Get Campaign Mode!</a>
 </div>
+{%- endmacro %}
+
+{%- macro loginoutbutton() %}
+  <div id="loginlogout">
+  {% if current_user.name %}
+  <p>Hi, {{ current_user.name }}
+    {% if current_user.profile_url %}
+    <a class="btn btn-danger" onclick="fb_logout();">Log Out</a>
+    {% else %}
+      <a class="btn btn-danger" href="{{ glogout_url }}">Log Out</a>
+    {% endif %}
+  </p>
+  {% endif %}
+  {% if current_user.cookie_user %}
+  <button class="btn btn-danger" onclick="loginmodal()" tpye="button">Log In</button>
+  {% endif %}
+  </div>
 {%- endmacro %}
 
 {%- macro standardgameoptions() %}
@@ -534,17 +540,17 @@ FB.getLoginStatus(function(ret) {
   <div id="multiplayerlink">
       <a id="multiplayerlinkbutton" href="/multiplayer" class="btn btn-large btn-primary" title="Play Word Smashing Multiplayer!">Multiplayer Mode!</a>
   </div>
-{% endif %}
-
-{% if current_user.gold %}
-  {% if 'campaign' not in url %}
-  <div id="campaign">
-      <a id="campaignbutton" href="/campaign" class="btn btn-large btn-warning">Campaign!</a>
-  </div>
   {% endif %}
-{% else %}
-    {{ buyLink() }}
-{% endif %}
+
+  {% if current_user.gold %}
+    {% if 'campaign' not in url %}
+    <div id="campaign">
+        <a id="campaignbutton" href="/campaign" class="btn btn-large btn-warning">Campaign!</a>
+    </div>
+    {% endif %}
+  {% else %}
+      {{ campaignLink() }}
+  {% endif %}
 {%- endmacro %}
 
 {%- macro paypalbuyform() %}
