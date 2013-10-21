@@ -9,7 +9,12 @@
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
-    <url>
+	<url>
+		<loc>http://wordsmashing.com/multiplayer</loc>
+		<changefreq>weekly</changefreq>
+		<priority>1</priority>
+	</url>
+	<url>
 		<loc>http://wordsmashing.com/timed</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
