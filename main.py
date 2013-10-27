@@ -12,7 +12,7 @@ import jinja2
 
 from paypal import IPNHandler
 
-
+import json
 import time
 import jwt
 
@@ -311,6 +311,14 @@ class LearnEnglishHandler(BaseHandler):
     def post(self):
         self.render('learn-english.html')
 
+class EnglishLevelHandler(BaseHandler):
+    def get(self, urlkey):
+
+        self.render('learn-english-level.html', {
+            "level": LEARN_ENGLISH_LEVELS[urlkey],
+            "json": json,
+        })
+
 class CampaignHandler(BaseHandler):
     def get(self):
         self.render('campaign.html')
@@ -337,7 +345,7 @@ class LevelHandler(BaseHandler):
         self.render('level.html', {'level_num': level_num, 'level': LEVELS[level_num - 1]})
 
     def post(self, level):
-        level_num = int(level)        
+        level_num = int(level)
         self.render('level.html', {'level_num': level_num, 'level': LEVELS[level_num - 1]})
 
 
@@ -448,6 +456,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/games-multiplayer', GameMultiplayerHandler),
     ('/games', GamesHandler),
     ('/learn-english', LearnEnglishHandler),
+    ('/learn-english/(.*)', EnglishLevelHandler),
     ('/campaign', CampaignHandler),
     (r'/campaign/level(\d+)', LevelHandler),
     ('/postback', PostbackHandler),

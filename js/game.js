@@ -24,6 +24,9 @@ var HARD = 4;
 if(!difficulty) {
     var difficulty = EASY;
 }
+if(typeof requiredWords !== 'object') {
+    var requiredWords = {};
+}
 /**
  * implementing 5 10 20 combos!
  */
@@ -43,12 +46,12 @@ function showChangeDifficultyDialog(){
     //TODO fix ui
     var mediumButton = '<button class="btn btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button" title="Change difficulty to Medium">Medium</button>';
     if(! achievements.medium){
-        var mediumButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Easy!"><span class="icon-lock"></span>Medium</button>';
+        mediumButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Easy!"><span class="icon-lock"></span>Medium</button>';
     }
     
     var hardButton = '<button class="btn btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button" title="Change difficulty to Hard">Hard</button>';
     if(! achievements.hard){
-        var hardButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Medium!"><span class="icon-lock"></span>Hard</button>';
+        hardButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Medium!"><span class="icon-lock"></span>Hard</button>';
     }
     
     modal.open({content: '<div id="changedifficulty">'+
@@ -89,6 +92,12 @@ function changeDifficulty(newDifficulty){
     $('#changedifficultybutton').text('Difficulty: ' + difficultyText);
 }
 
+function addGrowersTo(gamedatalist) {
+    for (var i = 0; i < game.growth_rate; i++) {
+        gamedatalist.push({'letter': getRandomLetter(), 'halfgrown': true, 'selected': false });
+    }
+}
+
 newGame = function () {
     if(typeof GAMESAPI === 'object') {
         GAMESAPI.beginGameSession(
@@ -105,9 +114,7 @@ newGame = function () {
     for (var i = 0; i < game.startwords; i++) {
         gamedata.push({letter: getRandomLetter(), 'selected': false});
     }
-    for (var i = 0; i < game.growth_rate; i++) {
-        gamedata.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false});
-    }
+    addGrowersTo(gamedata)
     //push empty spaces
     var numspaces = game.width * game.height - game.startwords - game.growth_rate - num_blocked;
     for (var i = 0; i < numspaces; i++) {
@@ -540,10 +547,8 @@ function turnEnd(endPos) {
     for (var i = 0; i < numspaces - game.growth_rate; i++) {
         growers.push({'selected': false})
     }
-
-    growers.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false})
-    growers.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false})
-    growers.push({letter: getRandomLetter(), 'halfgrown': 'halfgrown', 'selected': false})
+    addGrowersTo(growers);
+    
     growers.shuffle()
     //place them
     currpos = 0
