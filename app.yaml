@@ -46,9 +46,6 @@ handlers:
 # - url: /(.*)html
   # static_files: \1html
   # upload: \1html
-- url: /sitemap
-  static_files: sitemap.xml
-  upload: sitemap.xml
 - url: /BingSiteAuth.xml
   static_files: BingSiteAuth.xml
   upload: BingSiteAuth.xml

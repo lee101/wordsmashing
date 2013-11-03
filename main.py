@@ -395,6 +395,13 @@ class SaveDifficultyHandler(BaseHandler):
         user.difficulty = int(self.request.get('difficulty', None))
         user.put()
         self.response.out.write('success')
+class SitemapHandler(webapp2.RequestHandler):
+    def get(self):
+        template_values = {
+            'learnenglishlevels': LEARN_ENGLISH_LEVELS,
+        }
+        template = JINJA_ENVIRONMENT.get_template('sitemap.xml')
+        self.response.write(template.render(template_values))
 
 
 class PostbackHandler(BaseHandler):
@@ -467,6 +474,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/savemute', SaveMuteHandler),
     ('/savelevelsunlocked', SaveLevelsUnlockedHandler),
     ('/savedifficulty', SaveDifficultyHandler),
+    ('/sitemap', SitemapHandler),
     (r'/ipn/(.*)', IPNHandler),
 
 ], debug=ws.debug, config=config))

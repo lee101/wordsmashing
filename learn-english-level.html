@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <title>Learn English With Word Smashing Addicting &amp; Fun Word Puzzle Game</title>
     <meta name="description"
-          content="Learn English Playing Word Smashing! Learn English With This Addicting New Word Puzzle, For Free!">
+          content="Learn English {{ level.name }} - Word Smashing! Learn English With This Addicting New Word Puzzle, For Free!">
 
-    <meta name="keywords" content="learn english, word finder, learn english words, free online puzzle games, word puzzle game">
-    <meta property="og:title" content="Word Smashing - Learn English With Word Puzzle Games!">
+    <meta name="keywords" content="learn english, {{ level.name|lower }}, learn english words, free online puzzle games, word puzzle games">
+    <meta property="og:title" content="Learn English {{ level.name }} With Word Smashing Puzzle Game!">
     <meta property="og:url" content="{{ url }}">
     <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
     <meta property="og:description"
@@ -51,7 +51,8 @@
       }
     }
     var requiredWords = {{ json.dumps(level.required_words) }};
-    
+    var level_name = {{ level.name }};
+
   </script>
 
 </head>
@@ -116,7 +117,10 @@
             <h1>Learn English Playing Word Games!</h1>
             <p class="lead">
               <b>Instructions: </b><br/>
-              Make Words for points and to clear space!<br/> 
+              Get all of the following words!<br/> 
+              {% for required_word in level.required_words %}
+                <button id="learn-english-words-{{ required_word }}" class="btn btn-large">{{ required_word }}</button>
+              {% endfor %}
             	Click a letter and click on an empty space to move it there.<br/>
             	You will only be able to move if there is a clear path.<br/>
             	Every turn three new letters will grow into the game.<br/> 

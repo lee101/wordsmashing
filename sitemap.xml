@@ -1,41 +1,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>http://wordsmashing.com</loc>
+		<loc>http://www.wordsmashing.com</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://wordsmashing.com/learn-english</loc>
+		<loc>http://www.wordsmashing.com/multiplayer</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://wordsmashing.com/multiplayer</loc>
+		<loc>http://www.wordsmashing.com/timed</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://wordsmashing.com/timed</loc>
+		<loc>http://www.wordsmashing.com/learn-english</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
+	{% for key, level in learnenglishlevels.iteritems() %}
 	<url>
-		<loc>http://wordsmashing.com/about</loc>
+		<loc>http://www.wordsmashing.com/learn-english/{{ key }}</loc>
+		<changefreq>weekly</changefreq>
+		<priority>0.8</priority>
+	</url>
+	{% endfor %}
+	<url>
+		<loc>http://www.wordsmashing.com/about</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0.1</priority>
 	</url>
 	<url>
-		<loc>http://wordsmashing.com/terms</loc>
+		<loc>http://www.wordsmashing.com/terms</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
 	<url>
-		<loc>http://wordsmashing.com/privacy-policy</loc>
+		<loc>http://www.wordsmashing.com/privacy-policy</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
 	<url>
-		<loc>http://wordsmashing.com/contact</loc>
+		<loc>http://www.wordsmashing.com/contact</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>

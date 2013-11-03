@@ -24,9 +24,55 @@ var HARD = 4;
 if(!difficulty) {
     var difficulty = EASY;
 }
+var canWinViaRequiredWords = false;
 if(typeof requiredWords !== 'object') {
-    var requiredWords = {};
+    var requiredWords = [];
+    canWinViaRequiredWords = true;
 }
+if(typeof level_name !== 'object') {
+    var level_name = 0;
+}
+function inRequiredWord(word) {
+    var reverseword = word.reverse();
+    for (var i = 0; i < requiredWords.length; i++) {
+        if(requiredWords[i].indexOf(word) != -1) {
+            return true;
+        }
+        if(requiredWords[i].indexOf(reverseword) != -1) {
+            return true;
+        }
+    }
+    return false;
+}
+function isRequiredWord(word) {
+    for (var i = 0; i < requiredWords.length; i++) {
+        if(requiredWords[i] === word) {
+            return true;
+        }
+    }
+    return false;
+}
+function removeRequiredWord(word) {
+    for (var i = 0; i < requiredWords.length; i++) {
+        if(requiredWords[i] === word) {
+            //preserve end then pop off
+            var endPos = requiredWords.length - 1;
+            requiredWords[i] = requiredWords[endPos];
+            requiredWords.pop();
+            return;
+        }
+    }
+}
+var numRequiredWordsFound = 0;
+function updateRequiredWordsView(word) {
+    removeRequiredWord(word);
+    numRequiredWordsFound++;
+    $('#learn-english-words-' + word).addClass('btn-success');
+    if (numRequiredWordsFound >= requiredWords.length) {
+        gameover();
+    }
+}
+
 /**
  * implementing 5 10 20 combos!
  */
@@ -399,30 +445,43 @@ function turnEnd(endPos) {
 
             for (; leftStart <= endPos[0] &&  rightStart <= numRight +endPos[0]; leftStart++,rightStart++) {
 
-
-
                 //take startlen characters starting at leftStart+i
                 possibleword = ""
                 for (var j = leftStart; j <= rightStart; j++) {
                     possibleword += gamedata2d[endPos[1]][j].letter
                 }
                 possibleword = possibleword.toLowerCase();
+                reversepossibleword = possibleword.reverse();
                 
                 if (words[possibleword]) {
-                    //scoreword
-                	matches = 1;
-                	scores = scoreWord(possibleword)
-                    game.score += scores;
-                    removeTheHword=true
-                    showScore(possibleword, scoreWord(possibleword))
+                    var isRequired = isRequiredWord(possibleword)
+                    if (isRequired) {
+                        updateRequiredWordsView(possibleword)
+                    }
+                    if (isRequired || ! inRequiredWord(possibleword)) {
+                        //scoreword
+                    	matches = 1;
+                        var wordsscore = scoreWord(possibleword);
+                    	scores = wordsscore;
+                        game.score += scores;
+                        removeTheHword=true
+                        showScore(possibleword, wordsscore)
+                    }
                 }
-                else if (words[possibleword.reverse()]) {
-                    //scoreword
-                	matches = 1;
-                	scores = scoreWord(possibleword)
-                    game.score += scores;
-                    removeTheHword=true
-                    showScore(possibleword.reverse(), scoreWord(possibleword))
+                else if (words[reversepossibleword]) {
+                    var isRequired = isRequiredWord(reversepossibleword)
+                    if (isRequired) {
+                        updateRequiredWordsView(reversepossibleword)
+                    }
+                    if (isRequired || ! inRequiredWord(reversepossibleword)) {
+                        //scoreword
+                    	matches = 1;
+                        var wordsscore = scoreWord(reversepossibleword);
+                    	scores = wordsscore;
+                        game.score += scores;
+                        removeTheHword=true
+                        showScore(reversepossibleword, wordsscore)
+                    }
                 }
                 if(matches >= 1) {
                     unlockHWord([leftStart, endPos[1]], [rightStart, endPos[1]])
@@ -481,21 +540,37 @@ function turnEnd(endPos) {
                     possibleword += gamedata2d[j][endPos[0]].letter
                 }
                 possibleword = possibleword.toLowerCase()
+                reversepossibleword = possibleword.reverse()
+
                 if (words[possibleword]) {
-                    //scoreword
-                	matches++;
-                	scores += scoreWord(possibleword)
-                    game.score += scoreWord(possibleword)
-                    removeVword(topStart, bottomStart)
-                    showScore(possibleword, scoreWord(possibleword))
+                    var isRequired = isRequiredWord(possibleword)
+                    if (isRequired) {
+                        updateRequiredWordsView(possibleword)
+                    }
+                    if (isRequired || ! inRequiredWord(possibleword)) {
+                        //scoreword
+                        matches++;
+                        var wordsscore = scoreWord(possibleword)
+                        scores += wordsscore
+                        game.score += wordsscore
+                        removeVword(topStart, bottomStart)
+                        showScore(possibleword, wordsscore)
+                    }
                 }
-                else if (words[possibleword.reverse()]) {
-                    //scoreword
-                	matches++;
-                	scores += scoreWord(possibleword);
-                    game.score += scoreWord(possibleword)
-                    removeVword(topStart, bottomStart)
-                    showScore(possibleword.reverse(), scoreWord(possibleword))
+                else if (words[reversepossibleword]) {
+                    var isRequired = isRequiredWord(reversepossibleword)
+                    if (isRequired) {
+                        updateRequiredWordsView(reversepossibleword)
+                    }
+                    if (isRequired || ! inRequiredWord(reversepossibleword)) {
+                        //scoreword
+                        matches++;
+                        var wordsscore = scoreWord(reversepossibleword)
+                        scores += wordsscore;
+                        game.score += wordsscore
+                        removeVword(topStart, bottomStart)
+                        showScore(reversepossibleword, wordsscore)
+                    }
                 }
                 if(matches >= 1) {
                     unlockVWord([endPos[0], topStart], [endPos[0], bottomStart])
@@ -548,7 +623,7 @@ function turnEnd(endPos) {
         growers.push({'selected': false})
     }
     addGrowersTo(growers);
-    
+
     growers.shuffle()
     //place them
     currpos = 0
@@ -579,6 +654,12 @@ function gameover(){
     var congratsMessage = 'Congratulations! Your Score: ' + game.score + '!';
     if(isHighScore){
         congratsMessage = 'Thats A New Best! Your New High Score: ' + game.score + '!';
+    }
+    if(numRequiredWordsFound == requiredWords.length) {
+        congratsMessage += " You got all the words!";
+    }
+    else if (numRequiredWordsFound > 0) {
+        congratsMessage += " You got " + numRequiredWordsFound + " required words!";
     }
 	modal.open({content: '<div id="changedifficulty">'+
 		'<p class="lead">Smashed It!</p>'+
