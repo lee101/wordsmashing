@@ -397,6 +397,7 @@ class SaveDifficultyHandler(BaseHandler):
         self.response.out.write('success')
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
+        self.response.headers.add_header('content-type', 'text/xml')
         template_values = {
             'learnenglishlevels': LEARN_ENGLISH_LEVELS,
         }
