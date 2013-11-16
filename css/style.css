@@ -189,17 +189,15 @@ body {
     margin-top: 20px;
     position: relative;
 }
-#footer {
+.footer {
 	display: inline;
 	margin-top: 20px;
 	margin-bottom: 30px;
 	float: left;
 	width: 100%;
-}
-#footer {
 	text-align: center;
 }
-#footer a {
+.footer__link {
 	font-size: small;
 	margin: 0 11px;
 	color: Gray;
@@ -274,3 +272,7 @@ margin: 10px 0 10px 10px;
     font-weight: 200;
     line-height: 36px;
 }
+
+/*@media only screen and (max-device-width: 480px) {
+    
+}*/

@@ -113,30 +113,7 @@
 		
     <div class="clear">
     </div>
-	<div id="footer">
-		<p>
-			<a href="/contact" title="Contact Us">Contact</a> 
-			<a href="/about" title="About Word Smashing">About Us</a>
-			<span>Terms &amp; Conditions</span>
-		    <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
-		    <span>© 2013 <a href="http://www.addictingwordgames.com" title="Addicting Word Games" target="_blank">Addicting Word Games</a></span>
-            <a href="http://www.facebook.com/WordSmashing" title="Word Smashing on Facebook" target="_blank">
-		        <img src="/img/facebook.jpg" alt="Word Smashing on Facebook" width="144px" height="44px">
-		    </a>
-			<div class="g-plus" data-href="//plus.google.com/116949277834973226564" data-rel="publisher"></div>
-
-			<!-- Place this tag after the last badge tag. -->
-			<script type="text/javascript">
-			  (function() {
-			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-			    po.src = 'https://apis.google.com/js/plusone.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-			  })();
-			</script><br/>
-		    <a href="https://twitter.com/Wordsmashing" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Wordsmashing</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-		</p>
-	</div>
+    {{ macros.footer() }}
 	<div class="clear">
 	</div>
 </div>
