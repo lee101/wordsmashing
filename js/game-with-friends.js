@@ -377,23 +377,23 @@ function getAllMovesFrom(yxpos) {
         ypos = next[0];
         //find possible moves
         var possibleMoves = [];
-        //can go left if theres no grown letter
+        //can go left if there's no grown letter
         if (xpos > 0 && (!gamedata2d[ypos][xpos - 1].letter || gamedata2d[ypos][xpos - 1].halfgrown) && !seen[ypos][xpos - 1] && !gamedata2d[ypos][xpos - 1].blocked) {
             seen[ypos][xpos - 1] = true;
             //TODO flip!!!!!!!!
             possibleMoves.push([ypos, xpos - 1]);
         }
-        //can go up if theres no grown letter
+        //can go up if there's no grown letter
         if (ypos > 0 && (!gamedata2d[ypos - 1][xpos].letter || gamedata2d[ypos - 1][xpos].halfgrown) && !seen[ypos - 1][xpos] && !gamedata2d[ypos - 1][xpos].blocked) {
             seen[ypos - 1][xpos] = true;
             possibleMoves.push([ypos - 1, xpos]);
         }
-        //can go right if theres no grown letter
+        //can go right if there's no grown letter
         if (xpos < game.width - 1 && (!gamedata2d[ypos][xpos + 1].letter || gamedata2d[ypos][xpos + 1].halfgrown) && !seen[ypos][xpos + 1] && !gamedata2d[ypos][xpos + 1].blocked) {
             seen[ypos][xpos + 1] = true;
             possibleMoves.push([ypos, xpos + 1]);
         }
-        //can go down if theres no grown letter
+        //can go down if there's no grown letter
         if (ypos < game.height - 1 && (!gamedata2d[ypos + 1][xpos].letter || gamedata2d[ypos + 1][xpos].halfgrown) && !seen[ypos + 1][xpos] && !gamedata2d[ypos + 1][xpos].blocked) {
             seen[ypos + 1][xpos] = true;
             possibleMoves.push([ypos + 1, xpos]);
@@ -1137,7 +1137,7 @@ function getpath(start, goal) {
         ypos = next[0];
         //find possible moves
         var possibleMoves = []
-        //can go left if theres no grown letter
+        //can go left if there's no grown letter
         if (xpos > 0 && (!gamedata2d[ypos][xpos - 1].letter || gamedata2d[ypos][xpos - 1].halfgrown) && !seen[ypos][xpos - 1] && !gamedata2d[ypos][xpos - 1].blocked) {
             seen[ypos][xpos - 1] = true;
             previous[ypos][xpos - 1] = [ypos, xpos];
@@ -1145,21 +1145,21 @@ function getpath(start, goal) {
 
 
         }
-        //can go up if theres no grown letter
+        //can go up if there's no grown letter
         if (ypos > 0 && (!gamedata2d[ypos - 1][xpos].letter || gamedata2d[ypos - 1][xpos].halfgrown) && !seen[ypos - 1][xpos] && !gamedata2d[ypos - 1][xpos].blocked) {
             seen[ypos - 1][xpos] = true;
             previous[ypos - 1][xpos] = [ypos, xpos];
             possibleMoves.push([ypos - 1, xpos])
 
         }
-        //can go right if theres no grown letter
+        //can go right if there's no grown letter
         if (xpos < game.width - 1 && (!gamedata2d[ypos][xpos + 1].letter || gamedata2d[ypos][xpos + 1].halfgrown) && !seen[ypos][xpos + 1] && !gamedata2d[ypos][xpos + 1].blocked) {
             seen[ypos][xpos + 1] = true;
             previous[ypos][xpos + 1] = [ypos, xpos];
             possibleMoves.push([ypos, xpos + 1])
 
         }
-        //can go down if theres no grown letter
+        //can go down if there's no grown letter
         if (ypos < game.height - 1 && (!gamedata2d[ypos + 1][xpos].letter || gamedata2d[ypos + 1][xpos].halfgrown) && !seen[ypos + 1][xpos] && !gamedata2d[ypos + 1][xpos].blocked) {
             seen[ypos + 1][xpos] = true;
             previous[ypos + 1][xpos] = [ypos, xpos];
