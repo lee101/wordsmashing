@@ -604,6 +604,9 @@ FB.getLoginStatus(function(ret) {
 {%- macro footer() %}
     <div class="footer">
       <p>
+        {% if not url.endswith('learn-english') %}
+            <a class="footer__link" href="/learn-english" title="Learn English">Learn English</a> 
+        {% endif %}
         {% if '/contact' in url %}
             <span>Contact</span>
         {% else %}

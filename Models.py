@@ -125,6 +125,7 @@ LEVELS = [
 class EnglishLevel(object):
 
     urlkey = ""
+    name = ""
     required_words = []
 
     def __init__(self, urlkey, required_words):

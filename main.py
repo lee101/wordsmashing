@@ -306,10 +306,10 @@ class GamesHandler(BaseHandler):
 
 class LearnEnglishHandler(BaseHandler):
     def get(self):
-        self.render('learn-english.html')
-
-    def post(self):
-        self.render('learn-english.html')
+        self.render('learn-english.html', {
+            "learnenglishlevels": LEARN_ENGLISH_LEVELS,
+            "json": json,
+            })
 
 class EnglishLevelHandler(BaseHandler):
     def get(self, urlkey):

@@ -7,7 +7,7 @@
     <meta name="description"
           content="Learn English Playing Word Smashing! Learn English With This Addicting New Word Puzzle, For Free!">
 
-    <meta name="keywords" content="learn english, word finder, learn english words, free online puzzle games, word puzzle game">
+    <meta name="keywords" content="learn english, english games for kids, learn english words, free online puzzle games, word puzzle games for kids">
     <meta property="og:title" content="Word Smashing - Learn English With Word Puzzle Games!">
     <meta property="og:url" content="{{ url }}">
     <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
@@ -19,39 +19,6 @@
 
 
     {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
-  <script type="text/javascript">
-    var learnedwords = {};
-    var parent1 = showScore;
-    showScore = function(word, score) {
-      parent1(word, score);
-      learnedwords[word] = true;
-    };
-
-    var parent2 = gameover;
-    gameover = function() {
-      parent2();
-      var firstTime = true;
-      //bind new event to close function
-      var parent = modal.close;
-      modal.close = function() {
-        parent();
-        if(firstTime) {
-            var words = '<p>' + Object.keys(learnedwords).join('</p><p>') + '</p>'
-            modal.open({content: '<div id="changedifficulty">'+
-              '<p class="lead">Congratulations!!</p>'+
-              '<p class="lead">You Got '+Object.keys(learnedwords).length+' Different Words!</p>'+
-              words +
-              '<div style="float:right"><button class="btn btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
-              '<div class="clear"></div>'+
-            '</div>'});
-            
-            firstTime = false;
-            learnedwords = {};
-        }
-      }
-    }
-
-  </script>
 
 </head>
 <body>
@@ -60,15 +27,15 @@
     <div id="container">
         <div id="main">
         	<div id="logo">
-              <a href="/" title="Word Smashing Word Puzzle">
-                <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
-              </a>
+                <a href="/" title="Word Smashing Word Puzzle">
+                    <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                </a>
 		        <div id="login">
                 {{ macros.loginoutbutton() }}
                     {{ macros.jplayer() }}
 			    </div>
 	        </div>
-            <table id="gametable" border="1">
+            <table id="gametable" border="1" style="display:none">
                 <tr>
                     <td>
 
@@ -91,7 +58,21 @@
                 <button style="display: none"></button>
             </div>
         </div>
-        <div id="gameoptions">
+        <div id="instructions">
+        	
+            <h1>Learn English Playing Word Games!</h1>
+            <p class="lead">
+              <b>Instructions: </b><br/>
+                Which english words are you going to learn?<br/> 
+                {% for key, level in learnenglishlevels.iteritems() %}
+                <a class="english-level-btn-link btn btn-large" href="/learn-english/{{ key }}" title="Learn English {{ level.name }}">{{ level.name }}</a>
+                {% endfor %}
+                <br/>
+            	Make as many of that type of word as you can!<br/>
+                Looking for another challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a> or <a href="/multiplayer" title="Play Word Smashing Multiplayer Mode">Play Word Smashing VS mode</a>!<br/>
+            	</p>
+        </div>
+        <div id="gameoptions" style="display:none">
             {{ macros.standardgameoptions() }}
 
         </div>
@@ -110,24 +91,6 @@
 
         </div>
         
-        <div id="instructions">
-        	
-            <h1>Learn English Playing Word Games!</h1>
-            <p class="lead">
-              <b>Instructions: </b><br/>
-              Make Words for points and to clear space!<br/> 
-            	Click a letter and click on an empty space to move it there.<br/>
-            	You will only be able to move if there is a clear path.<br/>
-            	Every turn three new letters will grow into the game.<br/> 
-            	Its game over when the board is filled with letters!<br/>
-            	Get two words in one turn, get combos and learn new words for bonus points!<br/>
-            	On Easy You can make words with 2 or more letters.<br/>
-            	On Medium You can make words with 3 or more letters.<br/>
-            	On Hard You can only make words with 4 or more letters!<br/>
-                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a>.<br/>
-            	Some place names and peoples names do not count as words.
-            	</p>
-        </div>
         <div class="clear"></div>
         <div id="btm">
             <script type="text/javascript"><!--

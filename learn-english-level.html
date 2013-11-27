@@ -23,17 +23,17 @@
     var learnedwords = {};
     var parent1 = showScore;
     showScore = function(word, score) {
-      parent1(word, score);
-      learnedwords[word] = true;
+        parent1(word, score);
+        learnedwords[word] = true;
     };
 
     var parent2 = gameover;
     gameover = function() {
-      parent2();
-      var firstTime = true;
-      //bind new event to close function
-      var parent = modal.close;
-      modal.close = function() {
+        parent2();
+        var firstTime = true;
+        //bind new event to close function
+        var parent = modal.close;
+        modal.close = function() {
         parent();
         if(firstTime) {
             var words = '<p>' + Object.keys(learnedwords).join('</p><p>') + '</p>'
@@ -62,9 +62,9 @@
     <div id="container">
         <div id="main">
         	<div id="logo">
-              <a href="/" title="Word Smashing Word Puzzle">
-                <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
-              </a>
+                <a href="/" title="Word Smashing Word Puzzle">
+                    <img src="/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                </a>
 		        <div id="login">
                 {{ macros.loginoutbutton() }}
                     {{ macros.jplayer() }}
