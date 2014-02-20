@@ -90,23 +90,23 @@ jQuery.get('/js/words.txt', function (data) {
 });
 function showChangeDifficultyDialog(){
     //TODO fix ui
-    var mediumButton = '<button class="btn btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button" title="Change difficulty to Medium">Medium</button>';
+    var mediumButton = '<button class="btn btn-large btn-danger" onmousedown="changeDifficulty(MEDIUM)" type="button" title="Change difficulty to Medium">Medium</button>';
     if(! achievements.medium){
         mediumButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Easy!"><span class="icon-lock"></span>Medium</button>';
     }
-    
-    var hardButton = '<button class="btn btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button" title="Change difficulty to Hard">Hard</button>';
+
+    var hardButton = '<button class="btn btn-large btn-danger" onmousedown="changeDifficulty(HARD)" type="button" title="Change difficulty to Hard">Hard</button>';
     if(! achievements.hard){
         hardButton = '<button class="btn btn-large btn-danger btn disabled" type="button" title="Get Over 5000 Points on Medium!"><span class="icon-lock"></span>Hard</button>';
     }
-    
+
     modal.open({content: '<div id="changedifficulty">'+
         '<p class="lead">Change difficulty and start a new game?</p>'+
-        '<button class="btn btn-large btn-danger" onclick="changeDifficulty(EASY)" type="button" title="Change difficulty to Easy">Easy</button>'+
+        '<button class="btn btn-large btn-danger" onmousedown="changeDifficulty(EASY)" type="button" title="Change difficulty to Easy">Easy</button>'+
         mediumButton+
         hardButton+
     '</div>'});
-    
+
 }
 
 function changeDifficulty(newDifficulty){
@@ -191,7 +191,7 @@ newGame = function () {
     comboCounter = 0;
     $('#showscore1').html('<button style="display: none"></button>');
     // reset num_locked and num_blocked
-    //locked_spaces 
+    //locked_spaces
     num_blocked = Object.keys(blocked_spaces).length;
     num_locked = Object.keys(locked_spaces).length + num_blocked;
     update();
@@ -211,7 +211,7 @@ function unlock(x,y) {
     var cell = $('#' + y + '-' + x);
     cell.removeAttr('style');
     cell.removeAttr('id');
-    cell.html('<div id="'+y+'-'+x+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>');
+    cell.html('<div id="'+y+'-'+x+'" onmousedown="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>');
     num_blocked--;
     num_locked--;
     if(num_locked <= 0) {
@@ -389,7 +389,7 @@ function turnEnd(endPos) {
     //two used for doubling scores
     var matches=0;
     var scores = 0;
-    
+
     var removeTheHword=false
 
     //grow tiles
@@ -452,7 +452,7 @@ function turnEnd(endPos) {
                 }
                 possibleword = possibleword.toLowerCase();
                 reversepossibleword = possibleword.reverse();
-                
+
                 if (words[possibleword]) {
                     var isRequired = isRequiredWord(possibleword)
                     if (isRequired) {
@@ -584,7 +584,7 @@ function turnEnd(endPos) {
     if(removeTheHword){
         removeHword(leftStart, rightStart)
     }
-    
+
     if(matches == 2){
     	showDouble();
     	game.score += scores;
@@ -664,8 +664,8 @@ function gameover(){
 	modal.open({content: '<div id="changedifficulty">'+
 		'<p class="lead">Smashed It!</p>'+
 		'<p class="lead">' + congratsMessage + '</p>'+
-    	'<div style="float:left"><button class="btn btn-large btn-primary" onclick="postHighScoreToFacebook()">Post High Score To Facebook!</button></div>'+
-    	'<div style="float:right"><button class="btn btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
+    	'<div style="float:left"><button class="btn btn-large btn-primary" onmousedown="postHighScoreToFacebook()">Post High Score To Facebook!</button></div>'+
+    	'<div style="float:right"><button class="btn btn-large btn-success" onmousedown="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
     	'<div class="clear"></div>'+
 	'</div>'});
     if(! current_user.has_bought) {
@@ -699,17 +699,17 @@ function updateAchievements() {
     if(! achievements.medium && game.score >= 5000){
         achievements.medium = true;
         saveAchievement(1);
-        
+
         modal.open({content: '<div id="changedifficulty">'+
             '<p class="lead">Congratulations!!</p>'+
             '<p class="lead">You Have Unlocked Medium Difficulty!</p>'+
             '<p class="lead">Only Words With 3 or More Letters on Medium!</p>'+
-            '<button class="btn btn-large btn-primary" onclick="postAchievementToFacebook(MEDIUM)" style="margin:20px;">Post Achievement To Facebook!</button>'+
-            '<div style="float:left"><button class="btn btn-large btn-danger" onclick="modal.close()" type="button">Keep Playing On Easy!</button></div>'+
-            '<div style="float:right"><button class="btn btn-large btn-danger" onclick="changeDifficulty(MEDIUM)" type="button">Play On Medium!</button></div>'+
+            '<button class="btn btn-large btn-primary" onmousedown="postAchievementToFacebook(MEDIUM)" style="margin:20px;">Post Achievement To Facebook!</button>'+
+            '<div style="float:left"><button class="btn btn-large btn-danger" onmousedown="modal.close()" type="button">Keep Playing On Easy!</button></div>'+
+            '<div style="float:right"><button class="btn btn-large btn-danger" onmousedown="changeDifficulty(MEDIUM)" type="button">Play On Medium!</button></div>'+
             '<div class="clear"></div>'+
         '</div>'});
-        
+
     }
     if(! achievements.hard && game.score >= 5000 && difficulty == MEDIUM){
         achievements.hard = true;
@@ -718,12 +718,12 @@ function updateAchievements() {
             '<p class="lead">Congratulations!!</p>'+
             '<p class="lead">You Have Unlocked Hard Difficulty!</p>'+
             '<p class="lead">Only Words With 4 or More Letters on Hard!</p>'+
-            '<button class="btn btn-large btn-primary" onclick="postAchievementToFacebook(HARD)" style="margin:20px;">Post Achievement To Facebook!</button>'+
-            '<div style="float:left"><button class="btn btn-large btn-danger" onclick="modal.close()" type="button">Keep Playing On Medium!</button></div>'+
-            '<div style="float:right"><button class="btn btn-large btn-danger" onclick="changeDifficulty(HARD)" type="button">Play On Hard!</button></div>'+
+            '<button class="btn btn-large btn-primary" onmousedown="postAchievementToFacebook(HARD)" style="margin:20px;">Post Achievement To Facebook!</button>'+
+            '<div style="float:left"><button class="btn btn-large btn-danger" onmousedown="modal.close()" type="button">Keep Playing On Medium!</button></div>'+
+            '<div style="float:right"><button class="btn btn-large btn-danger" onmousedown="changeDifficulty(HARD)" type="button">Play On Hard!</button></div>'+
             '<div class="clear"></div>'+
         '</div>'});
-        
+
     }
 }
 var iteration=0;
@@ -738,7 +738,7 @@ function showScore(word, score) {
         $('#showscore'+definiteit+' button').css({display:'none'})
     })
     updateAchievements();
-    //"<button class=\"" + btnclass + "\" onclick=\"selectWord(this)\" type=\"button\">" + gd.letter + "</button>"
+    //"<button class=\"" + btnclass + "\" onmousedown=\"selectWord(this)\" type=\"button\">" + gd.letter + "</button>"
 }
 function showDouble() {
     iteration++
@@ -774,17 +774,17 @@ function update() {
             return ''
         }
         var cssclass = ''
-        var val = '<div id="'+i+'-'+j+'" onclick="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>'
+        var val = '<div id="'+i+'-'+j+'" onmousedown="moveTo(this)" class="btn btn-large btn-link" style="height:26px;" ></div>'
         var btnclass = 'btn btn-large btn-danger'
 
         if (gd.selected) {
             btnclass = 'btn btn-large btn-warning'
         }
         if (gd.letter) {
-            val = '<button id="'+i+'-'+j+'" class="' + btnclass + "\" onclick=\"selectWord(this)\" type=\"button\">" + gd.letter + "</button>"
+            val = '<button id="'+i+'-'+j+'" class="' + btnclass + "\" onmousedown=\"selectWord(this)\" type=\"button\">" + gd.letter + "</button>"
         }
         if (gd.halfgrown) {
-            val = '<div id="'+i+'-'+j+'" onclick="moveTo(this)" class="btn-link swap" style="height: 36px;padding-top: 10px;" >'+
+            val = '<div id="'+i+'-'+j+'" onmousedown="moveTo(this)" class="btn-link swap" style="height: 36px;padding-top: 10px;" >'+
             '<button class="btn btn-small disabled btn-danger swap grower" type="button" >' + gd.letter + "</button></div>"
         }
         return val
