@@ -262,8 +262,9 @@ function selectWord(imclicked) {
     //unselect current if there is a current selected
     if (selectedXpos != -1 && selectedYpos != -1) {
         gamedata2d[selectedYpos][selectedXpos].selected = false;
-        $("#"+selectedYpos+'-'+selectedXpos).removeClass('btn-warning');
-        $("#"+selectedYpos+'-'+selectedXpos).addClass('btn-danger');
+        var currTileAt = $("#" + selectedYpos + '-' + selectedXpos);
+        currTileAt.removeClass('btn-warning');
+        currTileAt.addClass('btn-danger');
         //stop if current selected is this
         if(selectedXpos == xPos && selectedYpos == yPos){
             selectedXpos = -1;
@@ -279,9 +280,9 @@ function selectWord(imclicked) {
     selectedYpos = yPos
 
     //update view
-
-    $("#"+yPos+'-'+xPos).removeClass('btn-danger');
-    $("#"+yPos+'-'+xPos).addClass('btn-warning');
+    var tileAt = $("#" + yPos + '-' + xPos);
+    tileAt.removeClass('btn-danger');
+    tileAt.addClass('btn-warning');
 }
 /*
  animate along path
