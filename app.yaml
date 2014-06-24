@@ -52,10 +52,6 @@ handlers:
 - url: /robots.txt
   static_files: robots.txt
   upload: robots.txt
-- url: /leecole
-  static_files: leecole.html
-  upload: leecole.html
-  expiration: "0d 1h"
 - url: /achievement-hard.html
   static_files: achievement-hard.html
   upload: achievement-hard.html
