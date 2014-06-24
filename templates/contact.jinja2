@@ -21,19 +21,20 @@
 
 </head>
 <body>
-  {{ macros.fbstuff() }}
+{{ macros.fbstuff() }}
 <div id="pagebody">
     <div id="container">
         <div id="main">
-        	<div id="logo">
+            <div id="logo">
                 <a href="/" title="Word Smashing Word Puzzle Game">
                     <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing"/>
                 </a>
+
                 <div id="login">
                     {{ macros.loginoutbutton() }}
                     {{ macros.jplayer() }}
-			    </div>
-	        </div>
+                </div>
+            </div>
 
             <table id="gametable" border="1">
                 <tr>
@@ -43,7 +44,8 @@
 
                 </tr>
             </table>
-            <div class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></div>
+            <div class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450"
+                 data-show-faces="true"></div>
             {{ macros.shareBtnsHorizontal() }}
             <div id="showscore0">
                 <button style="display: none"></button>
@@ -79,8 +81,11 @@
         <div id="instructions">
 
             <h1>Contact Word Smashing</h1>
-            <p class="lead">Contact Word Smashing by email: <a href="mailto:lee.penkman@wordsmashing.com" title="contact word smashing">lee.penkman@wordsmashing.com</a>
-            	</p>
+
+            <p class="lead">Contact Word Smashing by email: <a href="mailto:lee.penkman@wordsmashing.com"
+                                                               title="contact word smashing">lee.penkman@wordsmashing.com</a>
+            </p>
+
             <p class="lead">Word smashing is a free online word search puzzle fun for the whole family!</p>
         </div>
         <div class="clear"></div>
@@ -104,8 +109,8 @@
     <div class="clear">
     </div>
     {{ macros.footer() }}
-	<div class="clear">
-	</div>
+    <div class="clear">
+    </div>
 </div>
 
 </body>

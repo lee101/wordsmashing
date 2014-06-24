@@ -21,19 +21,21 @@
 
 </head>
 <body>
-  {{ macros.fbstuff() }}
+{{ macros.fbstuff() }}
 <div id="pagebody">
     <div id="container">
         <div id="main">
-        	<div id="logo">
+            <div id="logo">
                 <a href="/" title="Word Smashing Word Puzzle Game">
-                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250"
+                         height="184"/>
                 </a>
+
                 <div id="login">
                     {{ macros.loginoutbutton() }}
                     {{ macros.jplayer() }}
-			    </div>
-	        </div>
+                </div>
+            </div>
 
             <table id="gametable" border="1">
                 <tr>
@@ -43,7 +45,8 @@
 
                 </tr>
             </table>
-            <div class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></div>
+            <div class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450"
+                 data-show-faces="true"></div>
             {{ macros.shareBtnsHorizontal() }}
             <div id="showscore0">
                 <button style="display: none"></button>
@@ -79,19 +82,22 @@
         <div id="instructions">
 
             <h1>About Word Smashing</h1>
-            <p class="lead">Word smashing is a brand new, free online word search puzzle. It offers free addicting fun for the whole family. Be puzzled and build your brain today by playing Word Smashing. </p>
+
+            <p class="lead">Word smashing is a brand new, free online word search puzzle. It offers free addicting fun
+                for the whole family. Be puzzled and build your brain today by playing Word Smashing. </p>
+
             <p class="lead"><b>Instructions:</b><br/>
-            	Make Words for points and to clear space!<br/>
-            	Click a letter and click on an empty space to move it there.<br/>
-            	You will only be able to move if there is a clear path.<br/>
-            	Every turn three new letters will grow into the game.<br/>
-            	Its game over when the board is filled with letters!<br/>
-            	Get two words in one turn and get combos by making words every turn for bonus points.<br/>
-            	On Easy You can make words with 2 or more letters.<br/>
-            	On Medium You can make words with 3 or more letters.<br/>
-            	On Hard You can only make words with 4 or more letters!<br/>
-            	Some place names and peoples names do not count as words.
-            	</p>
+                Make Words for points and to clear space!<br/>
+                Click a letter and click on an empty space to move it there.<br/>
+                You will only be able to move if there is a clear path.<br/>
+                Every turn three new letters will grow into the game.<br/>
+                Its game over when the board is filled with letters!<br/>
+                Get two words in one turn and get combos by making words every turn for bonus points.<br/>
+                On Easy You can make words with 2 or more letters.<br/>
+                On Medium You can make words with 3 or more letters.<br/>
+                On Hard You can only make words with 4 or more letters!<br/>
+                Some place names and peoples names do not count as words.
+            </p>
         </div>
         <div class="clear"></div>
         <div id="btm">
@@ -114,8 +120,8 @@
     <div class="clear">
     </div>
     {{ macros.footer() }}
-	<div class="clear">
-	</div>
+    <div class="clear">
+    </div>
 </div>
 </body>
 </html>

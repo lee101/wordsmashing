@@ -19,101 +19,107 @@
 
     {{ macros.headers(ws, highscores, achievements, level) }}
     <script type="text/javascript">
-    {% if level_num == 1 %}
-        $(function(){
-            {% if current_user.gold %}
-            modal.open({content:
-                '<p class="lead">Tiles can now be blocked!<br/><br/>'+
-                'But don\'t worry! Tiles with locks can be unlocked by scoring a word nearby!<br/><br/>'+
-                'Break all the locks to win!</p>'+
-                '<button class="btn btn-large btn-success" onclick="modal.close()" title="Play Next Level" type="button">Okay !</button>'
+        {% if level_num == 1 %}
+            $(function () {
+                {% if current_user.gold %}
+                    modal.open({content: '<p class="lead">Tiles can now be blocked!<br/><br/>' +
+                            'But don\'t worry! Tiles with locks can be unlocked by scoring a word nearby!<br/><br/>' +
+                            'Break all the locks to win!</p>' +
+                            '<button class="btn btn-large btn-success" onclick="modal.close()" title="Play Next Level" type="button">Okay !</button>'
+                    });
+                {% else %}
+                    // modal.open({
+                    //     'content': $('#calltoactionpopup').html()
+                    // });
+                {% endif %}
             });
-            {% else %}
-            // modal.open({
-            //     'content': $('#calltoactionpopup').html()
-            // });
-            {% endif %}
-        });
-    {% endif %}
-    function winViaBreakingAllLocks() {
-        $.ajax( {
-        "url":  "/savelevelsunlocked",
-        "data": {"levels_unlocked":{{ level_num }}},
-        "success": function (text) {
-        },
-        "type": "GET",
-        "cache": false,
-        "error": function (xhr, error, thrown) {
-            if ( error == "parsererror" ) {
-            }
-        }
-        } );
-        extraContent = ''
-        {% if level_num < num_levels %}
-            extraContent += '<a class="btn btn-large btn-success" href="/campaign/level{{ level_num + 1 }}" title="Play Next Level">Next Level!</a>'
-        {% else %}
-            extraContent += '<p class="lead">Congratulations!! You have finished the final level!!</p>'
         {% endif %}
+        function winViaBreakingAllLocks() {
+            $.ajax({
+                "url": "/savelevelsunlocked",
+                "data": {"levels_unlocked":{{ level_num }}},
+                "success": function (text) {
+                },
+                "type": "GET",
+                "cache": false,
+                "error": function (xhr, error, thrown) {
+                    if (error == "parsererror") {
+                    }
+                }
+            });
+            extraContent = ''
+            {% if level_num < num_levels %}
+                extraContent += '<a class="btn btn-large btn-success" href="/campaign/level{{ level_num + 1 }}" title="Play Next Level">Next Level!</a>'
+            {% else %}
+                extraContent += '<p class="lead">Congratulations!! You have finished the final level!!</p>'
+            {% endif %}
 
-        if(difficulty == EASY) {
-            extraContent += '<br/><br/><a class="btn btn-large btn-success" onclick="changeDifficulty(MEDIUM)" title="Play On Medium">Play Again On Medium!</a>'
+            if (difficulty == EASY) {
+                extraContent += '<br/><br/><a class="btn btn-large btn-success" onclick="changeDifficulty(MEDIUM)" title="Play On Medium">Play Again On Medium!</a>'
+            }
+            if (difficulty == MEDIUM) {
+                extraContent += '<br/><br/><button class="btn btn-large btn-success" onclick="changeDifficulty(HARD)" title="Play On Hard">Play Again On Hard!</button>'
+            }
+            modal.open({content: '<p class="lead">Congratulations you won by breaking all the locks!</p>' +
+                    extraContent
+            });
         }
-        if(difficulty == MEDIUM) {
-            extraContent += '<br/><br/><button class="btn btn-large btn-success" onclick="changeDifficulty(HARD)" title="Play On Hard">Play Again On Hard!</button>'
-        }
-        modal.open({content:
-            '<p class="lead">Congratulations you won by breaking all the locks!</p>'+
-             extraContent
-        });
-    }
     </script>
 </head>
 <body>
-  {{ macros.fbstuff() }}
+{{ macros.fbstuff() }}
 <div id="pagebody">
     <div id="container">
         <div id="main">
-        	<div id="logo">
+            <div id="logo">
                 <a href="http://www.wordsmashing.com" title="Word Smashing Word Puzzle Game" target="_blank">
-                  <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250"
+                         height="184"/>
                 </a>
-  		      <div id="login">
-                {{ macros.loginoutbutton() }}
-                {{ macros.jplayer() }}
-  			    </div>
-	        </div>
+
+                <div id="login">
+                    {{ macros.loginoutbutton() }}
+                    {{ macros.jplayer() }}
+                </div>
+            </div>
             {% if current_user.gold %}
-            <table id="gametable" border="1">
+                <table id="gametable" border="1">
             {% else %}
-            <div id="calltoactionpopup">
+                <div id="calltoactionpopup">
                 {% if current_user.name %}
                     {{ macros.buyLink() }}
                 {% else %}
-                <p id="mustsignin" class="lead">Login with your gold account to play!</br>
-                <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/static/img/google-icon-64.png" alt="Google Login"/></a>
-                <a href="#" onclick="fb_login();return false;" title="Login With Facebook"><img src="/static/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>
+                    <p id="mustsignin" class="lead">Login with your gold account to play!</br>
+                        <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img
+                                src="/static/img/google-icon-64.png" alt="Google Login"/></a>
+                        <a href="#" onclick="fb_login();return false;" title="Login With Facebook"><img
+                                src="/static/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>
                 {% endif %}
                 <table id="gametable" border="1" style="display:none">
             {% endif %}
-                <tr>
-                    <td>
+            <tr>
+                <td>
 
-                    </td>
+                </td>
 
-                </tr>
+            </tr>
             </table>
             {% if not current_user.gold %}
-                <p id="campaign-for-free" class="lead">Or get Word Smashing Campaign for Free! <br/>Just click below to share us and click done!</p>
+                <p id="campaign-for-free" class="lead">Or get Word Smashing Campaign for Free! <br/>Just click below to
+                    share us and click done!</p>
             {% endif %}
             <div id="sharestuff">
-            <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></span>
-            {{ macros.shareBtnsHorizontal() }}
+                <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true"
+                      data-width="450" data-show-faces="true"></span>
+                {{ macros.shareBtnsHorizontal() }}
             </div>
             <div id="sharearea" onclick="showdonesharingbtn()">
             </div>
             {% if not current_user.gold %}
-                <button id="donesharing" class="btn btn-large btn-warning" disabled="disabled" onclick="makegold()">Done!</button>
-            </div>
+                <button id="donesharing" class="btn btn-large btn-warning" disabled="disabled" onclick="makegold()">
+                    Done!
+                </button>
+                </div>
             {% endif %}
             <div id="showscore0">
                 <button style="display: none"></button>
@@ -149,18 +155,20 @@
         <div id="instructions">
 
             <h1>Word Smashing Campaign Level {{ level_num }}</h1>
+
             <p class="lead"><b>Instructions: </b>Make Words for points and to clear space!<br/>
-            	Click a letter and click on an empty space to move it there.<br/>
-            	You will only be able to move if there is a clear path.<br/>
-            	Every turn three new letters will grow into the game.<br/>
-            	Its game over when the board is filled with letters!<br/>
-            	Get two words in one turn and get combos by making words every turn for bonus points.<br/>
-            	On Easy You can make words with 2 or more letters.<br/>
-            	On Medium You can make words with 3 or more letters.<br/>
-            	On Hard You can only make words with 4 or more letters!<br/>
-                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a>.<br/>
-            	Some place names and peoples names do not count as words.
-            	</p>
+                Click a letter and click on an empty space to move it there.<br/>
+                You will only be able to move if there is a clear path.<br/>
+                Every turn three new letters will grow into the game.<br/>
+                Its game over when the board is filled with letters!<br/>
+                Get two words in one turn and get combos by making words every turn for bonus points.<br/>
+                On Easy You can make words with 2 or more letters.<br/>
+                On Medium You can make words with 3 or more letters.<br/>
+                On Hard You can only make words with 4 or more letters!<br/>
+                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word
+                    Smashing Time Trials</a>.<br/>
+                Some place names and peoples names do not count as words.
+            </p>
         </div>
         <div class="clear"></div>
         <div id="btm">
@@ -183,8 +191,8 @@
     <div class="clear">
     </div>
     {{ macros.footer() }}
-	<div class="clear">
-	</div>
+    <div class="clear">
+    </div>
 </div>
 
 </body>

@@ -19,28 +19,29 @@
 
     {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
     <script type="text/javascript">
-      function showHelp(){
-          modal.open({content: $('#instructions').html()});
-      }
-      $(function(){
-        showHelp();
-        $('#closehelpbtn').html("Continue");
-      });
+        function showHelp() {
+            modal.open({content: $('#instructions').html()});
+        }
+        $(function () {
+            showHelp();
+            $('#closehelpbtn').html("Continue");
+        });
     </script>
 </head>
 <body>
-    {{ macros.fbstuff() }}
+{{ macros.fbstuff() }}
 <div id="pagebody">
     <div id="container">
         <div id="main">
-        	<div id="logo">
-                <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+            <div id="logo">
+                <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250"
+                     height="184"/>
 
-		        <div id="login">
-                {{ macros.loginoutbutton() }}
+                <div id="login">
+                    {{ macros.loginoutbutton() }}
                     {{ macros.jplayer() }}
-			    </div>
-	        </div>
+                </div>
+            </div>
             <table id="gametable" border="1">
                 <tr>
                     <td>
@@ -49,7 +50,8 @@
 
                 </tr>
             </table>
-            <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></span>
+            <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450"
+                  data-show-faces="true"></span>
             {{ macros.shareBtnsHorizontal() }}
             <div id="showscore0">
                 <button style="display: none"></button>
@@ -87,7 +89,9 @@
 
         <div id="instructions" style="display:none">
             <h1 style="display:none">Word Smashing</h1>
+
             <p class="lead" style="display:none">Word smashing is a free online word search puzzle.</p>
+
             <p class="lead"><b>Instructions:</b><br/>
                 Make words! lots of words! two at once or heaps in a row for bonus points!<br/>
                 Get words up, down, forward and backwards!<br/>
@@ -95,10 +99,13 @@
                 To move, click a letter and click a space!<br/>
                 You can move if there's a clear path!<br/>
                 Each turn 3 more letters appear, when the board fills up its game over!<br/>
-                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a>.<br/>
+                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word
+                    Smashing Time Trials</a>.<br/>
                 Some people &amp; place names don't count!<br/>
             </p>
-            <button id="closehelpbtn" style="float:left" class="btn btn-large btn-success" onclick="modal.close()" type="button">Play Now!</button>
+            <button id="closehelpbtn" style="float:left" class="btn btn-large btn-success" onclick="modal.close()"
+                    type="button">Play Now!
+            </button>
             <div class="clear"></div>
         </div>
         <div class="clear"></div>
@@ -120,8 +127,8 @@
     <div class="clear">
     </div>
     {{ macros.footer() }}
-	<div class="clear">
-	</div>
+    <div class="clear">
+    </div>
 </div>
 
 </body>

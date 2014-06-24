@@ -7,7 +7,8 @@
     <meta name="description"
           content="Learn English Playing Word Smashing! Learn English With This Addicting New Word Puzzle, For Free!">
 
-    <meta name="keywords" content="learn english, english games for kids, learn english words, free online puzzle games, word puzzle games for kids">
+    <meta name="keywords"
+          content="learn english, english games for kids, learn english words, free online puzzle games, word puzzle games for kids">
     <meta property="og:title" content="Word Smashing - Learn English With Word Puzzle Games!">
     <meta property="og:url" content="{{ url }}">
     <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
@@ -22,19 +23,21 @@
 
 </head>
 <body>
-  {{ macros.fbstuff() }}
-  <div id="pagebody">
+{{ macros.fbstuff() }}
+<div id="pagebody">
     <div id="container">
         <div id="main">
-        	<div id="logo">
+            <div id="logo">
                 <a href="/" title="Word Smashing Word Puzzle">
-                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250"
+                         height="184"/>
                 </a>
-		        <div id="login">
-                {{ macros.loginoutbutton() }}
+
+                <div id="login">
+                    {{ macros.loginoutbutton() }}
                     {{ macros.jplayer() }}
-			    </div>
-	        </div>
+                </div>
+            </div>
             <table id="gametable" border="1" style="display:none">
                 <tr>
                     <td>
@@ -43,7 +46,8 @@
 
                 </tr>
             </table>
-            <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></span>
+            <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450"
+                  data-show-faces="true"></span>
             {{ macros.shareBtnsHorizontal() }}
             <div id="showscore0">
                 <button style="display: none"></button>
@@ -61,16 +65,21 @@
         <div id="instructions">
 
             <h1>Learn English Playing Word Games!</h1>
+
             <p class="lead">
-              <br/>
+                <br/>
                 Which english words are you going to learn?<br/>
                 {% for key, level in learnenglishlevels.iteritems() %}
-                <a class="english-level-btn-link btn btn-large btn-danger" href="/learn-english/{{ key }}" title="Learn English {{ level.name }}">{{ level.name }}</a>
+                    <a class="english-level-btn-link btn btn-large btn-danger" href="/learn-english/{{ key }}"
+                       title="Learn English {{ level.name }}">{{ level.name }}</a>
                 {% endfor %}
                 <br/>
                 Make as many of that type of word as you can!<br/>
-                Looking for another challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a> or <a href="/multiplayer" title="Play Word Smashing Multiplayer Mode">Play Word Smashing VS mode</a>!<br/>
+                Looking for another challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word
+                Smashing Time Trials</a> or <a href="/multiplayer" title="Play Word Smashing Multiplayer Mode">Play Word
+                Smashing VS mode</a>!<br/>
             </p>
+
             <div id="btm">
                 <script type="text/javascript"><!--
                 google_ad_client = "ca-pub-7026363262140448";
@@ -112,8 +121,8 @@
     <div class="clear">
     </div>
     {{ macros.footer() }}
-	<div class="clear">
-	</div>
+    <div class="clear">
+    </div>
 </div>
 
 </body>

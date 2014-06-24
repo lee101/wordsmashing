@@ -20,76 +20,77 @@
     {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
     <script>
 
-        var clock = (function(){
+        var clock = (function () {
             var self = this;
-            self.time = 5*60;
+            self.time = 5 * 60;
 
             var started = false;
 
-            self.reset = function(){
-                self.time = 5*60;
+            self.reset = function () {
+                self.time = 5 * 60;
                 started = false;
             }
 
-            self.start = function(){
+            self.start = function () {
                 started = true;
             }
 
-            setInterval(function(){
-                if(started){
+            setInterval(function () {
+                if (started) {
                     self.time--;
                     var seperator = ':';
-                    if (self.time%60 <= 9) {
+                    if (self.time % 60 <= 9) {
                         seperator = ':0'
                     }
-                    $('.time p').html(Math.floor(self.time/60) + seperator + self.time%60);
+                    $('.time p').html(Math.floor(self.time / 60) + seperator + self.time % 60);
 
-                    if(time <= 0){
+                    if (time <= 0) {
                         gameover();
                         self.reset();
                     }
                 }
-            },1000);
+            }, 1000);
             return self;
         })();
-        $(function(){
-        var parent = gameover;
-        gameover = function(){
-            parent();
-            clock.reset();
-        }
-        var parent2 = newGame;
-        newGame = function(){
-            parent2();
-            clock.reset();
-            clock.start();
-        }
-        modal.open({content:
-            '<div id="highscores-modal">'+
-                '<p class="lead">Word Smashing Time Trials!</p>'+
-                '<p class="lead">You have 5 minutes!</p>'+
-                '<p class="lead">Get as many points as possible!</p>'+
-                '<div style="float:right"><button class="btn-large btn-success" onclick="modal.close();newGame()" type="button">Play Now!</button></div>'+
-    	'<div class="clear"></div>'+
-            '</div>'});
+        $(function () {
+            var parent = gameover;
+            gameover = function () {
+                parent();
+                clock.reset();
+            }
+            var parent2 = newGame;
+            newGame = function () {
+                parent2();
+                clock.reset();
+                clock.start();
+            }
+            modal.open({content: '<div id="highscores-modal">' +
+                    '<p class="lead">Word Smashing Time Trials!</p>' +
+                    '<p class="lead">You have 5 minutes!</p>' +
+                    '<p class="lead">Get as many points as possible!</p>' +
+                    '<div style="float:right"><button class="btn-large btn-success" onclick="modal.close();newGame()" type="button">Play Now!</button></div>' +
+                    '<div class="clear"></div>' +
+                    '</div>'});
         });
     </script>
 
 </head>
 <body>
-  {{ macros.fbstuff() }}
-  <div id="pagebody">
+{{ macros.fbstuff() }}
+<div id="pagebody">
     <div id="container">
         <div id="main">
-        	<div id="logo">
+            <div id="logo">
                 <a href="/" title="Word Smashing Puzzle Game">
-                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250"
+                         height="184"/>
                 </a>
-		        <div id="login">
-                {{ macros.loginoutbutton() }}
+
+                <div id="login">
+                    {{ macros.loginoutbutton() }}
                     {{ macros.jplayer() }}
-			    </div>
-	        </div>
+                </div>
+            </div>
             <div class="time"><p class="lead">5:00</p></div>
             <table id="gametable" border="1">
                 <tr>
@@ -99,7 +100,8 @@
 
                 </tr>
             </table>
-            <div class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></div>
+            <div class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450"
+                 data-show-faces="true"></div>
             {{ macros.shareBtnsHorizontal() }}
             <div id="showscore0">
                 <button style="display: none"></button>
@@ -135,18 +137,21 @@
         <div id="instructions">
 
             <h1>Word Smashing Time Trials</h1>
+
             <p class="lead"><b>Instructions: </b>Make Words for points and to clear space!<br/>
-            	Click a letter and click on an empty space to move it there.<br/>
-            	You will only be able to move if there is a clear path.<br/>
-            	Every turn three new letters will grow into the game.<br/>
-            	Its game over when the board is filled with letters or you run out of time!<br/>
-            	Get two words in one turn and get combos by making words every turn for bonus points.<br/>
-            	On Easy You can make words with 2 or more letters.<br/>
-            	On Medium You can make words with 3 or more letters.<br/>
-            	On Hard You can only make words with 4 or more letters!<br/>
-                Want something more relaxed? <a href="/" title="Play Word Smashing Classic">Play Word Smashing Classic</a>.<br/>
-            	Some place names and peoples names do not count as words.
-            	</p>
+                Click a letter and click on an empty space to move it there.<br/>
+                You will only be able to move if there is a clear path.<br/>
+                Every turn three new letters will grow into the game.<br/>
+                Its game over when the board is filled with letters or you run out of time!<br/>
+                Get two words in one turn and get combos by making words every turn for bonus points.<br/>
+                On Easy You can make words with 2 or more letters.<br/>
+                On Medium You can make words with 3 or more letters.<br/>
+                On Hard You can only make words with 4 or more letters!<br/>
+                Want something more relaxed? <a href="/" title="Play Word Smashing Classic">Play Word Smashing
+                    Classic</a>.<br/>
+                Some place names and peoples names do not count as words.
+            </p>
+
             <p class="lead">Word smashing is a free online word search puzzle.</p>
         </div>
         <div class="clear"></div>
@@ -170,8 +175,8 @@
     <div class="clear">
     </div>
     {{ macros.footer() }}
-	<div class="clear">
-	</div>
+    <div class="clear">
+    </div>
 </div>
 </body>
 </html>
