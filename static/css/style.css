@@ -1,0 +1,281 @@
+
+#overlay {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:#000;
+	opacity:0.5;
+	filter:alpha(opacity=50);
+}
+
+#modal {
+	position:absolute;
+	/*background:url(tint20.png) 0 0 repeat;*/
+	background:rgba(0,0,0,0.2);
+	border-radius:14px;
+	padding:8px;
+}
+
+#content {
+	border-radius:8px;
+	background:#fff;
+	padding:20px;
+}
+.lead {
+    font-size: 18px;
+    line-height: 32px;
+}
+#help {
+    margin: 10px;
+}
+
+#close {
+	position:absolute;
+	background:url('/static/img/close.png') 0 0 no-repeat;
+	width:24px;
+	height:27px;
+	display:block;
+	text-indent:-9999px;
+	top:-7px;
+	right:-7px;
+}
+
+
+
+#logo {
+	text-align: center;
+}
+
+body {
+    font-family: Verdana, Helvetica, sans-serif;
+    background-color: #DDDDDD;
+}
+table{
+	background-color:#343434;
+}
+tr{
+
+}
+td{
+    width: 57px;
+    height: 50px;
+    text-align: center;
+    padding: 3px;
+    border: 1px solid gray;
+}
+td div {
+    width: 10px;
+}
+.grower {
+    margin-left: 12px;
+}
+.swap:hover{
+	cursor:pointer;
+}
+body {
+    font-family: arial;
+    font-style: normal;
+    background-color: #F5F5F5;
+    height: 100%;
+}
+.clear{
+    clear: both;
+}
+#pagebody {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    margin: 0 auto;
+    position: relative;
+    width: 1020px;
+    height: auto !important;
+    min-height: 100%;
+    height: 100% !important;
+}
+
+#container {
+    margin: 0 30px;
+    position: relative;
+}
+/*
+.selected{
+    margin: -4px 2px 2px -4px;
+}*/
+
+.btn-large{
+    position: relative;
+}
+
+#showscore0{
+    position: relative;
+    left: 203px;
+    top: -384px;
+    height: 0;
+}
+#showscore1{
+    position: relative;
+    left: 53px;
+    top: -314px;
+    height: 0;
+}
+#showscore2{
+    position: relative;
+    left: 203px;
+    top: -161px;
+    height: 0;
+
+}
+#showscore3{
+    position: relative;
+    left: 53px;
+    top: -111px;
+    height: 0;
+}
+#score{
+    margin: 40px 0 30px 10px;
+}
+#score2{
+	margin: 40px 0 30px 10px;
+}
+#newgame{
+	margin: 40px 0 30px 10px;
+}
+#difficulty{
+	margin: 40px 0 30px 10px;
+}
+#timedlink {
+    margin: 40px 0 30px 10px;
+}
+#multiplayerlink {
+    margin: 40px 0 30px 10px;
+}
+.gameoption {
+    margin: 40px 0 30px 10px;
+}
+#main {
+    margin: 10px 0 0;
+    position: relative;
+    width: 567px;
+    float: left;
+}
+#bannerAdd {
+    float: left;
+    width: 165px;
+    height: 650px;
+    margin-top: 45px;
+}
+#share {
+    display: inline;
+    float: right;
+    margin-top: 35px;
+}
+#gameoptions{
+    float: left;
+    width: 220px;
+    margin-top: 157px;
+}
+#instructions{
+    float: left;
+    max-width: 754px;
+    margin-top: 5px;
+    position: relative;
+    margin-left:20px;
+}
+#btm{
+    float: left;
+    height: 95px;
+    margin-top: 20px;
+    position: relative;
+}
+.footer {
+	display: inline;
+	margin-top: 20px;
+	margin-bottom: 30px;
+	float: left;
+	width: 100%;
+	text-align: center;
+}
+.footer__link {
+	font-size: small;
+	margin: 0 11px;
+	color: Gray;
+}
+#sharearea {
+    margin: 10px;
+    padding: 55px;
+    height: 0;
+    margin-top: -120px;
+    z-index: 10000;
+}
+
+#sharestuff {
+    border-color: #fadf98;
+    border-width: 1px;
+    border-style: solid;
+    margin: 10px;
+    padding: 10px;
+}
+
+.clear{
+	clear:both;
+}
+#fb-gameoptions{
+	float: left;
+}
+#fb-logo{
+	float: left;
+}
+#fb-gameoptions div {
+margin: 10px 0 10px 10px;
+}
+#changedifficulty{
+	background-color: #FFFFFF;
+	width:512px;
+	text-align: center;
+	padding:20px 10px;
+}
+#changedifficulty button{
+	margin:0px 20px;
+}
+#fbbtm {
+	float: left;
+	height: 280px;
+	position: relative;
+	text-align:center;
+}
+#login{
+	float: right;
+}
+.winadd{
+    width: 336px;
+    height: 280px;
+    margin: 20px;
+}
+.time{
+    text-align: center;
+}
+#instructions .lead {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 36px;
+}
+.icon-volume-off,
+.icon-volume-on,
+.icon-volume-up {
+    margin-top: 5px !important;
+}
+.modal-text {
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 36px;
+}
+.english-level-btn-link {
+    margin: 10px 20px 10px 0;
+}
+
+/*@media only screen and (max-device-width: 480px) {
+
+}*/

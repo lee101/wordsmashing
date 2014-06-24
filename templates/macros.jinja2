@@ -1,0 +1,662 @@
+{% macro jplayer() -%}
+<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+
+<div id="jp_container_1" class="jp-audio">
+<div class="jp-type-single">
+  <div class="jp-gui jp-interface">
+    <ul class="jp-controls">
+      <!--<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>-->
+      <!--<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>-->
+      <!--<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>-->
+      <li><a href="javascript:;" class="jp-mute btn btn-small btn-danger" tabindex="1" title="mute" onclick="mute()"><span class="icon-volume-off"></span></a></li>
+      <li><a href="javascript:;" class="jp-unmute btn btn-small btn-danger" tabindex="1" title="unmute" onclick="unmute()"><span class="icon-volume-up"></span></a></li>
+      <!--<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>-->
+    </ul>
+    <!--<div class="jp-progress">-->
+      <!--<div class="jp-seek-bar">-->
+        <!--<div class="jp-play-bar"></div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <div class="jp-volume-bar">
+        <div class="jp-volume-bg">
+            <div class="jp-volume-bar-value"></div>
+        </div>
+    </div>
+    <!--<div class="jp-time-holder">-->
+      <!--<div class="jp-current-time"></div>-->
+      <!--<div class="jp-duration"></div>-->
+      <!--<ul class="jp-toggles">-->
+        <!--<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>-->
+        <!--<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  </div>
+  <!--<div class="jp-title">-->
+    <!--<ul>-->
+      <!--<li>Bubble</li>-->
+    <!--</ul>-->
+  <!--</div>-->
+  <!--<div class="jp-no-solution">-->
+    <!--<span>Update Required</span>-->
+    <!--To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.-->
+  <!--</div>-->
+</div>
+</div>
+{%- endmacro %}
+
+{% macro headers(ws, highscores, achievements, level) -%}
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon"/>
+    <link rel="apple-touch-icon" href="/static/img/word-smashing-icon-iphone.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/img/word-smashing-icon-ipad.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/img/word-smashing-icon-iphone-retina.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/img/word-smashing-icon-ipad-retina.png" />
+    <link rel="stylesheet" rel="stylesheet" href="/static/css/social-likes.css"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
+    <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
+    <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
+    <link type="text/css" href="/static/jplayerskin/jplayer.pink.flag.css" rel="stylesheet" />
+      {% if ws.debug %}
+      <script src="https://sandbox.google.com/checkout/inapp/lib/buy.js"></script>
+      {% endif %}
+      {% if not ws.debug %}
+      <script src="https://sandbox.google.com/checkout/inapp/lib/buy.js"></script>
+      <!--<script src="https://wallet.google.com/inapp/lib/buy.js"></script>-->
+      {% endif %}
+      <script type="text/javascript">
+
+        // Success handler
+        var successHandler = function(status){
+          if (window.console != undefined) {
+            console.log("Purchase completed successfully: ", status);
+            window.location.href = "http://www.wordsmashing.com/campaign";
+          }
+        }
+
+        // Failure handler
+        var failureHandler = function(status){
+          if (window.console != undefined) {
+            console.log("Purchase failed ", status);
+          }
+        }
+
+        function purchase(item) {
+          var generated_jwt;
+          if (item == "Gold") {
+            generated_jwt = "{{ jwt }}";
+          } else {
+            return;
+          }
+
+          google.payments.inapp.buy({
+            'jwt'     : generated_jwt,
+            'success' : successHandler,
+            'failure' : failureHandler
+          });
+        }
+      </script>
+    <script>
+    var achievements = {};
+    {% for achievement in achievements %}
+    {% if achievement.type == UNLOCKED_MEDIUM %}
+    achievements.medium = true;
+    {% endif %}
+    {% if achievement.type == UNLOCKED_HARD %}
+    achievements.hard = true;
+    {% endif %}
+    {% endfor %}
+
+    var highscores = {};
+    {% for score in highscores %}
+        {% if score.difficulty == MEDIUM %}
+            highscores.medium = {{ score.score }};
+        {% endif %}
+        {% if score.difficulty == EASY %}
+            highscores.easy = {{ score.score }};
+        {% endif %}
+        {% if score.difficulty == HARD %}
+            highscores.hard = {{ score.score }};
+        {% endif %}
+    {% endfor %}
+
+    {% if level %}
+      num_blocked = {{ level.blocked_spaces|length }} + {{ level.locked_spaces|length }};
+      {% if level.blocked_spaces %}
+        blocked_spaces = {}
+        {% for pair in level.blocked_spaces %}
+          {% set bx = pair[0] %}
+          {% set by = pair[1] %}
+          blocked_spaces['{{ bx }}-{{ by }}'] = true;
+        {% endfor %}
+      {% endif %}
+
+      {% if level.locked_spaces %}
+        num_locked = {{ level.locked_spaces|length }};
+        locked_spaces = {}
+        {% for pair in level.locked_spaces %}
+          {% set bx = pair[0] %}
+          {% set by = pair[1] %}
+          locked_spaces['{{ bx }}-{{ by }}'] = true;
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+
+    {% if current_user.difficulty != 0 and current_user.difficulty != None %}
+    var difficulty = {{ current_user.difficulty }};
+    {% endif %}
+
+    var current_user = {};
+    {% if current_user.gold %}
+    current_user.has_bought = true;
+    {% endif %}
+
+var loginModalIsOpen = false;
+function loginmodal(){
+  loginModalIsOpen= true;
+    modal.open({content:
+        '<p class="lead">Log in with Facebook or Google</p>'+
+        '<p style="text-align: center;"><a style="margin:10px;" href="{{ glogin_url }}"" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>' +
+        '<a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a></p>'
+
+    });
+    var parentfunc = modal.close;
+
+    modal.close = function(){
+      parentfunc();
+      loginModalIsOpen = false;
+    }
+}
+    </script>
+
+    <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="/static/js/wordutils.js"></script>
+    {% if 'multiplayer' in url %}
+      <script type="text/javascript" src="/static/js/game-with-friends.js"></script>
+    {% else %}
+      <script type="text/javascript" src="/static/js/game.js"></script>
+    {% endif %}
+
+    <script src="/static/js/social-likes.min.js"></script>
+
+    <script type="text/javascript" src="/static/js/jquery.jplayer.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#jquery_jplayer_1").jPlayer({
+            ready: function () {
+                $(this).jPlayer("setMedia", {
+                  {% if ws.debug %}
+                    mp3: "/static/music/ws-theme.mp3",
+                    oga: "/static/music/ws-theme.ogg"
+                  {% endif %}
+                  {% if not ws.debug %}
+                    mp3: "http://commondatastorage.googleapis.com/wordsmashing%2Fws-piano-theme2.mp3",
+                    oga: "http://commondatastorage.googleapis.com/wordsmashing%2Fws-piano-theme2.ogg"
+                  {% endif %}
+                });
+                $(this).jPlayer("option", "loop",true);
+                $(this).jPlayer("play");
+            },
+            ended: function() { // The $.jPlayer.event.ended event
+                $(this).jPlayer("play"); // Repeat the media
+            },
+            volumechange: function (event) {
+                var myVol = event.jPlayer.options.volume;
+                // myMuted = event.jPlayer.options.muted;
+                $.ajax( {
+                  "url":  "/savevolume",
+                  "data": {"volume":myVol},
+                  "success": function (text) {
+                  },
+                  "type": "GET",
+                  "cache": false,
+                  "error": function (xhr, error, thrown) {
+                  }
+                });
+            },
+            {% if current_user.volume %}
+            volume: {{ current_user.volume }},
+            {% else %}
+            volume: 0.5,
+            {% endif %}
+            {% if current_user.muted %}
+            muted: 1,
+            {% endif %}
+
+            swfPath: "/js",
+            supplied: "mp3, oga"
+        });
+    });
+    function mute () {
+        $.ajax( {
+            "url":  "/savemute",
+            "data": {"muted":1},
+            "success": function (text) {
+            },
+            "type": "GET",
+            "cache": false,
+            "error": function (xhr, error, thrown) {
+            }
+        });
+    }
+    function unmute () {
+        $.ajax( {
+            "url":  "/savemute",
+            "data": {"muted":0},
+            "success": function (text) {
+            },
+            "type": "GET",
+            "cache": false,
+            "error": function (xhr, error, thrown) {
+            }
+        });
+    }
+</script>
+
+    <script type="text/javascript">
+    (function(d){
+      var f = d.getElementsByTagName('SCRIPT')[0], p = d.createElement('SCRIPT');
+      p.type = 'text/javascript';
+      p.async = true;
+      p.src = '//assets.pinterest.com/js/pinit.js';
+      f.parentNode.insertBefore(p, f);
+    }(document));
+    </script>
+	<script>
+
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-41301467-1', 'wordsmashing.com');
+	  ga('send', 'pageview');
+
+	</script>
+  <script src="http://o.aolcdn.com/gamesdevcenter/sdk/v2/GamesSDK.js" type="text/javascript"></script>
+  <script type="text/javascript">
+      // the first parameter is accessToken, the second parameter is the "isGuest" flag.
+      GAMESAPI.overrideParams("122151_chg3dsbnlc4sg1109q4q_hp54nh7v4tl4pk0kz33mvvls4n", false);
+
+  </script>
+{%- endmacro %}
+{%- macro pinIt(url, img, desc) %}
+<a href="//pinterest.com/pin/create/button/?url={{ url }}&media={{ img }}&description={{ desc }}" data-pin-do="buttonPin" data-pin-config="beside">
+    <img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" />
+</a>
+{%- endmacro %}
+{%- macro shareBtnsHorizontal(differenturl) %}
+{% if not differenturl %}
+{% set differenturl = url %}
+{% endif %}
+<ul class="social-likes" data-url="{{ differenturl }}">
+  <li class="facebook" title="Share link on Facebook">Facebook</li>
+  <li class="twitter" data-via="Wordsmashing" data-related="Wordsmashing:Word Smashing Tweeting About Puzzles and Games" title="Share link on Twitter">Twitter</li>
+  <li class="plusone" title="Share link on Google+">Google+</li>
+  <li class="pinterest" title="Share image on Pinterest" data-media="{{ differenturl }}">Pinterest</li>
+</ul>
+{%- endmacro %}
+
+{%- macro fbstuff() %}
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '138831849632195',                        // App ID from the app dashboard
+    channelUrl : '//wordsmashing.appspot.com/channel.html', // Channel file for x-domain comms
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+  });
+
+    //Fetch the status so that we can log out.
+    //You must have the login status before you can logout,
+    //and if you authenticated via oAuth (server side), this is necessary.
+    //If you logged in via the JavaScript SDK, you can simply call FB.logout()
+    //once the login status is fetched, call handleSessionResponse
+    FB.getLoginStatus();
+
+  // Here we subscribe to the auth.authResponseChange JavaScript event. This event is fired
+  // for any authentication related change, such as login, logout or session refresh. This means that
+  // whenever someone who was previously logged out tries to log in again, the correct case below
+  // will be handled.
+  FB.Event.subscribe('auth.authResponseChange', function(response) {
+    // Here we specify what we do with the response anytime this event occurs.
+    if (response.status === 'connected') {
+      // The response object is returned with a status field that lets the app know the current
+      // login status of the person. In this case, we're handling the situation where they
+      // have logged in to the app.
+
+      if (response.authResponse) {
+          access_token = response.authResponse.accessToken; //get access token
+          user_id = response.authResponse.userID; //get FB UID
+      }
+      FB.api('/me', function(resp) {
+          console.log('Good to see you, ' + resp.name + '.');
+          user_name = resp.name;
+          //add logout button
+          $('#loginlogout').html('<p>Hi, '+ user_name + '<a class="btn btn-danger" onclick="fb_logout();">Log Out</a></p>');
+
+          if(loginModalIsOpen) {
+            modal.close();
+          }
+          {% if 'buy' in url or 'campaign' in url %}
+          //only for buy page
+
+          //window.location.reload();
+          buybtn = $('#paypalbuyform')
+          if(buybtn) {
+            buybtn.attr('data-callback', 'http://www.wordsmashing.com/ipn/' + user_id)
+          }
+          $('#logintobuy').html('Hi, '+user_name+ ' Your purchase will be asscociated with your Facebook account!')
+          $('#buybutton').prop('disabled', false);
+          $('#ppbuy').css({display: 'block'});
+          $.ajax( {
+            "url":  "/isgold",
+            "data": {"access_token":access_token},
+            "success": function (text) {
+              if(text=="success") {
+                $('#mustsignin').css({'display': 'none'});
+                $('#donesharing').css({'display': 'none'});
+                $('#campaign-for-free').css({'display': 'none'});
+                $('#gametable').css({'display': 'block'});
+              } else {
+                $('#mustsignin').css({'display': 'none'});
+                $('#campaign-for-free').html('Get Word Smashing Campaign for Free! <br/>Just click below to share us and click done!');
+              }
+            },
+            "type": "GET",
+            "cache": false,
+            "error": function (xhr, error, thrown) {
+                if ( error == "parsererror" ) {
+                    console.log( "JSON data from "+
+                        "server could not be parsed. This is caused by a JSON formatting error." );
+                }
+          }
+          } );
+          {% endif %}
+
+      });
+
+
+      console.log(response);
+    } else if (response.status === 'not_authorized') {
+      // In this case, the person is logged into Facebook, but not into the app, so we call
+      // FB.login() to prompt them to do so.
+      // In real-life usage, you wouldn't want to immediately prompt someone to login
+      // like this, for two reasons:
+      // (1) JavaScript created popup windows are blocked by most browsers unless they
+      // result from direct interaction from people using the app (such as a mouse click)
+      // (2) it is a bad experience to be continually prompted to login upon page load.
+      FB.login();
+    } else {
+      // In this case, the person is not logged into Facebook, so we call the login()
+      // function to prompt them to do so. Note that at this stage there is no indication
+      // of whether they are logged into the app. If they aren't then they'll see the Login
+      // dialog right after they log in to Facebook.
+      // The same caveats as above apply to the FB.login() call here.
+      FB.login();
+    }
+  });
+  };
+access_token=0;
+function fb_login(){
+  FB.login(function(response) {
+
+      if (response.authResponse) {
+          console.log('Welcome!  Fetching your information.... ');
+          //console.log(response); // dump complete info
+          access_token = response.authResponse.accessToken; //get access token
+          user_id = response.authResponse.userID; //get FB UID
+
+          FB.api('/me', function(response) {
+              user_email = response.email; //get user email
+          });
+
+      } else {
+          //user hit cancel button
+          console.log('User cancelled login or did not fully authorize.');
+
+      }
+  }, {
+      scope: 'publish_stream,email'
+  });
+}
+function fb_logout(){
+FB.getLoginStatus(function(ret) {
+    /// are they currently logged into Facebook?
+    if(ret.authResponse) {
+        //they were authed so do the logout
+        FB.logout(function(response) {
+        // user is now logged out
+        $('#loginlogout').html('<button class="btn btn-danger" onclick="loginmodal()" type="button">Log In</button>');
+        //only for buy page
+        $('#logintobuy').html('Log in with Facebook or Google!<br/><br/>'+
+                    '<a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/img/google-icon-64.png" alt="Google Login"/></a>'+
+                    '<a href="#" onclick="fb_login();return false" title="Login With Facebook"><img src="/img/facebook-icon-64.png" alt="Facebook Login"/></a><br/><br/>'+
+                    'Your purchase will be asscociated with your account.<br/><br/>');
+        $('#buybutton').prop('disabled', true);
+
+        });
+    } else {
+       ///do something if they aren't logged in
+       //or just get rid of this if you don't need to do something if they weren't logged in
+        fb_login();
+    }
+});
+  // if (access_token){
+  //   window.location.href = 'https://www.facebook.com/logout.php?next={{ url }}&access_token='+access_token;
+  // }
+  // else {
+  //   window.location.href = 'https://www.facebook.com/logout.php?next={{ url }}&access_token={{ current_user.access_token }}';
+  // }
+}
+
+  // Load the SDK asynchronously
+  (function(d){
+   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement('script'); js.id = id; js.async = true;
+   js.src = "//connect.facebook.net/en_US/all.js";
+   ref.parentNode.insertBefore(js, ref);
+  }(document));
+
+  // Here we run a very simple test of the Graph API after login is successful.
+  // This testAPI() function is only called in those cases.
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Good to see you, ' + response.name + '.');
+    });
+  }
+</script>
+{%- endmacro %}
+
+{%- macro buybutton() %}
+<div id="buy">
+  {% if current_user.name %}
+  <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button">Buy $0.97 !</button>
+  {% else %}
+  <button id="buybutton" class="btn btn-large btn-warning" onclick="purchase('Gold')" type="button" disabled>Buy $0.97 !</button>
+  {% endif %}
+</div>
+{%- endmacro %}
+
+{%- macro buyLink() %}
+<div id="buy">
+  <a id="buylink" href="https://wordsmashing.appspot.com/buy" class="btn btn-large btn-warning" target="_blank">Buy Full Game $0.97</a>
+</div>
+{%- endmacro %}
+
+{%- macro campaignLink() %}
+<div id="buy">
+  <a id="buylink" href="/campaign/level1" class="btn btn-large btn-warning">Get Campaign Mode!</a>
+</div>
+{%- endmacro %}
+
+{%- macro loginoutbutton() %}
+  <div id="loginlogout">
+  {% if current_user.name %}
+  <p>Hi, {{ current_user.name }}
+    {% if current_user.profile_url %}
+    <a class="btn btn-danger" onclick="fb_logout();">Log Out</a>
+    {% else %}
+      <a class="btn btn-danger" href="{{ glogout_url }}">Log Out</a>
+    {% endif %}
+  </p>
+  {% endif %}
+  {% if current_user.cookie_user %}
+  <button class="btn btn-danger" onclick="loginmodal()" tpye="button">Log In</button>
+  {% endif %}
+  </div>
+{%- endmacro %}
+
+{%- macro standardgameoptions() %}
+  {% if 'campaign/level' in url %}
+  <div class="gameoption">
+    <a class="btn btn-large btn-danger" href="/campaign" title="Word Smashing Campaign Game Levels">Menu</a>
+  </div>
+  {% endif %}
+  <div id="score" onclick="showHighScores()">
+    <button class="btn btn-large btn-danger" type="button">Score: 0</button>
+  </div>
+  {% if 'multiplayer' in url %}
+  <div id="score2" onclick="showHighScores()">
+    <button class="btn btn-large btn-primary" type="button">Score: 0</button>
+  </div>
+  {% endif %}
+  <div id="newgame">
+    <button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+  </div>
+  <div id="difficulty">
+    <button id="changedifficultybutton" class="btn btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: {% if current_user.difficulty==MEDIUM %}Medium{% else %}{% if current_user.difficulty == HARD %}Hard{% else %}Easy{% endif %}{% endif %}</button>
+  </div>
+  {% if 'timed' not in url %}
+  <div id="timedlink">
+      <a id="timedlinkbutton" href="/timed" class="btn btn-large btn-danger" title="Play Word Smashing Timed!">Timed Mode!</a>
+  </div>
+  {% endif %}
+  {% if 'multiplayer' not in url %}
+  <div id="multiplayerlink">
+      <a id="multiplayerlinkbutton" href="/multiplayer" class="btn btn-large btn-primary" title="Play Word Smashing Multiplayer!">Multiplayer Mode!</a>
+  </div>
+  {% endif %}
+
+  {% if current_user.gold %}
+    {% if 'campaign' not in url %}
+    <div id="campaign">
+        <a id="campaignbutton" href="/campaign" class="btn btn-large btn-warning">Campaign!</a>
+    </div>
+    {% endif %}
+  {% else %}
+      {{ campaignLink() }}
+  {% endif %}
+{%- endmacro %}
+
+{%- macro paypalbuyform() %}
+<script id="paypalbuyform" src="/static/js/paypal-button.min.js?merchant=P43U2BDEMJJXL"
+    data-button="buynow"
+    data-name="Word Smashing"
+    data-quantity="1"
+    data-amount="0.97"
+    data-shipping="0"
+    data-tax="0"
+    data-callback="http://www.wordsmashing.com/ipn/{{ current_user.id }}"
+    data-return="http://www.wordsmashing.com/makegold"
+    {% if ws.debug %}
+    data-env="sandbox"
+    {% endif %}
+></script>
+<!--<form action="https://api-3t.sandbox.paypal.com/nvp" method="post">
+  <p>
+    <input id="submitBtn" type="submit"
+    value="Pay with PayPal" />
+    <input type="hidden" name="success_url"
+    value="https://wordsmashing.appspot.com/buy" />
+    <input type="hidden" name="cancel_url"
+    value="https://wordsmashing.appspot.com/buy">
+  </p>
+</form>
+ <form action="checkout.php" METHOD="POST">
+  <input type="image" name="paypal_submit" id="paypal_submit" src="https://www.paypal.com/en_US/i/btn/btn_dg_pay_w_paypal.gif" border="0" align="top" alt="Pay with PayPal"/>
+</form> -->
+{%- endmacro %}
+
+{%- macro paypalincludes() %}
+      <script src="https://www.paypalobjects.com/js/external/dg.js"></script>
+      <script>
+      var dg = new PAYPAL.apps.DGFlow({
+      // the HTML ID of the form submit button which calls setEC
+      trigger: 'submitBtn'
+      // the experience type: instant or mini
+      expType: 'instant'
+      });
+      </script>
+      <script>
+      if (window.opener){
+      window.close();
+      }
+      else if (top.dg.isOpen() == true){
+      top.dg.closeFlow();
+      }
+      </script>
+{%- endmacro %}
+{%- macro footer() %}
+    <div class="footer">
+      <p>
+        {% if not url.endswith('learn-english') %}
+            <a class="footer__link" href="/learn-english" title="Learn English">Learn English</a>
+        {% endif %}
+        {% if '/contact' in url %}
+            <span>Contact</span>
+        {% else %}
+            <a class="footer__link" href="/contact" title="Contact Us">Contact</a>
+        {% endif %}
+        {% if '/about' in url %}
+            <span>About Us</span>
+        {% else %}
+            <a class="footer__link" href="/about" title="About Word Smashing">About Us</a>
+        {% endif %}
+        {% if '/terms' in url %}
+            <span>Terms &amp; Conditions</span>
+        {% else %}
+            <a class="footer__link" href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
+        {% endif %}
+        {% if '/privacy-policy' in url %}
+            <span>Privacy Policy</span>
+        {% else %}
+            <a class="footer__link" href="/privacy-policy" title="Privacy Policy">Privacy Policy</a>
+        {% endif %}
+
+        <span>© 2013 <a class="footer__link" href="http://www.addictingwordgames.com" title="Addicting Word Games" target="_blank">Addicting Word Games</a></span>
+        <a href="http://www.facebook.com/WordSmashing" title="Word Smashing on Facebook" target="_blank">
+            <img src="/static/img/facebook.jpg" alt="Word Smashing on Facebook" width="144px" height="44px">
+        </a>
+        <div class="g-plus" data-href="//plus.google.com/116949277834973226564" data-rel="publisher"></div>
+
+        <!-- Place this tag after the last badge tag. -->
+        <script type="text/javascript">
+          (function() {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+          })();
+        </script><br/>
+          <a href="https://twitter.com/Wordsmashing" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Wordsmashing</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </p>
+    </div>
+{%- endmacro %}
+
+{%- macro iframefooter() %}
+  <div class="footer">
+    <p>
+      <a class="footer__link" href="/contact" title="Contact Us" target="_blank">Contact</a>
+      <a class="footer__link" href="/about" title="About Word Smashing" target="_blank">About Us</a>
+      <a class="footer__link" href="/terms" title="Terms &amp; Conditions" target="_blank">Terms &amp; Conditions</a>
+      <a class="footer__link" href="/privacy-policy" title="Privacy Policy" target="_blank">Privacy Policy</a>
+      <span>© 2013 <a class="footer__link" href="http://www.addictingwordgames.com" title="Addicting Word Games" target="_blank">Addicting Word Games</a></span>
+    </p>
+  </div>
+{%- endmacro %}
+

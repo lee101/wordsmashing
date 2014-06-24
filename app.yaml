@@ -7,59 +7,36 @@ threadsafe: yes
 default_expiration: "300d 5h"
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
-- url: /css
-  static_dir: css
-  http_headers:
-    Vary: Accept-Encoding
-- url: /js
-  static_dir: js
-  http_headers:
-    Vary: Accept-Encoding
-- url: /jplayerskin
-  static_dir: jplayerskin
-  http_headers:
-    Vary: Accept-Encoding
-- url: /music
-  static_dir: music
-  http_headers:
-    Vary: Accept-Encoding
-- url: /img
-  static_dir: img
-  http_headers:
-    Vary: Accept-Encoding
-- url: /bootstrap/*
-  static_dir: bootstrap
-  http_headers:
-    Vary: Accept-Encoding
-- url: /channel.html
-  static_files: channel.html
-  upload: channel.html
-  expiration: "300d"
 - url: /manifest.webapp
   static_files: manifest/manifest.json
   upload: manifest/manifest.json
   http_headers:
     Content-Type: application/x-web-app-manifest+json
-# - url: /(.*)html
-  # static_files: \1html
-  # upload: \1html
+
+- url: /static/*
+  static_dir: static
+  http_headers:
+    Vary: Accept-Encoding
+- url: /transient/*
+  static_dir: transient
+  http_headers:
+    Vary: Accept-Encoding
+  expiration: "0d 1h"
+
+- url: /favicon.ico
+  static_files: static/favicon.ico
+  upload: static/favicon.ico
+- url: /BingSiteAuth.xml
+  static_files: static/BingSiteAuth.xml
+  upload: static/BingSiteAuth.xml
+- url: /channel.html
+  static_files: static/channel.html
+  upload: static/channel.html
+
 - url: /BingSiteAuth.xml
   static_files: BingSiteAuth.xml
   upload: BingSiteAuth.xml
-- url: /robots.txt
-  static_files: robots.txt
-  upload: robots.txt
-- url: /achievement-hard.html
-  static_files: achievement-hard.html
-  upload: achievement-hard.html
-  expiration: "0d 1h"
-- url: /achievement-medium.html
-  static_files: achievement-medium.html
-  upload: achievement-medium.html
-  expiration: "0d 1h"
+
 - url: .*
   script: main.app
 
@@ -79,7 +56,7 @@ automatic_scaling:
 pagespeed:
 
   url_blacklist:
-  - http://www.wordsmashing.com/music/*
+  - http://www.wordsmashing.com/static/music/*
   - http://www.wordsmashing.com/sitemap
   - http://www.wordsmashing.com/manifest.webapp
   - https://wordsmashing.appspot.com/buy

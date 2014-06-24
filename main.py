@@ -1,24 +1,22 @@
 #!/usr/bin/env python
 
-from Models import *
 from google.appengine.api import users
-from ws import ws
-import os
 import webapp2
-import facebook
 from webapp2_extras import sessions
-import utils
 import jinja2
 
+from Models import *
+from ws import ws
+import os
+import facebook
+import utils
 from paypal import IPNHandler
-
 import json
 import time
 import jwt
-
-# application-specific imports
 from sellerinfo import SELLER_ID
 from sellerinfo import SELLER_SECRET
+
 
 FACEBOOK_APP_ID = "138831849632195"
 FACEBOOK_APP_SECRET = "93986c9cdd240540f70efaea56a9e3f2"
@@ -39,16 +37,17 @@ class BaseHandler(webapp2.RequestHandler):
     user. See http://developers.facebook.com/docs/authentication/ for
     more information.
     """
+
     @property
     def current_user(self):
-        #===== Google Auth
+        # ===== Google Auth
         user = users.get_current_user()
         if user:
             dbUser = User.byId(user.user_id())
             if dbUser:
                 return dbUser
             else:
-                
+
                 dbUser = User()
                 dbUser.id = user.user_id()
                 dbUser.name = user.nickname()
@@ -56,7 +55,7 @@ class BaseHandler(webapp2.RequestHandler):
                 dbUser.put()
                 return dbUser
 
-        #===== FACEBOOK Auth
+        # ===== FACEBOOK Auth
         if self.session.get("user"):
             # User is logged in
             return User.byId(self.session.get("user")["id"])
@@ -64,8 +63,8 @@ class BaseHandler(webapp2.RequestHandler):
             # Either used just logged in or just saw the first page
             # We'll see here
             fbcookie = facebook.get_user_from_cookie(self.request.cookies,
-                                                   FACEBOOK_APP_ID,
-                                                   FACEBOOK_APP_SECRET)
+                                                     FACEBOOK_APP_ID,
+                                                     FACEBOOK_APP_SECRET)
             if fbcookie:
                 # Okay so user logged in.
                 # Now, check to see if existing user
@@ -97,9 +96,9 @@ class BaseHandler(webapp2.RequestHandler):
         anonymous_cookie = self.request.cookies.get('wsuser', None)
         if anonymous_cookie is None:
             cookie_value = utils.random_string()
-            self.response.set_cookie('wsuser', cookie_value, max_age = 15724800)
+            self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
             anon_user = User()
-            anon_user.cookie_user=1
+            anon_user.cookie_user = 1
             anon_user.id = cookie_value
             anon_user.put()
             return anon_user
@@ -108,9 +107,9 @@ class BaseHandler(webapp2.RequestHandler):
             if anon_user:
                 return anon_user
             cookie_value = utils.random_string()
-            self.response.set_cookie('wsuser', cookie_value, max_age = 15724800)
+            self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
             anon_user = User()
-            anon_user.cookie_user=1
+            anon_user.cookie_user = 1
             anon_user.id = cookie_value
             anon_user.put()
             return anon_user
@@ -141,11 +140,11 @@ class BaseHandler(webapp2.RequestHandler):
         """
         return self.session_store.get_session()
 
-    def render(self, view_name, extraParams = {}):
+    def render(self, view_name, extraParams={}):
 
         # achievements = Acheivement.all().filter("user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         # if len(achievements) == 0:
-        #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
+        # achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         currentUser = self.current_user
         achievements = Achievement.getUserAchievements(currentUser)
         highscores = HighScore.getHighScores(currentUser)
@@ -178,24 +177,25 @@ class BaseHandler(webapp2.RequestHandler):
             'facebook_app_id': FACEBOOK_APP_ID,
             'current_user': currentUser,
             'achievements': achievements,
-            'UNLOCKED_MEDIUM':UNLOCKED_MEDIUM,
-            'UNLOCKED_HARD':UNLOCKED_HARD,
-            'MEDIUM':MEDIUM,
-            'EASY':EASY,
-            'HARD':HARD,
-            'highscores':highscores,
+            'UNLOCKED_MEDIUM': UNLOCKED_MEDIUM,
+            'UNLOCKED_HARD': UNLOCKED_HARD,
+            'MEDIUM': MEDIUM,
+            'EASY': EASY,
+            'HARD': HARD,
+            'highscores': highscores,
             'glogin_url': users.create_login_url(self.request.uri),
             'glogout_url': users.create_logout_url(self.request.uri),
-            'url':self.request.uri,
+            'url': self.request.uri,
             'num_levels': len(LEVELS)
         }
         template_values.update(extraParams)
-        #logging.error(highscores)
+        # logging.error(highscores)
 
         #self.response.set_cookie('wsuser', , max_age = 15724800)
 
         template = JINJA_ENVIRONMENT.get_template(view_name)
         self.response.write(template.render(template_values))
+
 
 class ScoresHandler(BaseHandler):
     def get(self):
@@ -214,6 +214,8 @@ class ScoresHandler(BaseHandler):
         HighScore.updateHighScoreFor(currentUser, userscore.score, userscore.difficulty, userscore.timedMode)
 
         self.response.out.write('success')
+
+
 class AchievementsHandler(BaseHandler):
     def get(self):
         acheive = Achievement()
@@ -222,11 +224,11 @@ class AchievementsHandler(BaseHandler):
             raise Exception("unknown achievement: " + acheive.type)
         currentUser = self.current_user
         if currentUser:
-
             acheive.user = currentUser.key
         acheive.put()
-        #graph = facebook.GraphAPI(self.current_user['access_token'])
+        # graph = facebook.GraphAPI(self.current_user['access_token'])
         self.response.out.write('success')
+
 
 class IsGoldHandler(BaseHandler):
     def get(self):
@@ -234,119 +236,92 @@ class IsGoldHandler(BaseHandler):
         if currentUser.gold:
             self.response.out.write('success')
 
+
 class MainHandler(BaseHandler):
     def get(self):
-        self.render('index.html')
-        
-    def post(self):
-        self.render('index.html')
+        self.render('templates/index.jinja2')
+
 
 class FbHandler(BaseHandler):
     def get(self):
-        self.render('facebook.html')
+        self.render('templates/facebook.jinja2')
 
-    def post(self):
-        self.render('facebook.html')
 
 class ContactHandler(BaseHandler):
     def get(self):
-        self.render('contact.html')
+        self.render('templates/contact.jinja2')
 
-    def post(self):
-        self.render('contact.html')
 
 class AboutHandler(BaseHandler):
     def get(self):
-        self.render('about.html')
+        self.render('templates/about.jinja2')
 
-    def post(self):
-        self.render('about.html')
 
 class PrivacyHandler(BaseHandler):
     def get(self):
-        self.render('privacy-policy.html')
+        self.render('templates/privacy-policy.jinja2')
 
-    def post(self):
-        self.render('privacy-policy.html')
 
 class TermsHandler(BaseHandler):
     def get(self):
-        self.render('terms.html')
+        self.render('templates/terms.jinja2')
 
-    def post(self):
-        self.render('terms.html')
 
 class TimedHandler(BaseHandler):
     def get(self):
-        self.render('timed.html')
+        self.render('templates/timed.jinja2')
 
-    def post(self):
-        self.render('timed.html')
 
 class FriendsHandler(BaseHandler):
     def get(self):
-        self.render('multiplayer.html')
+        self.render('templates/multiplayer.jinja2')
 
-    def post(self):
-        self.render('multiplayer.html')
 
 class GameMultiplayerHandler(BaseHandler):
     def get(self):
-        self.render('games-multiplayer.html')
+        self.render('templates/games-multiplayer.jinja2')
 
-    def post(self):
-        self.render('games-multiplayer.html')
 
 class GamesHandler(BaseHandler):
     def get(self):
-        self.render('games.html')
+        self.render('templates/games.jinja2')
 
-    def post(self):
-        self.render('games.html')
 
 class LearnEnglishHandler(BaseHandler):
     def get(self):
-        self.render('learn-english.html', {
+        self.render('templates/learn-english.jinja2', {
             "learnenglishlevels": LEARN_ENGLISH_LEVELS,
             "json": json,
-            })
+        })
+
 
 class EnglishLevelHandler(BaseHandler):
     def get(self, urlkey):
-
-        self.render('learn-english-level.html', {
+        self.render('templates/learn-english-level.jinja2', {
             "level": LEARN_ENGLISH_LEVELS[urlkey],
             "json": json,
         })
 
+
 class CampaignHandler(BaseHandler):
     def get(self):
-        self.render('campaign.html')
+        self.render('templates/campaign.jinja2')
 
-    def post(self):
-        self.render('campaign.html')
 
 class BuyHandler(BaseHandler):
     def get(self):
-
         # paymentAmount = "3.99"
         # CURRENCYCODE = "USD"
         # RETURNURL = "https://wordsmashing.appspot.com/buy"
         # CANCELURL = "https://wordsmashing.appspot.com/buy"
 
-        self.render('buy.html')
+        self.render('templates/buy.jinja2')
 
-    def post(self):
-        self.render('buy.html')
 
 class LevelHandler(BaseHandler):
     def get(self, level):
         level_num = int(level)
-        self.render('level.html', {'level_num': level_num, 'level': LEVELS[level_num - 1]})
-
-    def post(self, level):
-        level_num = int(level)
-        self.render('level.html', {'level_num': level_num, 'level': LEVELS[level_num - 1]})
+        self.render('templates/level.jinja2', {'level_num': level_num, 'level': LEVELS[level_num - 1]})
 
 
 class LogoutHandler(BaseHandler):
@@ -356,16 +331,17 @@ class LogoutHandler(BaseHandler):
 
         self.redirect('/')
 
+
 class makeGoldHandler(BaseHandler):
     def get(self):
         if self.request.get('reverse', None):
             user = self.current_user
-            user.gold=0
+            user.gold = 0
             user.put()
             self.response.out.write('success')
         else:
             User.buyFor(self.current_user.id)
-            ##TODOFIX
+            # #TODOFIX
             self.redirect("/campaign")
 
 
@@ -375,12 +351,15 @@ class SaveVolumeHandler(BaseHandler):
         user.volume = float(self.request.get('volume', None))
         user.put()
         self.response.out.write('success')
+
+
 class SaveMuteHandler(BaseHandler):
     def get(self):
         user = self.current_user
         user.muted = int(self.request.get('muted', None))
         user.put()
         self.response.out.write('success')
+
 
 class SaveLevelsUnlockedHandler(BaseHandler):
     def get(self):
@@ -389,12 +368,15 @@ class SaveLevelsUnlockedHandler(BaseHandler):
         user.put()
         self.response.out.write('success')
 
+
 class SaveDifficultyHandler(BaseHandler):
     def get(self):
         user = self.current_user
         user.difficulty = int(self.request.get('difficulty', None))
         user.put()
         self.response.out.write('success')
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/xml'
@@ -406,76 +388,77 @@ class SitemapHandler(webapp2.RequestHandler):
 
 
 class PostbackHandler(BaseHandler):
-  """Handles server postback - received at /postback"""
+    """Handles server postback - received at /postback"""
 
-  def post(self):
-    """Handles post request."""
-    encoded_jwt = self.request.get('jwt', None)
-    if encoded_jwt is not None:
-      # jwt.decode won't accept unicode, cast to str
-      # http://github.com/progrium/pyjwt/issues/4
-      decoded_jwt = jwt.decode(str(encoded_jwt), SELLER_SECRET)
+    def post(self):
+        """Handles post request."""
+        encoded_jwt = self.request.get('jwt', None)
+        if encoded_jwt is not None:
+            # jwt.decode won't accept unicode, cast to str
+            # http://github.com/progrium/pyjwt/issues/4
+            decoded_jwt = jwt.decode(str(encoded_jwt), SELLER_SECRET)
 
-      # validate the payment request and respond back to Google
-      if decoded_jwt['iss'] == 'Google' and decoded_jwt['aud'] == SELLER_ID:
-        if ('response' in decoded_jwt and
-            'orderId' in decoded_jwt['response'] and
-            'request' in decoded_jwt):
-          order_id = decoded_jwt['response']['orderId']
-          request_info = decoded_jwt['request']
-          if ('currencyCode' in request_info and 'sellerData' in request_info
-              and 'name' in request_info and 'price' in request_info):
-            # optional - update local database
-            # orderId = decoded_jwt['response']['orderId']
+            # validate the payment request and respond back to Google
+            if decoded_jwt['iss'] == 'Google' and decoded_jwt['aud'] == SELLER_ID:
+                if ('response' in decoded_jwt and
+                            'orderId' in decoded_jwt['response'] and
+                            'request' in decoded_jwt):
+                    order_id = decoded_jwt['response']['orderId']
+                    request_info = decoded_jwt['request']
+                    if ('currencyCode' in request_info and 'sellerData' in request_info
+                        and 'name' in request_info and 'price' in request_info):
+                        # optional - update local database
+                        # orderId = decoded_jwt['response']['orderId']
 
-            pb = Postback()
-            pb.jwtPostback = encoded_jwt
-            pb.orderId = order_id
-            # pb.itemName = request_info.get('name')
-            # pb.saleType = decoded_jwt['typ']
+                        pb = Postback()
+                        pb.jwtPostback = encoded_jwt
+                        pb.orderId = order_id
+                        # pb.itemName = request_info.get('name')
+                        # pb.saleType = decoded_jwt['typ']
 
-            if (decoded_jwt['typ'] == 'google/payments/inapp/item/v1/postback/buy'):
-                pb.price = request_info['price']
-                pb.currencyCode = request_info['currencyCode']
-            elif (decoded_jwt['typ'] == 'google/payments/inapp/subscription/v1/postback/buy'):
-                pb.price = request_info['initialPayment']['price']
-                pb.currencyCode = request_info['initialPayment']['currencyCode']
-                # pb.recurrencePrice = request_info['recurrence']['price']
-                # pb.recurrenceFrequency = request_info['recurrence']['frequency']
+                        if (decoded_jwt['typ'] == 'google/payments/inapp/item/v1/postback/buy'):
+                            pb.price = request_info['price']
+                            pb.currencyCode = request_info['currencyCode']
+                        elif (decoded_jwt['typ'] == 'google/payments/inapp/subscription/v1/postback/buy'):
+                            pb.price = request_info['initialPayment']['price']
+                            pb.currencyCode = request_info['initialPayment']['currencyCode']
+                            # pb.recurrencePrice = request_info['recurrence']['price']
+                            # pb.recurrenceFrequency = request_info['recurrence']['frequency']
 
-            pb.put()
-            sellerData = request_info.get('sellerData')
-            User.buyFor(sellerData)
-            # respond back to complete payment
-            self.response.out.write(order_id)
+                        pb.put()
+                        sellerData = request_info.get('sellerData')
+                        User.buyFor(sellerData)
+                        # respond back to complete payment
+                        self.response.out.write(order_id)
+
 
 app = ndb.toplevel(webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/scores', ScoresHandler),
-    ('/achievements', AchievementsHandler),
-    ('/logout', LogoutHandler),
-    ('/privacy-policy', PrivacyHandler),
-    ('/terms', TermsHandler),
-    ('/facebook', FbHandler),
-    ('/about', AboutHandler),
-    ('/contact', ContactHandler),
-    ('/timed', TimedHandler),
-    ('/multiplayer', FriendsHandler),
-    ('/games-multiplayer', GameMultiplayerHandler),
-    ('/games', GamesHandler),
-    ('/learn-english', LearnEnglishHandler),
-    ('/learn-english/(.*)', EnglishLevelHandler),
-    ('/campaign', CampaignHandler),
-    (r'/campaign/level(\d+)', LevelHandler),
-    ('/postback', PostbackHandler),
-    ('/buy', BuyHandler),
-    ('/makegold', makeGoldHandler),
-    ('/isgold', IsGoldHandler),
-    ('/savevolume', SaveVolumeHandler),
-    ('/savemute', SaveMuteHandler),
-    ('/savelevelsunlocked', SaveLevelsUnlockedHandler),
-    ('/savedifficulty', SaveDifficultyHandler),
-    ('/sitemap', SitemapHandler),
-    (r'/ipn/(.*)', IPNHandler),
+                                               ('/', MainHandler),
+                                               ('/scores', ScoresHandler),
+                                               ('/achievements', AchievementsHandler),
+                                               ('/logout', LogoutHandler),
+                                               ('/privacy-policy', PrivacyHandler),
+                                               ('/terms', TermsHandler),
+                                               ('/facebook', FbHandler),
+                                               ('/about', AboutHandler),
+                                               ('/contact', ContactHandler),
+                                               ('/timed', TimedHandler),
+                                               ('/multiplayer', FriendsHandler),
+                                               ('/games-multiplayer', GameMultiplayerHandler),
+                                               ('/games', GamesHandler),
+                                               ('/learn-english', LearnEnglishHandler),
+                                               ('/learn-english/(.*)', EnglishLevelHandler),
+                                               ('/campaign', CampaignHandler),
+                                               (r'/campaign/level(\d+)', LevelHandler),
+                                               ('/postback', PostbackHandler),
+                                               ('/buy', BuyHandler),
+                                               ('/makegold', makeGoldHandler),
+                                               ('/isgold', IsGoldHandler),
+                                               ('/savevolume', SaveVolumeHandler),
+                                               ('/savemute', SaveMuteHandler),
+                                               ('/savelevelsunlocked', SaveLevelsUnlockedHandler),
+                                               ('/savedifficulty', SaveDifficultyHandler),
+                                               ('/sitemap', SitemapHandler),
+                                               (r'/ipn/(.*)', IPNHandler),
 
-], debug=ws.debug, config=config))
+                                           ], debug=ws.debug, config=config))

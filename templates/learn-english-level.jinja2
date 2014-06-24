@@ -1,0 +1,162 @@
+{% import "templates/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Learn English With Word Smashing Addicting &amp; Fun Word Puzzle Game</title>
+    <meta name="description"
+          content="Learn English {{ level.name }} - Word Smashing! Learn English With This Addicting New Word Puzzle, For Free!">
+
+    <meta name="keywords" content="learn english, {{ level.name|lower }}, learn english words, free online puzzle games, word puzzle games">
+    <meta property="og:title" content="Learn English {{ level.name }} With Word Smashing Puzzle Game!">
+    <meta property="og:url" content="{{ url }}">
+    <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
+    <meta property="og:description"
+          content="Word Smashing! An Utterly Addicting and Fun Word Puzzle and Brain Training Game, For Free!">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Word Smashing">
+    <meta property="fb:admins" content="337972272904903">
+
+
+    {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
+  <script type="text/javascript">
+    var learnedwords = {};
+    var parent1 = showScore;
+    showScore = function(word, score) {
+        parent1(word, score);
+        learnedwords[word] = true;
+    };
+
+    var parent2 = gameover;
+    gameover = function() {
+        parent2();
+        var firstTime = true;
+        //bind new event to close function
+        var parent = modal.close;
+        modal.close = function() {
+        parent();
+        if(firstTime) {
+            var words = '<p>' + Object.keys(learnedwords).join('</p><p>') + '</p>'
+            modal.open({content: '<div id="changedifficulty">'+
+              '<p class="lead">Congratulations!!</p>'+
+              '<p class="lead">You Got '+Object.keys(learnedwords).length+' Different Words!</p>'+
+              words +
+              '<div style="float:right"><button class="btn btn-large btn-success" onclick="changeDifficulty('+ difficulty +')" type="button">Play Again!</button></div>'+
+              '<div class="clear"></div>'+
+            '</div>'});
+
+            firstTime = false;
+            learnedwords = {};
+        }
+      }
+    }
+    var requiredWords = {{ json.dumps(level.required_words) }};
+    var level_name = {{ level.name }};
+
+  </script>
+
+</head>
+<body>
+  {{ macros.fbstuff() }}
+  <div id="pagebody">
+    <div id="container">
+        <div id="main">
+        	<div id="logo">
+                <a href="/" title="Word Smashing Word Puzzle">
+                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                </a>
+		        <div id="login">
+                {{ macros.loginoutbutton() }}
+                    {{ macros.jplayer() }}
+			    </div>
+	        </div>
+            <table id="gametable" border="1">
+                <tr>
+                    <td>
+
+                    </td>
+
+                </tr>
+            </table>
+            <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></span>
+            {{ macros.shareBtnsHorizontal() }}
+            <div id="showscore0">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore1">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore2">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore3">
+                <button style="display: none"></button>
+            </div>
+        </div>
+        <div id="gameoptions">
+            {{ macros.standardgameoptions() }}
+
+        </div>
+        <div id="bannerAdd">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7026363262140448";
+            /* word game vert */
+            google_ad_slot = "3713734958";
+            google_ad_width = 160;
+            google_ad_height = 600;
+            //-->
+            </script>
+            <script type="text/javascript"
+                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+
+        </div>
+
+        <div id="instructions">
+
+            <h1>Learn English Playing Word Games!</h1>
+            <p class="lead">
+              <b>Instructions: </b><br/>
+              Get all of the following words!<br/>
+              {% for required_word in level.required_words %}
+                <button id="learn-english-words-{{ required_word }}" class="btn btn-large">{{ required_word }}</button>
+              {% endfor %}
+            	Click a letter and click on an empty space to move it there.<br/>
+            	You will only be able to move if there is a clear path.<br/>
+            	Every turn three new letters will grow into the game.<br/>
+            	Its game over when the board is filled with letters!<br/>
+            	Get two words in one turn, get combos and learn new words for bonus points!<br/>
+            	On Easy You can make words with 2 or more letters.<br/>
+            	On Medium You can make words with 3 or more letters.<br/>
+            	On Hard You can only make words with 4 or more letters!<br/>
+                Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials">Play Word Smashing Time Trials</a>.<br/>
+            	Some place names and peoples names do not count as words.
+            	</p>
+        </div>
+        <div class="clear"></div>
+        <div id="btm">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7026363262140448";
+            /* big h default */
+            google_ad_slot = "3155331752";
+            google_ad_width = 728;
+            google_ad_height = 90;
+            //-->
+            </script>
+            <script type="text/javascript"
+                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+
+
+        </div>
+    </div>
+
+    <div class="clear">
+    </div>
+    {{ macros.footer() }}
+	<div class="clear">
+	</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+{% import "templates/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Buy Word Smashing!</title>
+    <meta name="description"
+          content="An Utterly Addicting Word Game, Fun For Everyone! Play This Addicting New Word Puzzle, Now For Free!">
+
+    <meta name="keywords" content="puzzle games, word finder, crossword, free online puzzle games, word puzzle game">
+    <meta property="og:title" content="Word Smashing - Addicting and Fun Word Puzzle Game">
+    <meta property="og:url" content="http://www.wordsmashing.com">
+    <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
+    <meta property="og:description"
+          content="Play Word Smashing! The Utterly Addicting and Fun Word Puzzle Game, Now For Free!">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Word Smashing">
+    <meta property="fb:admins" content="337972272904903">
+
+    {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
+    <script type="text/javascript">
+    {% if current_user.name %}
+    var needsRefresh = false;
+    {% else %}
+    var needsRefresh = true;
+
+    {% endif %}
+    </script>
+</head>
+<body>
+  {{ macros.fbstuff() }}
+<div id="pagebody">
+    <div id="container">
+        <div id="main">
+        	<div id="logo">
+
+                <a href="http://www.wordsmashing.com" title="Word Smashing Word Puzzle Game">
+                    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+
+                </a>
+
+		      <div id="login">
+                {{ macros.loginoutbutton() }}
+			  </div>
+	        </div>
+            {% if current_user.gold %}
+                <p class="lead">You already have Word Smashing! <a href="http://www.wordsmashing.com/campaign" title="Play Word Smashing">Play Campaign!</a></p>
+
+            {% else %}
+                <p id="logintobuy" class="lead">
+                    {% if current_user.name %}
+                        Hi, {{ current_user.name }} Your purchase will be asscociated with your {% if current_user.profile_url %}Facebook{% else %}Google{% endif %} account!<br/><br/>
+                    {% else %}
+                        Log in with Google!<br/><br/>
+                        <a style="margin:10px;" href="{{ glogin_url }}" title="Login With Google"><img src="/static/img/google-icon-64.png" alt="Google Login"/></a><br/><br/>
+                        Your purchase will be asscociated with your account.<br/><br/>
+                    {% endif %}
+
+                </p>
+                {% if current_user.name %}
+                <p id="ppbuy" style="margin:20px;">{{ macros.paypalbuyform() }}</p><br/>
+                {% else %}
+                <p id="ppbuy" style="margin:20px;display: none;">{{ macros.paypalbuyform() }}</p><br/>
+                {% endif %}
+
+            {% endif %}
+
+                <table id="gametable" border="1" style="display:none">
+                <tr>
+                    <td>
+
+                    </td>
+
+                </tr>
+            </table>
+            <span class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></span>
+            {{ macros.shareBtnsHorizontal() }}
+            <div id="showscore0">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore1">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore2">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore3">
+                <button style="display: none"></button>
+            </div>
+        </div>
+        <div id="gameoptions" style="display:none">
+            <div id="score" onclick="showHighScores()">
+                <button class="btn btn-large btn-danger" type="button">Score: 0</button>
+            </div>
+			<div id="newgame">
+            	<button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+			</div>
+			<div id="difficulty">
+            	<button id="changedifficultybutton" class="btn btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
+			</div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="clear">
+    </div>
+    {{ macros.footer() }}
+	<div class="clear">
+	</div>
+</div>
+</body>
+</html>

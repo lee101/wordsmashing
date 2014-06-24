@@ -1,0 +1,142 @@
+{% import "templates/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Word Smashing - Addicting and Fun Word Puzzle Game</title>
+    <meta name="description"
+          content="An Utterly Addicting Word Game, Fun For Everyone! Play This Addicting New Word Puzzle, Now For Free!">
+
+    <meta name="keywords" content="puzzle games, word finder, crossword, game, word puzzle game">
+    <meta property="og:title" content="Word Smashing - Addicting and Fun Word Puzzle Game">
+    <meta property="og:url" content="http://www.wordsmashing.com">
+    <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
+    <meta property="og:description"
+          content="Play Word Smashing! The Utterly Addicting and Fun Word Puzzle Game">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Word Smashing">
+    <meta property="fb:admins" content="337972272904903">
+
+    {{ macros.headers(ws, highscores, achievements, blocked_spaces) }}
+    <script type="text/javascript">
+      function showHelp(){
+          modal.open({content: $('#instructions').html()});
+      }
+      $(function(){
+        showHelp();
+        $('#closehelpbtn').html("Continue");
+      });
+    </script>
+    <style type="text/css" media="screen">
+        #main{
+        	margin:0;
+        }
+        body{
+        	background-color: white;
+        }
+        #pagebody{
+        	width:637px;
+        	border:none;
+        }
+        .jp-volume-bar{
+          top: 29px !important;
+          left: 418px !important;
+        }
+        .jp-controls{
+          top: 23px !important;
+          left: 418px !important;
+        }
+        .footer{
+          margin-top: 0;
+        }
+        #help{
+          float: right;
+          margin: 10px;
+        }
+        #score{
+          float: left;
+        }
+    </style>
+</head>
+<body>
+  {{ macros.fbstuff() }}
+<div id="pagebody">
+    <div id="container">
+        <div id="main">
+        	<div id="fb-logo">
+                <a href="http://www.wordsmashing.com" title="Word Smashing Word Puzzle Game" target="_blank">
+	        	    <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184"/>
+                </a>
+
+	        </div>
+          <div id="login">
+            {{ macros.jplayer() }}
+          </div>
+	    <div id="fb-gameoptions">
+          <div id="newgame">
+              <button class="btn btn-large btn-danger" onclick="newGame()" type="button">New Game!</button>
+          </div>
+          <div id="difficulty">
+              <button id="changedifficultybutton" class="btn btn-large btn-danger" onclick="showChangeDifficultyDialog()" type="button">Difficulty: Easy</button>
+          </div>
+          <div id="score" onclick="showHighScores()">
+              <button class="btn btn-large btn-danger"  type="button">Score: 0</button>
+          </div>
+          <div id="help">
+              <button class="btn btn-large btn-danger" onclick="showHelp()" type="button">?</button>
+          </div>
+      </div>
+            <div class="clear"></div>
+            <table id="gametable" border="1">
+                <tr>
+                    <td>
+
+                    </td>
+
+                </tr>
+            </table>
+            <div class="fb-like" data-href="https://www.facebook.com/WordSmashing" data-send="true" data-width="450" data-show-faces="true"></div>
+            {{ macros.shareBtnsHorizontal() }}
+            <!-- <div class="fb-like-box" data-href="https://www.facebook.com/WordSmashing" data-width="292" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
+             --><div id="showscore0">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore1">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore2">
+                <button style="display: none"></button>
+            </div>
+            <div id="showscore3">
+                <button style="display: none"></button>
+            </div>
+        </div>
+        <div class="clear"></div>
+
+        <div id="instructions" style="display:none">
+            <div class="modal-text">
+                <p class="lead"><b>Instructions:</b><br/>
+                    Make words! lots of words! two at once or heaps in a row for bonus points!<br/>
+                    Get words up, down, forward and backwards!<br/>
+                    On easy, get words with 2+ letters, on medium 3+, Hard 4+!<br/>
+                    To move, click a letter and click a space!<br/>
+                    You can move if there's a clear path!<br/>
+                    Each turn 3 more letters appear, when the board fills up its game over!<br/>
+                    Looking for a harder challenge? <a href="/timed" title="Play Word Smashing Time Trials" target="_blank">Play Word Smashing Time Trials</a>.<br/>
+                    Some people &amp; place names don't count!<br/>
+                </p>
+                <button id="closehelpbtn" style="float:left" class="btn btn-large btn-success" onclick="modal.close()" type="button">Play Now!</button>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="clear">
+    </div>
+  {{ macros.iframefooter() }}
+	<div class="clear">
+	</div>
+</div>
+</body>
+</html>
