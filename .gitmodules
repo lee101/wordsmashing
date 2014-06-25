@@ -1,0 +1,3 @@
+[submodule "gameon"]
+	path = gameon
+	url = git@github.com:lee101/gameon.git
