@@ -33,10 +33,10 @@ handlers:
   static_files: static/channel.html
   upload: static/channel.html
 
-- url: /BingSiteAuth.xml
-  static_files: BingSiteAuth.xml
-  upload: BingSiteAuth.xml
-
+- url: /gameon/static/*
+  static_dir: gameon/static
+  http_headers:
+    Vary: Accept-Encoding
 - url: .*
   script: main.app
 
