@@ -2,8 +2,8 @@
 
 import os
 import json
-from google.appengine.ext import ndb
 
+from google.appengine.ext import ndb
 import webapp2
 import jinja2
 
@@ -11,7 +11,6 @@ import fixtures
 from gameon import gameon
 from gameon.gameon_utils import GameOnUtils
 from ws import ws
-from gameon.paypal import IPNHandler
 
 
 FACEBOOK_APP_ID = "138831849632195"
@@ -35,7 +34,8 @@ class BaseHandler(webapp2.RequestHandler):
             # 'facebook_app_id': FACEBOOK_APP_ID,
             # 'glogin_url': users.create_login_url(self.request.uri),
             # 'glogout_url': users.create_logout_url(self.request.uri),
-            'url':self.request.uri,
+            'url': self.request.uri,
+            'path': self.request.path,
             # 'num_levels': len(LEVELS)
         }
         template_values.update(extraParams)

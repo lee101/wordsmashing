@@ -1,5 +1,25 @@
-<div class="ws-logo">
-    <a href="/" title="Word Smashing Word Puzzle">
-        <img src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184">
+<div class="ws-header">
+    {% if path|length > 1 %}
+        <div class="ws-header--item">&nbsp;
+            <button type="button" class="back-btn gameon-btn-hg btn btn-danger btn-lg" onclick="return APP.stepBack()">
+                <i
+                        class="fa fa-arrow-left"></i></button>
+
+        </div>
+    {% else %}
+        <div class="ws-header--item">&nbsp;
+            <button type="button" class="back-btn gameon-btn-hg btn btn-danger btn-lg" disabled="disabled">
+                <i
+                        class="fa fa-arrow-left"></i></button>
+
+        </div>
+    {% endif %}
+    <a href="/" title="Word Smashing Word Puzzle" class="ws-header--item">
+        <img class="gameon-hidden-xs" src="/static/img/wordsmashing_logo.png" alt="Word Smashing" title="Word Smashing" width="250" height="184" />
+        <img class="gameon-visible-xs" src="/static/img/wordsmashing_icon60.png" alt="Word Smashing" title="Word Smashing" width="60" height="60" />
     </a>
+
+    <div class="ws-header--item">
+        <button type="button" class="gameon-btn-hg btn btn-danger btn-lg">Login</button>
+    </div>
 </div>

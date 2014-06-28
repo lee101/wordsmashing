@@ -8,8 +8,8 @@ module.exports = function (grunt) {
                 options: {
 //                    env: require('./nunjucks-environment'),
                     name: function (filename) {
-//                        return filename;
-                        return filename.substring(filename.lastIndexOf("/") + 1, filename.lastIndexOf("."));
+                        return filename;
+//                        return filename.substring(filename.lastIndexOf("/") + 1, filename.lastIndexOf("."));
                     }
                 }
             }

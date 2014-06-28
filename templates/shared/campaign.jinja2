@@ -1,8 +1,34 @@
-<div id="instructions">
+<div id="instructions" style="display: none">
     <h1>Pick A Level</h1>
 
     <p class="lead">
         Play through the Word Smashing campaign in any difficulty!<br/>
         New boards and smashable locks!
     </p>
+</div>
+<div class="ws-main-btn-container">
+    <button type="button" class="ws-main-btn gameon-btn-hg btn btn-success btn-lg"
+            onclick="APP.goto('/campaign/easy')">Easy
+    </button>
+</div>
+<div class="ws-main-btn-container">
+    <button type="button" class="ws-main-btn gameon-btn-hg btn btn-success btn-lg"
+            onclick="APP.goto('/campaign/medium')"
+            disabled="disabled"><span
+            class="glyphicon glyphicon-lock"></span>Medium
+    </button>
+</div>
+<div class="ws-main-btn-container">
+    <button type="button" class="ws-main-btn gameon-btn-hg btn btn-success btn-lg"
+            onclick="APP.goto('/campaign/hard')"
+            disabled="disabled"><span
+            class="glyphicon glyphicon-lock"></span>Hard
+    </button>
+</div>
+<div class="ws-main-btn-container">
+    <button type="button" class="ws-main-btn gameon-btn-hg btn btn-success btn-lg"
+            onclick="APP.goto('/campaign/expert')"
+            disabled="disabled"><span
+            class="glyphicon glyphicon-lock"></span>Expert
+    </button>
 </div>

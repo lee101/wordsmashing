@@ -8,6 +8,23 @@
         return false
     };
 
+    APP.stepBack = function () {
+        var currrentPath = window.location.hash;
+        if (currrentPath == "") {
+            currrentPath = window.location.pathname;
+        }
+        if (currrentPath.length >= 1) {
+            APP.goto('/');
+        }
+        else {
+            currrentPath = currrentPath.split('/');
+            currrentPath.pop();
+            currrentPath = currrentPath.join('/');
+            APP.goto(currrentPath);
+        }
+        return false
+    };
+
 
     $(document).on('click', 'a:not([data-bypass])', function (e) {
         var href = $(this).prop('href');
@@ -24,7 +41,7 @@
         var $mainbody = $('#mainbody');
         var duration = 300;
 
-        $mainbody.fadeout(duration, function () {
+        $mainbody.fadeOut(duration, function () {
             if (currentView) {
                 currentView.close();
             }
@@ -35,7 +52,7 @@
         });
 
         //scroll to top
-        $("html, body").animate({ scrollTop: 0 }, "slow");
+        $("html, body").scrollTop(0);
     }
 
     APP.refresh = function () {
@@ -45,12 +62,8 @@
         $('#footerbody').html(APP.footer.render().el);
     };
 
-    var modalPages = {
-        '/companies/:url_title': 1
-    };
 
 
-    var isViewingModal = false;
     APP.currentView = location.pathname;
     function defaultHandler(pathname) {
         return function () {
@@ -89,7 +102,8 @@
         routes[key.substring(1)] = value;
     });
     jQuery.extend(routes, {
-        //pages needing login
+        //pages needing js rendering
+        '/campaign/:difficulty': 'campaign/:difficulty'
     });
 
     var Router = Backbone.Router.extend({
@@ -97,6 +111,7 @@
         'routes': routes,
         'home': defaultHandler('/'),
         'campaign': defaultHandler('/campaign'),
+        'campaign/:difficulty': defaultHandler('/campaign/:difficulty'),
         'timed': defaultHandler('/timed'),
         'classic': defaultHandler('/classic'),
         'versus': defaultHandler('/versus'),

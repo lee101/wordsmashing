@@ -7,17 +7,91 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/start.jinja2'));
+            this.$el.html(evutils.render('static/templates/shared/start.jinja2'));
 
             return this;
         }
     });
+
     APP.Views['/campaign'] = Backbone.View.extend({
         initialize: function (options) {
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/campaign.jinja2'));
+            this.$el.html(evutils.render('static/templates/shared/campaign.jinja2'));
+            gameon.getUser(function (user) {
+                var difficultiesUnlocked = user.difficulties_unlocked;
+                if (difficultiesUnlocked >= 1) {
+                    gameon.unlock('.mm-difficulty--' + fixtures.MEDIUM);
+                }
+                if (difficultiesUnlocked >= 2) {
+                    gameon.unlock('.mm-difficulty--' + fixtures.HARD);
+                }
+                if (difficultiesUnlocked >= 3) {
+                    gameon.unlock('.mm-difficulty--' + fixtures.EXPERT);
+                }
+            });
+
+            return this;
+        }
+    });
+    APP.Views['/campaign/:difficulty'] = Backbone.View.extend({
+        initialize: function (options) {
+            this.diffuculty = options.args[0];
+        },
+
+        render: function () {
+            var levelsSelf = this;
+
+            var LevelLink = function (id, locked) {
+                var self = this;
+
+                self.locked = locked;
+                self.id = id;
+                self.stars = {
+                    render: function () {
+                        return '';
+                    }
+                };
+
+                self.click = function () {
+                    APP.goto('/campaign/' + levelsSelf.diffuculty + '/' + self.id);
+                };
+
+                self.render = function () {
+                    if (self.locked) {
+                        return '<button type="button" class="btn btn-danger btn-lg" disabled="disabled"><span class="glyphicon glyphicon-lock"></span></button>';
+                    }
+                    var output = ['<button type="button" class="btn btn-danger btn-lg">' + self.id];
+                    if (typeof self.stars !== 'undefined') {
+                        output.push(' ' + self.stars.render());
+                    }
+                    output.push('</button>');
+                    return output.join('');
+                }
+            };
+            var tiles = [];
+            var levels = fixtures.DIFFICULTY_TO_LEVELS_MAP[difficulty];
+            gameon.getUser(function (user) {
+                var highScores = user.getHighScores();
+
+                for (var i = 0; i < levels.length; i++) {
+                    var locked = true;
+                    if (user.levels_unlocked + 1 >= levels[i].id) {
+                        locked = false;
+                    }
+
+                    var tile = new LevelLink(levels[i].id, locked);
+                    if (i < highScores.length) {
+                        tile.stars = new gameon.Stars(levels[i].starrating, highScores[i].score);
+                    }
+                    tiles.push(tile);
+                }
+            });
+            levelsSelf.levelsList = levels;
+            levelsSelf.board = new gameon.board(5, 5, tiles);
+            this.$el.html(evutils.render('static/templates/shared/levels.jinja2'));
+            levelsSelf.board.render('.mm-levels');
 
             return this;
         }
@@ -28,7 +102,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/contact.jinja2'));
+            this.$el.html(evutils.render('static/templates/shared/contact.jinja2'));
             return this;
         }
     });
@@ -38,7 +112,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/about.jinja2'));
+            this.$el.html(evutils.render('static/templates/shared/about.jinja2'));
             return this;
         }
     });
@@ -47,7 +121,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/terms.jinja2'));
+            this.$el.html(evutils.render('static/templates/shared/terms.jinja2'));
             return this;
         }
     });
@@ -56,7 +130,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/privacy.jinja2'));
+            this.$el.html(evutils.render('static/templates/shared/privacy.jinja2'));
             return this;
         }
     });
@@ -71,7 +145,7 @@
         render: function () {
             var self = this;
             gameon.getUser(function (user) {
-                self.$el.html(evutils.render('templates/shared/header.jinja2', {'path': self.path, 'user': user}));
+                self.$el.html(evutils.render('static/templates/shared/header.jinja2', {'path': self.path, 'user': user}));
             });
 
             return self;
@@ -84,7 +158,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/footer.jinja2', {'path': this.path}));
+            this.$el.html(evutils.render('static/templates/shared/footer.jinja2', {'path': this.path}));
             return this;
         }
     });

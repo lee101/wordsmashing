@@ -22,28 +22,6 @@
     {{ macros.jsheaders() }}
     <script>
         //fixtures
-        var achievements = {};
-        {% for achievement in achievements %}
-            {% if achievement.type == UNLOCKED_MEDIUM %}
-                achievements.medium = true;
-            {% endif %}
-            {% if achievement.type == UNLOCKED_HARD %}
-                achievements.hard = true;
-            {% endif %}
-        {% endfor %}
-
-        var highscores = {};
-        {% for score in highscores %}
-            {% if score.difficulty == MEDIUM %}
-                highscores.medium = {{ score.score }};
-            {% endif %}
-            {% if score.difficulty == EASY %}
-                highscores.easy = {{ score.score }};
-            {% endif %}
-            {% if score.difficulty == HARD %}
-                highscores.hard = {{ score.score }};
-            {% endif %}
-        {% endfor %}
 
         {% if level %}
             num_blocked = {{ level.blocked_spaces|length }} + {{ level.locked_spaces|length }};
@@ -67,7 +45,26 @@
             {% endif %}
         {% endif %}
 
-       </script>
+        fixtures.EASY = {{ fixtures.EASY }};
+        fixtures.MEDIUM = {{ fixtures.MEDIUM }};
+        fixtures.HARD = {{ fixtures.HARD }};
+        fixtures.EXPERT = {{ fixtures.EXPERT }};
+        fixtures.EASY_LEVELS =   {{ json.dumps(fixtures.EASY_LEVELS, cls=GameOnUtils.MyEncoder) }};
+        fixtures.MEDIUM_LEVELS = {{ json.dumps(fixtures.MEDIUM_LEVELS, cls=GameOnUtils.MyEncoder) }};
+        fixtures.HARD_LEVELS =   {{ json.dumps(fixtures.HARD_LEVELS, cls=GameOnUtils.MyEncoder) }};
+        fixtures.EXPERT_LEVELS = {{ json.dumps(fixtures.EXPERT_LEVELS, cls=GameOnUtils.MyEncoder) }};
+        fixtures.LEVELS = fixtures.EASY_LEVELS
+                .concat(fixtures.MEDIUM_LEVELS)
+                .concat(fixtures.HARD_LEVELS)
+                .concat(fixtures.EXPERT_LEVELS);
+        fixtures.DIFFICULTY_TO_LEVELS_MAP = {};
+        fixtures.DIFFICULTY_TO_LEVELS_MAP[fixtures.EASY] = fixtures.EASY_LEVELS;
+        fixtures.DIFFICULTY_TO_LEVELS_MAP[fixtures.MEDIUM] = fixtures.MEDIUM_LEVELS;
+        fixtures.DIFFICULTY_TO_LEVELS_MAP[fixtures.HARD] = fixtures.HARD_LEVELS;
+        fixtures.DIFFICULTY_TO_LEVELS_MAP[fixtures.EXPERT] = fixtures.EXPERT_LEVELS;
+
+
+    </script>
     {% block js %}
 
     {% endblock %}

@@ -1,9 +1,9 @@
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["campaign"] = (function() {function root(env, context, frame, runtime, cb) {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/campaign.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div id=\"instructions\">\n    <h1>Pick A Level</h1>\n\n    <p class=\"lead\">\n        Play through the Word Smashing campaign in any difficulty!<br/>\n        New boards and smashable locks!\n    </p>\n</div>\n";
+output += "<div id=\"instructions\" style=\"display: none\">\n    <h1>Pick A Level</h1>\n\n    <p class=\"lead\">\n        Play through the Word Smashing campaign in any difficulty!<br/>\n        New boards and smashable locks!\n    </p>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/easy')\">Easy\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/medium')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Medium\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/hard')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Hard\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/expert')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Expert\n    </button>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -15,18 +15,13 @@ root: root
 };
 })();
 })();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["footer"] = (function() {function root(env, context, frame, runtime, cb) {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/footer.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
 try {
 output += "<div class=\"footer\">\n    <p>\n        ";
-if(!(lineno = 2, colno = 28, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "url")),"endswith", env.autoesc), "url[\"endswith\"]", ["learn-english"]))) {
-output += "\n            <a class=\"footer__link\" href=\"/learn-english\" title=\"Learn English\">Learn English</a>\n        ";
-;
-}
-output += "\n        ";
-if("/contact" undefined runtime.contextOrFrameLookup(context, frame, "url")) {
+if("/contact" == runtime.contextOrFrameLookup(context, frame, "path")) {
 output += "\n            <span>Contact</span>\n        ";
 ;
 }
@@ -35,7 +30,7 @@ output += "\n            <a class=\"footer__link\" href=\"/contact\" title=\"Con
 ;
 }
 output += "\n        ";
-if("/about" undefined runtime.contextOrFrameLookup(context, frame, "url")) {
+if("/about" == runtime.contextOrFrameLookup(context, frame, "path")) {
 output += "\n            <span>About Us</span>\n        ";
 ;
 }
@@ -44,7 +39,7 @@ output += "\n            <a class=\"footer__link\" href=\"/about\" title=\"About
 ;
 }
 output += "\n        ";
-if("/terms" undefined runtime.contextOrFrameLookup(context, frame, "url")) {
+if("/terms" == runtime.contextOrFrameLookup(context, frame, "path")) {
 output += "\n            <span>Terms &amp; Conditions</span>\n        ";
 ;
 }
@@ -53,7 +48,7 @@ output += "\n            <a class=\"footer__link\" href=\"/terms\" title=\"Terms
 ;
 }
 output += "\n        ";
-if("/privacy-policy" undefined runtime.contextOrFrameLookup(context, frame, "url")) {
+if("/privacy-policy" == runtime.contextOrFrameLookup(context, frame, "path")) {
 output += "\n            <span>Privacy Policy</span>\n        ";
 ;
 }
@@ -73,12 +68,21 @@ root: root
 };
 })();
 })();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["header"] = (function() {function root(env, context, frame, runtime, cb) {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/header.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"ws-logo\">\n    <a href=\"/\" title=\"Word Smashing Word Puzzle\">\n        <img src=\"/static/img/wordsmashing_logo.png\" alt=\"Word Smashing\" title=\"Word Smashing\" width=\"250\" height=\"184\">\n    </a>\n</div>\n";
+output += "<div class=\"ws-header\">\n    ";
+if(env.getFilter("length").call(context, runtime.contextOrFrameLookup(context, frame, "path")) > 1) {
+output += "\n        <div class=\"ws-header--item\">&nbsp;\n            <button type=\"button\" class=\"back-btn gameon-btn-hg btn btn-danger btn-lg\" onclick=\"return APP.stepBack()\">\n                <i\n                        class=\"fa fa-arrow-left\"></i></button>\n\n        </div>\n    ";
+;
+}
+else {
+output += "\n        <div class=\"ws-header--item\">&nbsp;\n            <button type=\"button\" class=\"back-btn gameon-btn-hg btn btn-danger btn-lg\" disabled=\"disabled\">\n                <i\n                        class=\"fa fa-arrow-left\"></i></button>\n\n        </div>\n    ";
+;
+}
+output += "\n    <a href=\"/\" title=\"Word Smashing Word Puzzle\" class=\"ws-header--item\">\n        <img class=\"gameon-hidden-xs\" src=\"/static/img/wordsmashing_logo.png\" alt=\"Word Smashing\" title=\"Word Smashing\" width=\"250\" height=\"184\" />\n        <img class=\"gameon-visible-xs\" src=\"/static/img/wordsmashing_icon60.png\" alt=\"Word Smashing\" title=\"Word Smashing\" width=\"60\" height=\"60\" />\n    </a>\n\n    <div class=\"ws-header--item\">\n        <button type=\"button\" class=\"gameon-btn-hg btn btn-danger btn-lg\">Login</button>\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -90,12 +94,29 @@ root: root
 };
 })();
 })();
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["start"] = (function() {function root(env, context, frame, runtime, cb) {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/levels.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"ws-main-content\">\n\n    <a class=\"ws-play-btn btn btn-large btn-success gameon-btn-hg\" href=\"/campaign\">Play Now!</a>\n    <a class=\"ws-play-btn btn btn-large btn-success gameon-btn-hg\" href=\"/classic\">Classic</a>\n    <a class=\"ws-play-btn btn btn-large btn-success gameon-btn-hg\" href=\"/versus\">VS</a>\n</div>\n";
+output += "<div class=\"mm-levels gameon-board\">\n\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/start.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div id=\"instructions\" style=\"display:none\">\n    <h1 style=\"display:none\">Word Smashing</h1>\n\n    <p class=\"lead\" style=\"display:none\">Word smashing is a free online word search puzzle.</p>\n\n    <p class=\"lead\"><b>Instructions:</b><br/>\n        Make words! lots of words! two at once or heaps in a row for bonus points!<br/>\n        Get words up, down, forward and backwards!<br/>\n        To move, click a letter and click a space!<br/>\n        You can move if there's a clear path!<br/>\n        Each turn 3 more letters appear, when the board fills up its game over!<br/>\n        Some people &amp; place names don't count!<br/>\n    </p>\n</div>\n\n<div class=\"ws-main-content\">\n\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn btn btn-large btn-success gameon-btn-hg\" href=\"/campaign\">Play Now!</a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn btn btn-large btn-success gameon-btn-hg\" href=\"/classic\">Classic</a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn btn btn-large btn-success gameon-btn-hg\" href=\"/versus\">VS</a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn btn btn-large btn-success gameon-btn-hg\" href=\"/learn-english\">Learn English</a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <button class=\"ws-help-btn btn btn-large btn-danger gameon-btn-hg\" type=\"button\">?</button>\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {

@@ -1,24 +1,21 @@
 <div class="footer">
     <p>
-        {% if not url.endswith('learn-english') %}
-            <a class="footer__link" href="/learn-english" title="Learn English">Learn English</a>
-        {% endif %}
-        {% if '/contact' in url %}
+        {% if '/contact' == path %}
             <span>Contact</span>
         {% else %}
             <a class="footer__link" href="/contact" title="Contact Us">Contact</a>
         {% endif %}
-        {% if '/about' in url %}
+        {% if '/about' == path %}
             <span>About Us</span>
         {% else %}
             <a class="footer__link" href="/about" title="About Word Smashing">About Us</a>
         {% endif %}
-        {% if '/terms' in url %}
+        {% if '/terms' == path %}
             <span>Terms &amp; Conditions</span>
         {% else %}
             <a class="footer__link" href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
         {% endif %}
-        {% if '/privacy-policy' in url %}
+        {% if '/privacy-policy' == path %}
             <span>Privacy Policy</span>
         {% else %}
             <a class="footer__link" href="/privacy-policy" title="Privacy Policy">Privacy Policy</a>
