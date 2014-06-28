@@ -37,7 +37,7 @@
     });
     APP.Views['/campaign/:difficulty'] = Backbone.View.extend({
         initialize: function (options) {
-            this.diffuculty = options.args[0];
+            this.difficulty = options.args[0];
         },
 
         render: function () {
@@ -71,7 +71,7 @@
                 }
             };
             var tiles = [];
-            var levels = fixtures.DIFFICULTY_TO_LEVELS_MAP[difficulty];
+            var levels = fixtures.difficulty_to_levels_map[levelsSelf.difficulty];
             gameon.getUser(function (user) {
                 var highScores = user.getHighScores();
 

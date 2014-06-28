@@ -149,6 +149,7 @@ class SlashMurdererApp(webapp2.RequestHandler):
 app = ndb.toplevel(webapp2.WSGIApplication([
                                                ('/', MainHandler),
                                                ('(.*)/$', SlashMurdererApp),
+
                                                ('/privacy-policy', PrivacyHandler),
                                                ('/terms', TermsHandler),
                                                ('/facebook', FbHandler),
@@ -160,8 +161,13 @@ app = ndb.toplevel(webapp2.WSGIApplication([
                                                ('/games', GamesHandler),
                                                ('/learn-english', LearnEnglishHandler),
                                                ('/learn-english/(.*)', EnglishLevelHandler),
+
                                                ('/campaign', CampaignHandler),
-                                               (r'/campaign/level(\d+)', LevelHandler),
+
+                                               # need js rendering
+                                               (r'/campaign/..*', MainHandler),
+                                               (r'/campaign/..*/..*', MainHandler),
+
                                                ('/buy', BuyHandler),
                                                ('/sitemap', SitemapHandler),
 

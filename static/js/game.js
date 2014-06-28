@@ -10,6 +10,6 @@ var wordsmashing = (function () {
             var $modal = $('#modal');
             $modal.find('.modal-body').html($('#instructions').html());
             $modal.modal('show');
-        })
+        });
     });
 })();

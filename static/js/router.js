@@ -13,7 +13,7 @@
         if (currrentPath == "") {
             currrentPath = window.location.pathname;
         }
-        if (currrentPath.length >= 1) {
+        if (currrentPath.length <= 1) {
             APP.goto('/');
         }
         else {
@@ -103,7 +103,7 @@
     });
     jQuery.extend(routes, {
         //pages needing js rendering
-        '/campaign/:difficulty': 'campaign/:difficulty'
+        'campaign/:difficulty': 'campaign/:difficulty'
     });
 
     var Router = Backbone.Router.extend({
