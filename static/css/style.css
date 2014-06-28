@@ -1,3 +1,12 @@
+.gameon-board .even {
+  background-color: #373435;
+}
+.gameon-board .odd {
+  background-color: #494949;
+}
+.gameon-board td {
+  border: 1px solid gray;
+}
 .ws-header {
   background-color: white;
   border-bottom: 1px solid #CCCCCC;

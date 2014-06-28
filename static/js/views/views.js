@@ -55,7 +55,7 @@
                 };
 
                 self.click = function () {
-                    APP.goto('/campaign/' + levelsSelf.diffuculty + '/' + self.id);
+                    APP.goto('/campaign/' + levelsSelf.difficulty + '/' + self.id);
                 };
 
                 self.render = function () {
@@ -71,7 +71,7 @@
                 }
             };
             var tiles = [];
-            var levels = fixtures.difficulty_to_levels_map[levelsSelf.difficulty];
+            var levels = fixtures.getLevelsByDifficulty(levelsSelf.difficulty);
             gameon.getUser(function (user) {
                 var highScores = user.getHighScores();
 
@@ -89,12 +89,17 @@
                 }
             });
             levelsSelf.levelsList = levels;
-            levelsSelf.board = new gameon.board(5, 5, tiles);
-            this.$el.html(evutils.render('static/templates/shared/levels.jinja2'));
-            levelsSelf.board.render('.mm-levels');
+            levelsSelf.board = new gameon.board(4, 4, tiles);
+            evutils.render('static/templates/shared/levels.jinja2', {}, function (err, res) {
+                levelsSelf.$el.html(res);
+                levelsSelf.board.render(levelsSelf.$el.find('.mm-levels'));
+                levelsSelf.renderCallback();
+            });
 
             return this;
-        }
+        },
+        rendersAsync:true,
+        renderCallback: $.noop
     });
 
     APP.Views['/contact'] = Backbone.View.extend({
@@ -134,7 +139,6 @@
             return this;
         }
     });
-
 
 
     APP.Views.Header = Backbone.View.extend({

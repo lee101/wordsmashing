@@ -44,7 +44,7 @@ window.evutils = new (function () {
     });
 
 
-    self.render = function (template, opts) {
+    self.render = function (template, opts, callback) {
         if (typeof opts === 'undefined') {
             opts = {};
         }
@@ -54,7 +54,7 @@ window.evutils = new (function () {
             window: window,
             client_side: true
         });
-        return nunjucks.render(template, opts);
+        return nunjucks.render(template, opts, callback);
     };
 
 

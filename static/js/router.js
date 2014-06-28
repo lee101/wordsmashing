@@ -47,8 +47,17 @@
             }
 
             currentView = view;
-            $mainbody.html(view.render().el);
-            $mainbody.fadeIn(duration);
+            if (view.rendersAsync) {
+                view.renderCallback = function () {
+                    $mainbody.html(view.el);
+                    $mainbody.fadeIn(duration);
+                };
+                view.render();
+            }
+            else {
+                $mainbody.html(view.render().el);
+                $mainbody.fadeIn(duration);
+            }
         });
 
         //scroll to top
@@ -61,7 +70,6 @@
         $('#headerbody').html(APP.header.render().el);
         $('#footerbody').html(APP.footer.render().el);
     };
-
 
 
     APP.currentView = location.pathname;

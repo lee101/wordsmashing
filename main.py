@@ -49,6 +49,11 @@ class MainHandler(BaseHandler):
         self.render('templates/index.jinja2')
 
 
+class TestsHandler(BaseHandler):
+    def get(self):
+        self.render('templates/tests.jinja2')
+
+
 class FbHandler(BaseHandler):
     def get(self):
         self.render('templates/facebook.jinja2')
@@ -167,6 +172,8 @@ app = ndb.toplevel(webapp2.WSGIApplication([
                                                # need js rendering
                                                (r'/campaign/..*', MainHandler),
                                                (r'/campaign/..*/..*', MainHandler),
+
+                                               (r'/tests', TestsHandler),
 
                                                ('/buy', BuyHandler),
                                                ('/sitemap', SitemapHandler),
