@@ -1,0 +1,29 @@
+{% extends 'templates/base.jinja2' %}
+
+{% block headers %}
+
+    {% set title = 'Contact Word Smashing - Addicting and Fun Word Puzzle Game' -%}
+    {% set desc = 'Contact Word Smashing The Utterly Addicting Word Game. Play This Addicting New Word Puzzle Now!' -%}
+
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="description"
+          content="{{ desc }}">
+
+    <meta name="keywords" content="puzzle games, contact word smashing, crossword, game, word puzzle game">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:url" content="http://www.wordsmashing.com">
+    <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_logo.png">
+    <meta property="og:description"
+          content="{{ desc }}">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Word Smashing">
+    <meta property="fb:admins" content="337972272904903">
+
+{% endblock %}
+
+{% block mainbody %}
+    {% include "/templates/shared/contact.jinja2" %}
+{% endblock %}
+
+

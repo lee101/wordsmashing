@@ -71,7 +71,10 @@ class AboutHandler(BaseHandler):
 
 class PrivacyHandler(BaseHandler):
     def get(self):
-        self.render('templates/privacy-policy.jinja2')
+        if 'privacy-policy' in self.request.path:
+            self.redirect('/privacy', True)
+
+        self.render('templates/privacy.jinja2')
 
 
 class TermsHandler(BaseHandler):
@@ -155,6 +158,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
                                                ('/', MainHandler),
                                                ('(.*)/$', SlashMurdererApp),
 
+                                               ('/privacy', PrivacyHandler),
                                                ('/privacy-policy', PrivacyHandler),
                                                ('/terms', TermsHandler),
                                                ('/facebook', FbHandler),
