@@ -48,11 +48,12 @@ class Level(Fixture):
             return
         if h == 0:
             self.star_rating = [1, 2, 3, 4]
+            return
         self.star_rating = [
-            int(h / 4 * (7 * 4)),
-            int(h / 4 * (8 * 4)),
-            int(h / 4 * (9 * 4)),
-            int(h / 4 * (10 * 4)),
+            int(h / 4.0 * (7 * 4)),
+            int(h / 4.0 * (8 * 4)),
+            int(h / 4.0 * (9 * 4)),
+            int(h / 4.0 * (10 * 4)),
         ]
 
 

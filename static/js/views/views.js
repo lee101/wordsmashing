@@ -83,7 +83,7 @@
 
                     var tile = new LevelLink(levels[i].id, locked);
                     if (i < highScores.length) {
-                        tile.stars = new gameon.Stars(levels[i].starrating, highScores[i].score);
+                        tile.stars = new gameon.Stars(levels[i].star_rating, highScores[i].score);
                     }
                     tiles.push(tile);
                 }
