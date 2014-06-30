@@ -24,9 +24,9 @@ class Level(Fixture):
     locked_spaces = []
 
     def __init__(self, height=9, width=9, blocked_spaces=[], locked_spaces=[], growth_rate=3, difficulty=EASY,
-                 moves=None, time_left=None, star_rating=None):
+                 moves=None, time_left=None, star_rating=None, num_start_letters=14):
         '''
-        blocked_spaces array of (x,y) pairs
+        blocked_spaces/locked_spaces array of (x,y) pairs
         '''
         self.height = height
         self.width = width
@@ -41,6 +41,7 @@ class Level(Fixture):
         self.time_left = time_left
 
         self.star_rating = star_rating
+        self.num_start_letters = num_start_letters
 
     def set_hardness(self, h):
         if self.star_rating:

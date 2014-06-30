@@ -89,7 +89,7 @@
                 }
             });
             levelsSelf.levelsList = levels;
-            levelsSelf.board = new gameon.board(4, 4, tiles);
+            levelsSelf.board = new gameon.Board(4, 4, tiles);
             evutils.render('static/templates/shared/levels.jinja2', {}, function (err, res) {
                 levelsSelf.$el.html(res);
                 levelsSelf.board.render(levelsSelf.$el.find('.mm-levels'));
@@ -98,7 +98,31 @@
 
             return this;
         },
-        rendersAsync:true,
+        rendersAsync: true,
+        renderCallback: $.noop
+    });
+
+    APP.Views['/campaign/:difficulty/:level'] = Backbone.View.extend({
+        initialize: function (options) {
+            this.difficulty = options.args[0];
+            this.level = +options.args[1];
+        },
+
+        render: function () {
+
+            var self = this;
+
+            var level = fixtures.getLevelsByDifficulty(self.difficulty)[self.level];
+
+            self.game = new wordsmashing.Game(level);
+            self.game.renderCallback = function(html) {
+                self.$el.html(html);
+                self.renderCallback();
+            };
+
+            return this;
+        },
+        rendersAsync: true,
         renderCallback: $.noop
     });
 

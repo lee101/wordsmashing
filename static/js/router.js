@@ -142,5 +142,11 @@
             pushState: true
 //            silent: true
         });
+
+        $(document).on('click', '.ws-help-btn', function () {
+            var $modal = $('#modal');
+            $modal.find('.modal-body').html($('#instructions').html());
+            $modal.modal('show');
+        });
     });
 }());
