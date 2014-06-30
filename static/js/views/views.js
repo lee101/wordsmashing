@@ -90,11 +90,9 @@
             });
             levelsSelf.levelsList = levels;
             levelsSelf.board = new gameon.Board(4, 4, tiles);
-            evutils.render('templates/shared/levels.jinja2', {}, function (err, res) {
-                levelsSelf.$el.html(res);
-                levelsSelf.board.render(levelsSelf.$el.find('.mm-levels'));
-                levelsSelf.renderCallback();
-            });
+            levelsSelf.$el.html(evutils.render('templates/shared/levels.jinja2'));
+            levelsSelf.board.render(levelsSelf.$el.find('.mm-levels'));
+            levelsSelf.renderCallback();
 
             return this;
         },

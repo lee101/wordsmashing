@@ -111,7 +111,8 @@
     });
     jQuery.extend(routes, {
         //pages needing js rendering
-        'campaign/:difficulty': 'campaign/:difficulty'
+        'campaign/:difficulty': 'campaign/:difficulty',
+        'campaign/:difficulty/:level': 'campaign/:difficulty/:level'
     });
 
     var Router = Backbone.Router.extend({
@@ -120,6 +121,7 @@
         'home': defaultHandler('/'),
         'campaign': defaultHandler('/campaign'),
         'campaign/:difficulty': defaultHandler('/campaign/:difficulty'),
+        'campaign/:difficulty/:level': defaultHandler('/campaign/:difficulty/:level'),
         'timed': defaultHandler('/timed'),
         'classic': defaultHandler('/classic'),
         'versus': defaultHandler('/versus'),

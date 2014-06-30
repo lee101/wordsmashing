@@ -18,26 +18,24 @@ var wordsmashing = new (function () {
 
             var tiles = gameState.initialBoardTiles();
             gameState.board = new gameon.Board(level.width, level.height, tiles);
-            var $html = $('<div class="ws-level gameon-board"></div>');
-            evutils.render('static/templates/shared/game.jinja2', {}, function (err, res) {
-                $html = $(res);
-                gameState.board.render($html.find('.gameon-board'));
-                gameState.destruct = function () {
-                    gameon.cleanBoards();
-                    gameon.pauseSound("theme");
-                };
-                gameState.starBar = new gameon.StarBar(level.starrating);
-                gameState.starBar.setScore(0);
 
-                gameon.renderVolumeTo($html.find('.mm-volume'));
-                gameState.starBar.render($html.find('.mm-starbar'));
+            var $html = $(evutils.render('templates/shared/game.jinja2'));
+            gameState.board.render($html.find('.gameon-board'));
+            gameState.destruct = function () {
+                gameon.cleanBoards();
+                gameon.pauseSound("theme");
+            };
+            gameState.starBar = new gameon.StarBar(level.starrating);
+            gameState.starBar.setScore(0);
 
-                gameState.endHandler = new gameState.EndHandler();
-                gameState.endHandler.render();
-                if (typeof gameState.renderCallback === 'function') {
-                    gameState.renderCallback($html);
-                }
-            });
+            gameon.renderVolumeTo($html.find('.mm-volume'));
+            gameState.starBar.render($html.find('.mm-starbar'));
+
+            gameState.endHandler = new gameState.EndHandler();
+            gameState.endHandler.render();
+            if (typeof gameState.renderCallback === 'function') {
+                gameState.renderCallback($html);
+            }
         }
 
         gameState.initialBoardTiles = function () {
@@ -58,14 +56,15 @@ var wordsmashing = new (function () {
             return gameon.shuffle(tiles);
         };
         function addGrowersTo(tiles) {
-            for (var i = 0; i < game.growth_rate; i++) {
+            for (var i = 0; i < level.growth_rate; i++) {
                 var isRed = true;
-                if (level.is_multiplayer && i >= game.growth_rate / 2) {
+                if (level.is_multiplayer && i >= level.growth_rate / 2) {
                     isRed = false;
                 }
                 tiles.push(new MainTile(gameon.wordutils.getRandomLetter(), isRed, true));
             }
         }
+
         gameState.currentSelected = [0, 0];
         gameState.unselectAll = function () {
             var currentSelected = gameState.board.getTile(gameState.currentSelected);
