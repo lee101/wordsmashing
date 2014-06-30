@@ -7,7 +7,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('static/templates/shared/start.jinja2'));
+            this.$el.html(evutils.render('templates/shared/start.jinja2'));
 
             return this;
         }
@@ -18,7 +18,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('static/templates/shared/campaign.jinja2'));
+            this.$el.html(evutils.render('templates/shared/campaign.jinja2'));
             gameon.getUser(function (user) {
                 var difficultiesUnlocked = user.difficulties_unlocked;
                 if (difficultiesUnlocked >= 1) {
@@ -90,7 +90,7 @@
             });
             levelsSelf.levelsList = levels;
             levelsSelf.board = new gameon.Board(4, 4, tiles);
-            evutils.render('static/templates/shared/levels.jinja2', {}, function (err, res) {
+            evutils.render('templates/shared/levels.jinja2', {}, function (err, res) {
                 levelsSelf.$el.html(res);
                 levelsSelf.board.render(levelsSelf.$el.find('.mm-levels'));
                 levelsSelf.renderCallback();
@@ -131,7 +131,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('static/templates/shared/contact.jinja2'));
+            this.$el.html(evutils.render('templates/shared/contact.jinja2'));
             return this;
         }
     });
@@ -173,7 +173,7 @@
         render: function () {
             var self = this;
             gameon.getUser(function (user) {
-                self.$el.html(evutils.render('static/templates/shared/header.jinja2', {'path': self.path, 'user': user}));
+                self.$el.html(evutils.render('templates/shared/header.jinja2', {'path': self.path, 'user': user}));
             });
 
             return self;
@@ -186,7 +186,7 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('static/templates/shared/footer.jinja2', {'path': this.path}));
+            this.$el.html(evutils.render('templates/shared/footer.jinja2', {'path': this.path}));
             return this;
         }
     });

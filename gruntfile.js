@@ -3,7 +3,7 @@ module.exports = function (grunt) {
         nunjucks: {
             precompile: {
                 baseDir: 'templates/shared/',
-                src: 'templates/shared/*',
+                src: ['templates/shared/*', '!templates/shared/about.jinja2', '!templates/shared/terms.jinja2', '!templates/shared/privacy.jinja2'],
                 dest: 'static/js/templates.js',
                 options: {
 //                    env: require('./nunjucks-environment'),
@@ -16,7 +16,7 @@ module.exports = function (grunt) {
         },
         watch: {
             nunjucks: {
-                files: 'templates/shared/*',
+                files: ['templates/shared/*', '!templates/shared/about.jinja2', '!templates/shared/about.jinja2', '!templates/shared/terms.jinja2', '!templates/shared/privacy.jinja2'],
                 tasks: ['nunjucks']
             },
             less: {
