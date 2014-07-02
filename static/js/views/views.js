@@ -113,15 +113,10 @@
             var level = fixtures.getLevelsByDifficulty(self.difficulty)[self.level];
 
             self.game = new wordsmashing.Game(level);
-            self.game.renderCallback = function(html) {
-                self.$el.html(html);
-                self.renderCallback();
-            };
+            self.game.render(self.$el);
 
             return this;
-        },
-        rendersAsync: true,
-        renderCallback: $.noop
+        }
     });
 
     APP.Views['/contact'] = Backbone.View.extend({

@@ -25,17 +25,15 @@ var wordsmashing = new (function () {
                 gameon.cleanBoards();
                 gameon.pauseSound("theme");
             };
-            gameState.starBar = new gameon.StarBar(level.starrating);
+            gameState.starBar = new gameon.StarBar(level.star_rating);
             gameState.starBar.setScore(0);
 
             gameon.renderVolumeTo($html.find('.mm-volume'));
             gameState.starBar.render($html.find('.mm-starbar'));
-
-            gameState.endHandler = new gameState.EndHandler();
-            gameState.endHandler.render();
-            if (typeof gameState.renderCallback === 'function') {
-                gameState.renderCallback($html);
-            }
+//
+//            gameState.endHandler = new gameState.EndHandler();
+//            gameState.endHandler.render();
+            gameState.$html = $html;
         }
 
         gameState.initialBoardTiles = function () {
@@ -117,6 +115,11 @@ var wordsmashing = new (function () {
                 }
                 return '<button type="button" class="' + btnStyle + '">' + self.letter + '<div class="gameon-btn-extra">' + self.points + '</div></button>';
             };
+        };
+
+        gameState.render = function (target) {
+            gameState.$target = $(target);
+            gameState.$target.html(gameState.$html);
         };
 
         construct();
