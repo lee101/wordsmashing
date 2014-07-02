@@ -103,15 +103,22 @@ var wordsmashing = new (function () {
             };
 
             self.render = function () {
-                var btnStyle = 'btn btn-primary btn-lg';
+                var btnStyle = 'btn ';
                 if (self.selected) {
-                    btnStyle = 'btn btn-warning btn-lg';
+                    btnStyle += 'btn-warning ';
                 }
-                if (self.isRed) {
-                    btnStyle = 'btn btn-danger btn-lg';
+                else if (self.isRed) {
+                    btnStyle += 'btn-danger ';
                 }
-                if (self.locked) {
-                    return '<button type="button" class="' + btnStyle + '" disabled="disabled"><span class="glyphicon glyphicon-lock"></span></button>';
+                else if (self.locked) {
+                    return '<button type="button" class="' + btnStyle + ' btn-lg" disabled="disabled"><span class="glyphicon glyphicon-lock"></span></button>';
+                }
+                if (self.halfgrown) {
+                    btnStyle += ' btn-sm disabled swap grower';
+                    return '<button type="button" class="' + btnStyle + '">' + self.letter + '</button>';
+                }
+                else {
+                    btnStyle += ' btn-lg';
                 }
                 return '<button type="button" class="' + btnStyle + '">' + self.letter + '<div class="gameon-btn-extra">' + self.points + '</div></button>';
             };
