@@ -30,9 +30,9 @@ var wordsmashing = new (function () {
 
             gameon.renderVolumeTo($html.find('.mm-volume'));
             gameState.starBar.render($html.find('.mm-starbar'));
-//
-//            gameState.endHandler = new gameState.EndHandler();
-//            gameState.endHandler.render();
+
+            gameState.endHandler = new gameState.EndHandler();
+            gameState.endHandler.render();
             gameState.$html = $html;
         }
 
@@ -115,6 +115,48 @@ var wordsmashing = new (function () {
                 }
                 return '<button type="button" class="' + btnStyle + '">' + self.letter + '<div class="gameon-btn-extra">' + self.points + '</div></button>';
             };
+        };
+
+        gameState.EndHandler = function () {
+            var endSelf = this;
+            endSelf.moves = level.numMoves;
+            endSelf.render = function () {
+                if (level.numMoves) {
+                    $('.mm-end-condition').html('<p>Moves: ' + endSelf.moves + '</p>');
+                }
+                else {
+                    $('.mm-end-condition').html('<p>Time: <span class="gameon-clock"></span></p>');
+                }
+            };
+            endSelf.setMoves = function (moves) {
+                endSelf.moves = moves;
+                if (moves <= 0) {
+                    //todo settimeout so they can watch successanimation
+                    endSelf.gameOver();
+                    return;
+                }
+                endSelf.render();
+            };
+            endSelf.gameOver = function () {
+                gameon.getUser(function (user) {
+                    user.saveScore(level.id, gameState.starBar.getScore());
+                    if (gameState.starBar.hasWon()) {
+                        if (user.levels_unlocked < level.id) {
+                            user.saveLevelsUnlocked(level.id);
+                            var numLevels = fixtures.getLevelsByDifficulty(level.difficulty).length;
+                            if (user.levels_unlocked % numLevels === 0) {
+                                user.saveDifficultiesUnlocked(user.difficulties_unlocked + 1);
+                            }
+                        }
+                    }
+                });
+                gameState.destruct();
+                views.donelevel(gameState.starBar, level);
+            };
+            if (!level.numMoves) {
+                gameState.clock = gameon.clock(endSelf.gameOver, level.time);
+                gameState.clock.start();
+            }
         };
 
         gameState.render = function (target) {
