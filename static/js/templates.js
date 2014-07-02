@@ -90,7 +90,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"mm-logo\">\n    <div class=\"mm-level-controls\">\n        <div class=\"mm-end-condition\">\n            <p>Time: <span class=\"gameon-clock\"></span></p>\n        </div>\n        <div class=\"mm-volume\">\n\n        </div>\n        <div class=\"clear\"></div>\n        <div class=\"mm-starbar\">\n\n        </div>\n    </div>\n</div>\n<div class=\"mm-level gameon-board gameon-board--small-tiles\">\n\n</div>\n";
+output += "<div class=\"mainbody\">\n\n    <div class=\"mm-logo\">\n        <div class=\"mm-level-controls\">\n            <div class=\"mm-end-condition\">\n                <p>Time: <span class=\"gameon-clock\"></span></p>\n            </div>\n            <div class=\"mm-volume\">\n\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"mm-starbar\">\n\n            </div>\n        </div>\n    </div>\n    <div class=\"mm-level gameon-board gameon-board--small-tiles\">\n\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
