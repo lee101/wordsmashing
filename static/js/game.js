@@ -46,9 +46,9 @@ var wordsmashing = new (function () {
                 tiles.push(new MainTile(gameon.wordutils.getRandomLetter(), isRed));
             }
             addGrowersTo(tiles);
-            var numspaces = level.width * level.height - level.startwords - level.growth_rate
+            var numSpaces = level.width * level.height - level.num_start_letters - level.growth_rate
                 - level.locked_spaces.length - level.blocked_spaces.length;
-            for (var i = 0; i < numspaces; i++) {
+            for (var i = 0; i < numSpaces; i++) {
                 tiles.push(new EmptyTile());
             }
             return gameon.shuffle(tiles);
