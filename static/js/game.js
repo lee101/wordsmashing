@@ -63,8 +63,11 @@ var wordsmashing = new (function () {
             }
         }
 
-        gameState.currentSelected = [0, 0];
+        gameState.currentSelected = [-1, -1];
         gameState.unselectAll = function () {
+            if (gameState.currentSelected[0] == -1) {
+                return;
+            }
             var currentSelected = gameState.board.getTile(gameState.currentSelected);
             currentSelected.selected = false;
             currentSelected.reRender();
@@ -97,7 +100,9 @@ var wordsmashing = new (function () {
             self.selected = false;
 
             self.click = function () {
-                gameState.unselectAll();
+                if (!self.selected) {
+                    gameState.unselectAll();
+                }
                 self.selected = !self.selected;
                 self.reRender();
             };
