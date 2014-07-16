@@ -63,14 +63,13 @@ var wordsmashing = new (function () {
             }
         }
 
-        gameState.currentSelected = [-1, -1];
+        gameState.currentSelected = null;
         gameState.unselectAll = function () {
-            if (gameState.currentSelected[0] == -1) {
+            if (!gameState.currentSelected) {
                 return;
             }
-            var currentSelected = gameState.board.getTile(gameState.currentSelected);
-            currentSelected.selected = false;
-            currentSelected.reRender();
+            gameState.currentSelected.selected = false;
+            gameState.currentSelected.reRender();
         };
 
         var EmptyTile = function () {
@@ -102,8 +101,13 @@ var wordsmashing = new (function () {
             self.click = function () {
                 if (!self.selected) {
                     gameState.unselectAll();
+                    self.selected = true;
+                    gameState.currentSelected = self;
                 }
-                self.selected = !self.selected;
+                else {
+                    gameState.currentSelected = null;
+                    self.selected = false;
+                }
                 self.reRender();
             };
 
