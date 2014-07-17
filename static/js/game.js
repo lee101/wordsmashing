@@ -74,13 +74,20 @@ var wordsmashing = new (function () {
 
         var EmptyTile = function () {
             var self = this;
+            self.canPassThrough = true;
 
             self.click = function () {
-                //moveto
+                //moveto this
+                var path = gameState.board.getPathFromTo(gameState.currentSelected, self);
+                if (path) {
+                    gameState.board.animateTileAlongPath(gameState.currentSelected, path, function(){
+
+                    });
+                }
             };
 
             self.render = function () {
-                return '<div class="btn btn-lg btn-link" style="height:26px;"></div>';
+                return '<div class="btn btn-lg btn-link"></div>';
             };
         };
 
@@ -95,6 +102,7 @@ var wordsmashing = new (function () {
 
             self.isRed = isRed;
             self.halfgrown = halfgrown;
+            self.canPassThrough = halfgrown;
 
             self.selected = false;
 

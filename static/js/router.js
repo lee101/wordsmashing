@@ -56,7 +56,10 @@
             }
             else {
                 $mainbody.html(view.render().el);
-                $mainbody.fadeIn(duration);
+                $mainbody.fadeIn(duration, function () {
+                    //scroll to top
+                    $("html, body").scrollTop(0);
+                });
             }
         });
 
