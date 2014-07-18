@@ -4,6 +4,15 @@ gameon.loadSound('win', '/gameon/static/music/winning-level.mp3');
 gameon.loadSound('moved', '/static/music/moved-letter.m4a');
 gameon.loadSound('moving', '/static/music/moving-letter.m4a');
 
+//TODO move to fixtures.words
+words = {};
+jQuery.get('/static/js/words.txt', function (data) {
+    wordslist = data.split('\n');
+    for (var i = 0; i < wordslist.length; i++) {
+        words[wordslist[i]] = 1;
+    }
+});
+
 var wordsmashing = new (function () {
     "use strict";
     var self = this;
@@ -14,8 +23,7 @@ var wordsmashing = new (function () {
         function construct() {
             gameon.loopSound("theme");
 
-            gameState.isMultiplayer = level.is_multiplayer;
-
+            gameState.players_turn = 1;
             var tiles = gameState.initialBoardTiles();
             gameState.board = new gameon.Board(level.width, level.height, tiles);
 
@@ -80,7 +88,11 @@ var wordsmashing = new (function () {
                 //moveto this
                 var path = gameState.board.getPathFromTo(gameState.currentSelected, self);
                 if (path) {
-                    gameState.board.animateTileAlongPath(gameState.currentSelected, path, function () {
+                    var animationSpeed = 200;
+                    if (gameState.players_turn == 2) {
+                        animationSpeed = 400;
+                    }
+                    gameState.board.animateTileAlongPath(gameState.currentSelected, path, animationSpeed, function () {
                         gameState.board.swapTiles(gameState.currentSelected, self);
                         gameState.endHandler.turnEnd([self.yPos, self.xPos]);
 
@@ -195,16 +207,16 @@ var wordsmashing = new (function () {
                 }
             }
 
-            endSelf.turnEnd = function(endPos) {
+            endSelf.turnEnd = function (endPos) {
                 function removeHword(start, end) {
                     for (var k = start; k <= end; k++) {
-                        gameState.board.setTile(endPos[1], k, EmptyTile())
+                        gameState.board.setTile(endPos[1], k, new EmptyTile())
                     }
                 }
 
                 function removeVword(start, end) {
                     for (var k = start; k <= end; k++) {
-                        gameState.board.setTile(k, endPos[0], EmptyTile())
+                        gameState.board.setTile(k, endPos[0], new EmptyTile())
                     }
                 }
 
@@ -229,7 +241,7 @@ var wordsmashing = new (function () {
                     numLeft++
                 }
                 x = endPos[0];
-                while (x < game.width - 1) {
+                while (x < level.width - 1) {
                     x++;
                     if (!gameState.board.getTile(endPos[1], x).letter) {
                         break;
@@ -304,7 +316,7 @@ var wordsmashing = new (function () {
                     numTop++
                 }
                 y = endPos[1];
-                while (y < game.height - 1) {
+                while (y < level.height - 1) {
                     y++;
                     if (!gameState.board.getTile(y, endPos[0]).letter) {
                         break;
@@ -403,8 +415,8 @@ var wordsmashing = new (function () {
 
                 //look for 3 new spots
                 var numspaces = 0;
-                for (var i = 0; i < game.height; i++) {
-                    for (var j = 0; j < game.width; j++) {
+                for (var i = 0; i < level.height; i++) {
+                    for (var j = 0; j < level.width; j++) {
 
                         if (!gameState.board.getTile(i, j).letter && !gameState.board.getTile(i, j).blocked) {
                             numspaces++
@@ -418,15 +430,15 @@ var wordsmashing = new (function () {
                 //generate random 3 letter places
                 var growers = [];
                 for (var i = 0; i < numspaces - level.growth_rate; i++) {
-                    growers.push(EmptyTile())
+                    growers.push(new EmptyTile())
                 }
                 addGrowersTo(growers);
 
-                growers.shuffle();
+                gameon.shuffle(growers);
                 //place them
                 var currpos = 0;
-                for (var y = 0; y < game.height; y++) {
-                    for (var x = 0; x < game.width; x++) {
+                for (var y = 0; y < level.height; y++) {
+                    for (var x = 0; x < level.width; x++) {
 
                         if (!gameState.board.getTile(y, x).letter && !gameState.board.getTile(y, x).blocked) {
                             if (growers[currpos].letter) {
@@ -436,13 +448,16 @@ var wordsmashing = new (function () {
                         }
                     }
                 }
-                if (game.players_turn == 1) {
-                    game.players_turn = 2;
-                    makeAiMove();
+                if (level.is_multiplayer) {
+                    if (gameState.players_turn == 1) {
+                        gameState.players_turn = 2;
+                        makeAiMove();
+                    }
+                    else {
+                        gameState.players_turn = 1;
+                    }
                 }
-                else {
-                    game.players_turn = 1;
-                }
+
             };
 
             endSelf.gameOver = function () {
