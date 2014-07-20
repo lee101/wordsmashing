@@ -34,7 +34,6 @@ var wordsmashing = new (function () {
                 gameon.pauseSound("theme");
             };
             gameState.starBar = new gameon.StarBar(level.star_rating);
-            gameState.starBar.setScore(0);
 
             gameon.renderVolumeTo($html.find('.mm-volume'));
             gameState.starBar.render($html.find('.mm-starbar'));
@@ -159,9 +158,9 @@ var wordsmashing = new (function () {
 
         gameState.EndHandler = function () {
             var endSelf = this;
-            endSelf.moves = level.numMoves;
+            endSelf.moves = level.moves;
             endSelf.render = function () {
-                if (level.numMoves) {
+                if (level.moves) {
                     $('.mm-end-condition').html('<p>Moves: ' + endSelf.moves + '</p>');
                 }
                 else {
@@ -206,6 +205,15 @@ var wordsmashing = new (function () {
                     }
                 }
             }
+
+            endSelf.addToScore = function (score) {
+                if (gameState.players_turn == 1) {
+                    gameState.starBar.setScore(gameState.starBar.getScore() + score)
+                }
+                else {
+                    gameState.starBar2.setScore(gameState.starBar2.getScore() + score)
+                }
+            };
 
             endSelf.turnEnd = function (endPos) {
                 function removeHword(start, end) {
@@ -281,20 +289,18 @@ var wordsmashing = new (function () {
                             possibleword = possibleword.toLowerCase();
 
                             if (words[possibleword]) {
-                                //scoreword
                                 matches = 1;
-                                scores = scoreWord(possibleword);
-                                addToScore(scores);
+                                scores = gameon.wordutils.scoreWord(possibleword);
+                                endSelf.addToScore(scores);
                                 removeTheHword = true;
-                                showScore(possibleword, scoreWord(possibleword))
+                                showScore(possibleword, gameon.wordutils.scoreWord(possibleword))
                             }
                             else if (words[possibleword.reverse()]) {
-                                //scoreword
                                 matches = 1;
-                                scores = scoreWord(possibleword);
-                                addToScore(scores);
+                                scores = gameon.wordutils.scoreWord(possibleword);
+                                endSelf.addToScore(scores);
                                 removeTheHword = true;
-                                showScore(possibleword.reverse(), scoreWord(possibleword))
+                                showScore(possibleword.reverse(), gameon.wordutils.scoreWord(possibleword))
                             }
                             if (matches >= 1) {
                                 unlockHWord([leftStart, endPos[1]], [rightStart, endPos[1]]);
@@ -353,20 +359,18 @@ var wordsmashing = new (function () {
                             }
                             possibleword = possibleword.toLowerCase();
                             if (words[possibleword]) {
-                                //scoreword
                                 matches++;
-                                var currentWordsScore = scoreWord(possibleword);
+                                var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
                                 scores += currentWordsScore;
-                                addToScore(currentWordsScore);
+                                endSelf.addToScore(currentWordsScore);
                                 removeVword(topStart, bottomStart);
                                 showScore(possibleword, currentWordsScore)
                             }
                             else if (words[possibleword.reverse()]) {
-                                //scoreword
                                 matches++;
-                                var currentWordsScore = scoreWord(possibleword);
+                                var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
                                 scores += currentWordsScore;
-                                addToScore(currentWordsScore);
+                                endSelf.addToScore(currentWordsScore);
                                 removeVword(topStart, bottomStart);
                                 showScore(possibleword.reverse(), currentWordsScore)
                             }
@@ -385,7 +389,7 @@ var wordsmashing = new (function () {
 
                 if (matches == 2) {
                     showDouble();
-                    addToScore(scores);
+                    endSelf.addToScore(scores);
                 }
                 if (matches == 0) {
                     if (gameState.players_turn == 1) {
@@ -410,8 +414,7 @@ var wordsmashing = new (function () {
                     }
                 }
 
-                //deselect / unselect
-                gameState.currentSelected = null;
+                gameState.unselectAll();
 
                 //look for 3 new spots
                 var numspaces = 0;
@@ -458,6 +461,8 @@ var wordsmashing = new (function () {
                     }
                 }
 
+                gameState.board.render();
+
             };
 
             endSelf.gameOver = function () {
@@ -474,9 +479,10 @@ var wordsmashing = new (function () {
                     }
                 });
                 gameState.destruct();
-                views.donelevel(gameState.starBar, level);
+                //TODO done level veiw
+//                views.donelevel(gameState.starBar, level);
             };
-            if (!level.numMoves) {
+            if (!level.moves) {
                 gameState.clock = gameon.clock(endSelf.gameOver, level.time);
                 gameState.clock.start();
             }
