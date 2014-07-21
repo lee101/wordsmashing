@@ -77,6 +77,7 @@ var wordsmashing = new (function () {
             }
             gameState.currentSelected.selected = false;
             gameState.currentSelected.reRender();
+            gameState.currentSelected = null;
         };
 
         var EmptyTile = function () {
@@ -93,7 +94,7 @@ var wordsmashing = new (function () {
                     }
                     gameState.board.animateTileAlongPath(gameState.currentSelected, path, animationSpeed, function () {
                         gameState.board.swapTiles(gameState.currentSelected, self);
-                        gameState.endHandler.turnEnd([self.yPos, self.xPos]);
+                        gameState.endHandler.turnEnd(gameState.currentSelected);
 
                     });
                 }
@@ -114,24 +115,30 @@ var wordsmashing = new (function () {
             self.points = gameon.wordutils.scoreLetter(letter);
 
             self.isRed = isRed;
-            self.halfgrown = halfgrown;
-            self.canPassThrough = halfgrown;
+
+            self.setHalfgrown = function (halfgrown) {
+                self.halfgrown = halfgrown;
+                self.canPassThrough = halfgrown
+                if (!self.halfgrown) {
+                    self.click = function () {
+                        if (!self.selected) {
+                            gameState.unselectAll();
+                            self.selected = true;
+                            gameState.currentSelected = self;
+                        }
+                        else {
+                            gameState.currentSelected = null;
+                            self.selected = false;
+                        }
+                        self.reRender();
+                    };
+                }
+            };
+
+            self.setHalfgrown(halfgrown);
 
             self.selected = false;
-            if (!self.halfgrown) {
-                self.click = function () {
-                    if (!self.selected) {
-                        gameState.unselectAll();
-                        self.selected = true;
-                        gameState.currentSelected = self;
-                    }
-                    else {
-                        gameState.currentSelected = null;
-                        self.selected = false;
-                    }
-                    self.reRender();
-                };
-            }
+
 
             self.render = function () {
                 var btnStyle = 'btn ';
@@ -146,7 +153,7 @@ var wordsmashing = new (function () {
                 }
                 if (self.halfgrown) {
                     btnStyle += ' btn-sm disabled swap grower';
-                    return '<button type="button" class="' + btnStyle + '">' + self.letter + '</button>';
+                    return '<div><button type="button" class="' + btnStyle + '">' + self.letter + '</button></div>';
                 }
                 else {
                     btnStyle += ' btn-lg';
@@ -178,7 +185,11 @@ var wordsmashing = new (function () {
             };
 
             function showScore(word, score) {
-                gameState.board.fadingPopup('<button type="button" class="btn btn-success">' + word + '.'+ score+' Points!</button>');
+                gameState.board.fadingPopup('<button type="button" class="btn btn-success">' + word + '.' + score + ' Points!</button>');
+            }
+            function getCombo(comboCount) {
+                gameState.starBar.addMoveScoring(comboCount);
+                gameState.board.fadingPopup('<button type="button" class="btn btn-success">' + comboCount + 'X Combo.' + comboCount + ' Points!</button>');
             }
 
             function growTiles() {
@@ -187,7 +198,7 @@ var wordsmashing = new (function () {
                         var currentTile = gameState.board.getTile(y, x);
                         currentTile.justgrown = false;
                         if (currentTile.halfgrown) {
-                            currentTile.halfgrown = false;
+                            currentTile.setHalfgrown(false);
                             currentTile.justgrown = true;
                         }
                     }
@@ -200,13 +211,55 @@ var wordsmashing = new (function () {
                     for (var x = 0; x < level.width; x++) {
                         var currentTile = gameState.board.getTile(y, x);
                         if (currentTile.justgrown) {
-                            currentTile.halfgrown = true;
+                            currentTile.setHalfgrown(true);
                             currentTile.justgrown = false;
                         }
                         else {
                             currentTile.justgrown = false;
                         }
                     }
+                }
+            }
+
+
+            function unlock(y, x) {
+                if (!gameState.board.isInBoard(y, x)) {
+                    return;
+                }
+                var tile = gameState.board.getTile(y, x);
+                if (!tile.locked) {
+                    return;
+                }
+                gameState.board.setTile(y, x, new EmptyTile());
+
+//                num_blocked--;
+//                num_locked--;
+//                if (num_locked <= 0) {
+//                    if (typeof winViaBreakingAllLocks == "function") {
+//                        winViaBreakingAllLocks();
+//                    }
+//                }
+            }
+
+            function unlockHWord(startTile, endTile) {
+                //unlocks a horizontal word takes two xy coordinate pairs
+                //try left and right
+                unlock(startTile.yPos - 1, startTile.xPos);
+                unlock(endTile.yPos + 1, endTile.xPos);
+                for (var i = startTile.yPos; i <= endTile.yPos; i++) {
+                    unlock(i, startTile.xPos + 1);
+                    unlock(i, endTile.xPos - 1);
+                }
+            }
+
+            function unlockVWord(startTile, endTile) {
+                //unlocks a horizontal word takes two xy coordinate pairs
+                //try left and right
+                unlock(startTile.yPos, startTile.xPos - 1);
+                unlock(endTile.yPos, endTile.xPos + 1);
+                for (var i = startTile.xPos; i <= endTile.xPos; i++) {
+                    unlock(startTile.yPos + 1, i);
+                    unlock(startTile.yPos - 1, i);
                 }
             }
 
@@ -219,16 +272,16 @@ var wordsmashing = new (function () {
                 }
             };
 
-            endSelf.turnEnd = function (endPos) {
+            endSelf.turnEnd = function (endTile) {
                 function removeHword(start, end) {
                     for (var k = start; k <= end; k++) {
-                        gameState.board.setTile(endPos[1], k, new EmptyTile())
+                        gameState.board.setTile(endTile.yPos, k, new EmptyTile())
                     }
                 }
 
                 function removeVword(start, end) {
                     for (var k = start; k <= end; k++) {
-                        gameState.board.setTile(k, endPos[0], new EmptyTile())
+                        gameState.board.setTile(k, endTile.xPos, new EmptyTile())
                     }
                 }
 
@@ -244,18 +297,18 @@ var wordsmashing = new (function () {
                 ////////////////check horizontally then vertically
                 var numLeft = 0;
                 var numRight = 0;
-                x = endPos[0];
+                x = endTile.xPos;
                 while (x > 0) {
                     x--;
-                    if (!gameState.board.getTile(endPos[1], x).letter) {
+                    if (!gameState.board.getTile(endTile.yPos, x).letter) {
                         break;
                     }
                     numLeft++
                 }
-                x = endPos[0];
+                x = endTile.xPos;
                 while (x < level.width - 1) {
                     x++;
-                    if (!gameState.board.getTile(endPos[1], x).letter) {
+                    if (!gameState.board.getTile(endTile.yPos, x).letter) {
                         break;
                     }
                     numRight++
@@ -269,26 +322,25 @@ var wordsmashing = new (function () {
                 hfinder:
                     while (startlen >= level.difficulty) {
                         //try options
-                        //go as far left as pos while still including endPos[0]
-                        var leftStart = endPos[0];
+                        //go as far left as pos while still including endTile.xPos
+                        var leftStart = endTile.xPos;
                         for (var i = 0; i < startlen - 1 && leftStart - 1 >= 0; i++) {
-                            if (!gameState.board.getTile(endPos[1], leftStart - 1).letter) {
+                            if (!gameState.board.getTile(endTile.yPos, leftStart - 1).letter) {
                                 break;
                             }
                             leftStart--
                         }
                         var rightStart = leftStart + startlen - 1;
                         //consider all options from leftStart
-                        var iterationnumber = (maxlen - startlen) + 1;
 
-                        for (; leftStart <= endPos[0] && rightStart <= numRight + endPos[0]; leftStart++, rightStart++) {
+                        for (; leftStart <= endTile.xPos && rightStart <= numRight + endTile.xPos; leftStart++, rightStart++) {
 
 
 
                             //take startlen characters starting at leftStart+i
                             var possibleword = "";
                             for (var j = leftStart; j <= rightStart; j++) {
-                                possibleword += gameState.board.getTile(endPos[1], j).letter
+                                possibleword += gameState.board.getTile(endTile.yPos, j).letter
                             }
                             possibleword = possibleword.toLowerCase();
 
@@ -307,7 +359,7 @@ var wordsmashing = new (function () {
                                 showScore(possibleword.reverse(), gameon.wordutils.scoreWord(possibleword))
                             }
                             if (matches >= 1) {
-                                unlockHWord([leftStart, endPos[1]], [rightStart, endPos[1]]);
+                                unlockHWord(gameState.board.getTile(endTile.yPos, leftStart), gameState.board.getTile(endTile.yPos, rightStart));
                                 break hfinder;
                             }
                         }
@@ -317,18 +369,18 @@ var wordsmashing = new (function () {
                 ////////// Vertical check
                 var numTop = 0;
                 var numBottom = 0;
-                y = endPos[1];
+                y = endTile.yPos;
                 while (y > 0) {
                     y--;
-                    if (!gameState.board.getTile(y, endPos[0]).letter) {
+                    if (!gameState.board.getTile(y, endTile.xPos).letter) {
                         break;
                     }
                     numTop++
                 }
-                y = endPos[1];
+                y = endTile.yPos;
                 while (y < level.height - 1) {
                     y++;
-                    if (!gameState.board.getTile(y, endPos[0]).letter) {
+                    if (!gameState.board.getTile(y, endTile.xPos).letter) {
                         break;
                     }
                     numBottom++
@@ -342,24 +394,23 @@ var wordsmashing = new (function () {
                 vfinder:
                     while (startlen >= level.difficulty) {
                         //try options
-                        //go as far left as pos while still including endPos[0]
-                        var topStart = endPos[1];
+                        //go as far left as pos while still including endTile.xPos
+                        var topStart = endTile.yPos;
                         for (var i = 0; i < startlen - 1 && topStart - 1 >= 0; i++) {
-                            if (!gameState.board.getTile(topStart - 1, endPos[0]).letter) {
+                            if (!gameState.board.getTile(topStart - 1, endTile.xPos).letter) {
                                 break;
                             }
                             topStart--
                         }
                         var bottomStart = topStart + startlen - 1;
                         //consider all options from topStart
-                        var iterationnumber = (maxlen - startlen) + 1;
 
-                        for (; topStart <= endPos[1] && bottomStart <= numBottom + endPos[1]; topStart++, bottomStart++) {
+                        for (; topStart <= endTile.yPos && bottomStart <= numBottom + endTile.yPos; topStart++, bottomStart++) {
 
 
                             possibleword = "";
                             for (var j = topStart; j <= bottomStart; j++) {
-                                possibleword += gameState.board.getTile(j, endPos[0]).letter
+                                possibleword += gameState.board.getTile(j, endTile.xPos).letter
                             }
                             possibleword = possibleword.toLowerCase();
                             if (words[possibleword]) {
@@ -379,7 +430,7 @@ var wordsmashing = new (function () {
                                 showScore(possibleword.reverse(), currentWordsScore)
                             }
                             if (matches >= 1) {
-                                unlockVWord([endPos[0], topStart], [endPos[0], bottomStart]);
+                                unlockVWord(gameState.board.getTile(topStart, endTile.xPos), gameState.board.getTile(bottomStart, endTile.xPos));
                                 break vfinder;
                             }
                         }
@@ -407,13 +458,13 @@ var wordsmashing = new (function () {
                     if (gameState.players_turn == 1) {
                         gameState.comboCounter++;
                         if (gameState.comboCounter >= 2) {
-                            showCombo(gameState.comboCounter);
+                            getCombo(gameState.comboCounter);
                         }
                     }
                     else {
                         gameState.comboCounter2++;
                         if (gameState.comboCounter2 >= 2) {
-                            showCombo(gameState.comboCounter2);
+                            getCombo(gameState.comboCounter2);
                         }
                     }
                 }
@@ -432,7 +483,7 @@ var wordsmashing = new (function () {
                 }
                 //if 0 or less spaces then you loose
                 if (numspaces <= 0) {
-                    gameover()
+                    endSelf.gameOver()
                 }
                 //generate random 3 letter places
                 var growers = [];
