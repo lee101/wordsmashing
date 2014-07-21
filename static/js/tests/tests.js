@@ -16,3 +16,17 @@ describe("fixtures", function () {
     });
 
 });
+describe("WordSmashing", function () {
+
+    it('level 1', function () {
+        APP.goto('/');
+        APP.goto('/campaign');
+        APP.goto('/campaign/easy');
+        APP.goto('/campaign/easy/1');
+    });
+
+
+    it('go back to /tests', function () {
+        APP.goto('/tests');
+    });
+});
