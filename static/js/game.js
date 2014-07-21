@@ -177,6 +177,10 @@ var wordsmashing = new (function () {
                 endSelf.render();
             };
 
+            function showScore(word, score) {
+                gameState.board.fadingPopup('<button type="button" class="btn btn-success">' + word + '.'+ score+' Points!</button>');
+            }
+
             function growTiles() {
                 for (var y = 0; y < level.height; y++) {
                     for (var x = 0; x < level.width; x++) {
