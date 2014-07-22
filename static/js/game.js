@@ -240,7 +240,8 @@ var wordsmashing = new (function () {
             };
 
             function showScore(word, score) {
-                gameState.board.fadingPopup('<button type="button" class="btn btn-success">' + word + '.' + score + ' Points!</button>');
+                gameState.board.fadingPopup('<button type="button" class="btn btn-success">' +
+                    gameon.wordutils.capitaliseFirstLetter(word) + ' ' + score + ' Points!</button>');
             }
 
             function showDouble() {
@@ -593,8 +594,7 @@ var wordsmashing = new (function () {
                     }
                 });
                 gameState.destruct();
-                //TODO done level veiw
-//                views.donelevel(gameState.starBar, level);
+                APP.doneLevel(gameState.starBar, level);
             };
             if (!level.moves) {
                 gameState.clock = gameon.clock(endSelf.gameOver, level.time);

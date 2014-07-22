@@ -8,6 +8,20 @@
         return false
     };
 
+    APP.gotoLevel = function (level) {
+        //find level idx
+        var levelsByDifficulty = fixtures.getLevelsByDifficulty(level.difficulty);
+        var levelIdx = 1;
+        for (var i = 0; i < levelsByDifficulty.length; i++) {
+            if (levelsByDifficulty[i].id == level.id) {
+                break;
+            }
+            levelIdx++;
+        }
+        APP.goto('/campaign/' + fixtures.difficultyIdToName(level.difficulty) + '/' + levelIdx);
+        return false
+    };
+
     APP.stepBack = function () {
         var currrentPath = window.location.hash;
         if (currrentPath == "") {
@@ -83,13 +97,9 @@
                 return;
             }
 
-            function handle() {
-                APP.currentView = pathname;
-                APP.refresh();
-                animateTo(new APP.Views[pathname]({args: args}));
-            }
-
-            handle();
+            APP.currentView = pathname;
+            APP.refresh();
+            animateTo(new APP.Views[pathname]({args: args}));
         }
     }
 
@@ -143,6 +153,7 @@
         APP.router = new Router();
         APP.header = new APP.Views.Header({path: location.pathname});
         APP.footer = new APP.Views.Footer({path: location.pathname});
+        APP.doneLevel = defaultHandler('/done-level');
         Backbone.history.start({
             pushState: true
 //            silent: true

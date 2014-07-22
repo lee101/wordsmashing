@@ -32,6 +32,23 @@ root: root
 };
 })();
 })();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/done-level.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div class=\"main-game-wrapper\">\n\n    <div class=\"mm-logo\">\n        <div class=\"mm-starbar mm-starbar--center\">\n\n        </div>\n        <div class=\"mm-end-message\">\n            <p>Excellent!</p>\n        </div>\n        <div class=\"mm-bonus-message\">\n        </div>\n        <div class=\"gameon-level-controls\">\n            <div class=\"left\">\n                <a id=\"mm-replay\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg\"\n                        >Replay\n                </a>\n            </div>\n            <div class=\"right\">\n                <a id=\"mm-next-level\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg disabled\"\n                        ><span\n                        class=\"fa fa-lock\"></span>Next\n                </a>\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"text-center\">\n                <a href=\"/\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg\"\n                        >Menu\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
 (function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/footer.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -90,7 +107,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"mainbody\">\n\n    <div class=\"mm-logo\">\n        <div class=\"gameon-level-controls gameon-level-controls--small-tiles\">\n            <div class=\"mm-end-condition\">\n                <p>Time: <span class=\"gameon-clock\"></span></p>\n            </div>\n            <div class=\"mm-volume\">\n\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"mm-starbar\">\n\n            </div>\n        </div>\n    </div>\n    <div class=\"mm-level gameon-board gameon-board--small-tiles\">\n\n    </div>\n</div>\n";
+output += "<div class=\"main-game-wrapper\">\n\n    <div class=\"mm-logo\">\n        <div class=\"gameon-level-controls gameon-level-controls--small-tiles\">\n            <div class=\"mm-end-condition\">\n                <p>Time: <span class=\"gameon-clock\"></span></p>\n            </div>\n            <div class=\"mm-volume\">\n\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"mm-starbar\">\n\n            </div>\n        </div>\n    </div>\n    <div class=\"mm-level gameon-board gameon-board--small-tiles\">\n\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {

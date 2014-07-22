@@ -95,6 +95,15 @@
             self.difficultyNameToId = function (name) {
                 return difficultyNameToIdMap[name];
             };
+            var difficultyIdToNameMap = { };
+            difficultyIdToNameMap[self.EASY] = "easy";
+            difficultyIdToNameMap[self.MEDIUM] = "medium";
+            difficultyIdToNameMap[self.HARD] = "hard";
+            difficultyIdToNameMap[self.EXPERT] = "expert";
+
+            self.difficultyIdToName = function (id) {
+                return difficultyIdToNameMap[id];
+            };
 
             self.EASY_LEVELS = {{ json.dumps(fixtures.EASY_LEVELS, cls=GameOnUtils.MyEncoder) }};
             self.MEDIUM_LEVELS = {{ json.dumps(fixtures.MEDIUM_LEVELS, cls=GameOnUtils.MyEncoder) }};
@@ -110,7 +119,7 @@
             self.difficulty_to_levels_map[self.HARD] = self.HARD_LEVELS;
             self.difficulty_to_levels_map[self.EXPERT] = self.EXPERT_LEVELS;
 
-            self.getLevelsByDifficulty = function(difficulty) {
+            self.getLevelsByDifficulty = function (difficulty) {
                 if (typeof difficulty === "string") {
                     difficulty = self.difficultyNameToId(difficulty.toLowerCase());
                 }

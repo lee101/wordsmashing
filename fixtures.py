@@ -50,16 +50,16 @@ class Level(Fixture):
             self.star_rating = [1, 1, 1, 1]
             return
         self.star_rating = [
-            int(h / 4.0 * (7 * 4)),
-            int(h / 4.0 * (8 * 4)),
-            int(h / 4.0 * (9 * 4)),
-            int(h / 4.0 * (10 * 4)),
+            5 * int(h / 4.0 * (7 * 4)),
+            5 * int(h / 4.0 * (8 * 4)),
+            5 * int(h / 4.0 * (9 * 4)),
+            5 * int(h / 4.0 * (10 * 4)),
         ]
 
 
 EASY_LEVELS = [
     Level(height=4, width=4, growth_rate=0, moves=1),
-    Level(height=8, width=8, moves=10),
+    Level(height=8, width=8, moves=15, num_start_letters=8),
     Level(height=9, width=9, time_left=60 * 3),
     Level(locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3)]),
 

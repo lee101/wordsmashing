@@ -94,7 +94,7 @@
             levelsSelf.board.render(levelsSelf.$el.find('.mm-levels'));
             levelsSelf.renderCallback();
 
-            return this;
+            return levelsSelf;
         },
         rendersAsync: true,
         renderCallback: $.noop
@@ -103,20 +103,92 @@
     APP.Views['/campaign/:difficulty/:level'] = Backbone.View.extend({
         initialize: function (options) {
             this.difficulty = options.args[0];
-            this.level = +options.args[1] - 1;
+            this.levelIdx = +options.args[1] - 1;
         },
 
         render: function () {
 
             var self = this;
 
-            var level = fixtures.getLevelsByDifficulty(self.difficulty)[self.level];
+            var level = fixtures.getLevelsByDifficulty(self.difficulty)[self.levelIdx];
 
             self.game = new wordsmashing.Game(level);
             self.game.render(self.$el);
 
-            return this;
+            return self;
         }
+    });
+
+    APP.Views['/done-level'] = Backbone.View.extend({
+        initialize: function (options) {
+            this.starBar = options.args[0];
+            this.level = options.args[1];
+        },
+
+        render: function () {
+
+            var self = this;
+
+            var $html = $(evutils.render('templates/shared/done-level.jinja2'));
+            self.$el.html($html);
+
+
+            self.starBar.render($html.find('.mm-starbar'));
+
+            var $button = $html.find('#mm-next-level');
+            if (self.starBar.hasWon()) {
+                $button.removeClass('disabled');
+                $button.find('.fa-lock').remove();
+                $button.click(function () {
+                    self.nextLevel(self.level);
+                });
+            }
+            if (self.isLastLevel(self.level)) {
+                $button.hide();
+            }
+            $html.find('#mm-replay').click(function () {
+                //todo fix this workaround for backbone not triggering the same route
+                APP.goto("/");
+                APP.gotoLevel(self.level);
+            });
+            if (self.starBar.numStars == 0) {
+                $html.find('.mm-end-message p').html('Try Again!');
+            }
+            else if (self.starBar.numStars == 1) {
+                $html.find('.mm-end-message p').html('Good!');
+            }
+            else if (self.starBar.numStars == 2) {
+                $html.find('.mm-end-message p').html('Great!');
+            }
+            if (self.starBar.movesBonus) {
+                $html.find('.mm-bonus-message').append(
+                        'Moves Bonus: ' + self.starBar.movesBonus.bonus +
+                        ' Points!'
+                );
+            }
+            else if (self.starBar.timeBonus) {
+                $html.find('.mm-bonus-message').append(
+                        'Time Bonus: ' + self.starBar.timeBonus.bonus +
+                        ' Points!'
+                );
+            }
+            if (self.starBar.hasWon() && self.isLastLevel(self.level)) {
+                $html.find('.mm-end-message p').append(' <br /> Congratulations You have Won The Game!!!');
+            }
+            if (self.starBar.hasWon()) {
+                gameon.loopSound('win');
+            }
+
+            return self;
+        },
+        isLastLevel: function (lvl) {
+            return lvl.id === fixtures.LEVELS[fixtures.LEVELS.length - 1].id;
+        },
+        nextLevel: function (level) {
+            var nextLevel = fixtures.LEVELS[level.id];
+            APP.gotoLevel(nextLevel);
+        }
+
     });
 
     APP.Views['/contact'] = Backbone.View.extend({
