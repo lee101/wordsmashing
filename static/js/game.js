@@ -206,8 +206,8 @@ var wordsmashing = new (function () {
                     return '<button type="button" class="' + btnStyle + ' btn-lg" disabled="disabled"><span class="glyphicon glyphicon-lock"></span></button>';
                 }
                 if (self.halfgrown) {
-                    btnStyle += ' btn-sm disabled swap grower';
-                    return '<div><button type="button" class="' + btnStyle + '">' + self.letter + '</button></div>';
+                    btnStyle += ' btn-sm disabled';
+                    return '<div class="grower"><button type="button" class="' + btnStyle + '">' + self.letter + '</button></div>';
                 }
                 else {
                     btnStyle += ' btn-lg';
