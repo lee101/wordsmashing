@@ -47,7 +47,7 @@ class Level(Fixture):
         if self.star_rating:
             return
         if h == 0:
-            self.star_rating = [1, 2, 3, 4]
+            self.star_rating = [1, 1, 1, 1]
             return
         self.star_rating = [
             int(h / 4.0 * (7 * 4)),
@@ -58,7 +58,7 @@ class Level(Fixture):
 
 
 EASY_LEVELS = [
-    Level(height=4, width=4, growth_rate=0),
+    Level(height=4, width=4, growth_rate=0, moves=1),
     Level(height=8, width=8, moves=10),
     Level(height=9, width=9, time_left=60 * 3),
     Level(locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3)]),

@@ -103,7 +103,7 @@
     APP.Views['/campaign/:difficulty/:level'] = Backbone.View.extend({
         initialize: function (options) {
             this.difficulty = options.args[0];
-            this.level = +options.args[1];
+            this.level = +options.args[1] - 1;
         },
 
         render: function () {
