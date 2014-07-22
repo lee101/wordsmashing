@@ -39,14 +39,14 @@ var wordsmashing = new (function () {
             gameState.starBar.render($html.find('.mm-starbar'));
 
             gameState.endHandler = new gameState.EndHandler();
-            gameState.endHandler.render();
+            gameState.endHandler.render($html.find('.mm-end-condition'));
             gameState.$html = $html;
 
             if (level.id == 1) {
                 window.setTimeout(function () {
                     var $firstLevelFirstTile = $('#firstLevelFirstTile');
                     $firstLevelFirstTile.popover('show');
-                }, 1000);
+                }, 400);
             }
         }
 
@@ -220,12 +220,13 @@ var wordsmashing = new (function () {
         gameState.EndHandler = function () {
             var endSelf = this;
             endSelf.moves = level.moves;
-            endSelf.render = function () {
+            endSelf.render = function (target) {
+                endSelf.$target = $(target);
                 if (level.moves) {
-                    $('.mm-end-condition').html('<p>Moves: ' + endSelf.moves + '</p>');
+                    endSelf.$target.html('<p>Moves: ' + endSelf.moves + '</p>');
                 }
                 else {
-                    $('.mm-end-condition').html('<p>Time: <span class="gameon-clock"></span></p>');
+                    endSelf.$target.html('<p>Time: <span class="gameon-clock"></span></p>');
                 }
             };
             endSelf.setMoves = function (moves) {
@@ -235,7 +236,7 @@ var wordsmashing = new (function () {
                     endSelf.gameOver();
                     return;
                 }
-                endSelf.render();
+                endSelf.render(endSelf.$target);
             };
 
             function showScore(word, score) {
@@ -542,6 +543,7 @@ var wordsmashing = new (function () {
                 if (numspaces <= 0) {
                     endSelf.gameOver()
                 }
+                endSelf.setMoves(endSelf.moves - 1);
                 //generate random 3 letter places
                 var growers = [];
                 for (var i = 0; i < numspaces - level.growth_rate; i++) {
