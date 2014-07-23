@@ -39,6 +39,10 @@ var wordsmashing = new (function () {
                 gameState.starBar.render($html.find('.mm-starbar'));
                 gameState.starBar2 = new gameon.StarBar(level.star_rating, 'progress-bar-primary');
                 gameState.starBar2.render($html.find('.mm-starbar2'));
+
+                if (level.computer_blue_opponent) {
+                    gameState.aiHandler = new AIHandler();
+                }
             }
             else {
                 gameState.starBar = new gameon.StarBar(level.star_rating);
@@ -143,6 +147,10 @@ var wordsmashing = new (function () {
             gameState.currentSelected.selected = false;
             gameState.currentSelected.reRender();
             gameState.currentSelected = null;
+        };
+
+        gameState.moveFromTo = function (startTile, endTile) {
+
         };
 
         var EmptyTile = function () {
@@ -557,7 +565,7 @@ var wordsmashing = new (function () {
                 if (numspaces <= 0) {
                     endSelf.gameOver()
                 }
-                if(level.moves) {
+                if (level.moves) {
                     endSelf.setMoves(endSelf.moves - 1);
                 }
                 //generate random 3 letter places
@@ -585,7 +593,7 @@ var wordsmashing = new (function () {
                     if (gameState.players_turn == 1) {
                         gameState.players_turn = 2;
                         if (level.computer_blue_opponent) {
-                            makeAiMove();
+                            gameState.aiHandler.makeAiMove();
                         }
                     }
                     else {
@@ -594,7 +602,6 @@ var wordsmashing = new (function () {
                 }
 
                 gameState.board.render();
-
             };
 
             endSelf.gameOver = function () {
@@ -617,6 +624,62 @@ var wordsmashing = new (function () {
                 gameState.clock = gameon.clock(endSelf.gameOver, level.time);
                 gameState.clock.start();
             }
+        };
+
+        gameState.AIHandler = function () {
+            var AISelf = this;
+
+            AISelf.makeAiMove = function () {
+                //TODO figure out if people can move!
+                gameon.blockUI();
+
+                //find a place to move to
+                // - find all blue movables
+                var blueTiles = [];
+                for (var y = 0; y < level.height; y++) {
+                    for (var x = 0; x < level.width; x++) {
+                        var currentTile = gameState.board.getTile(y, x);
+                        if (currentTile.isRed == false &&
+                            currentTile.letter && !currentTile.halfgrown) {
+
+                            blueTiles.push([y, x]);
+                        }
+                    }
+                }
+                //get the move with best score
+                var maxScoreMove = [
+                    gameState.board.getTile(0, 0),
+                    gameState.board.getTile(0, 0)
+                ];
+                var maxScore = 0;
+                var totalNumMovesFound = 0;
+                for (var i = 0; i < blueTiles.length; i++) {
+                    var allMovesFrom = gameState.board.getAllReachableTilesFrom(blueTiles[i]);
+                    totalNumMovesFound += allMovesFrom.length;
+                    for (var j = 0; j < allMovesFrom.length; j++) {
+                        var currentMovesScore = scoreMove(blueTiles[i], allMovesFrom[j]);
+                        if (currentMovesScore >= maxScore) {
+                            maxScore = currentMovesScore;
+                            maxScoreMove = [blueTiles[i], allMovesFrom[j]];
+                        }
+                    }
+                }
+                if (totalNumMovesFound == 0) {
+                    //no moves! TODO something
+                    gameState.gameOver();
+                }
+
+                //update view
+                maxScoreMove[0].click();
+                setTimeout(function () {
+                    //move there
+                    maxScoreMove[1].click();
+                    gameon.unblockUI();
+                    //gameState.unselectAll();
+                }, 800);
+            };
+
+            return AISelf;
         };
 
         gameState.render = function (target) {
