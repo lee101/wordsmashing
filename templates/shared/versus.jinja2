@@ -1,0 +1,24 @@
+<div id="instructions" style="display: none">
+    <h1>Pick A Computer Or Local Opponent</h1>
+
+    <p class="lead">
+        Play head to head red vs blue.<br />
+        You can only control your own color but you can make words with anyone's letters!<br/>
+        Block your opponent off and use there letters so they can't move!
+    </p>
+</div>
+<div class="ws-main-btn-container">
+    <button type="button" class="ws-main-btn gameon-btn-hg btn btn-success btn-lg"
+            onclick="APP.goto('/versus/1player')">1 Player
+    </button>
+</div>
+<div class="ws-main-btn-container">
+    <button type="button" class="ws-main-btn gameon-btn-hg btn btn-success btn-lg"
+            onclick="APP.goto('/versus/2player')"
+            disabled="disabled"><span
+            class="glyphicon glyphicon-lock"></span>2 Player
+    </button>
+</div>
+<div class="ws-main-btn-container">
+    <button class="ws-help-btn btn btn-large btn-danger gameon-btn-hg" type="button">?</button>
+</div>

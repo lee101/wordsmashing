@@ -107,7 +107,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"main-game-wrapper\">\n\n    <div class=\"mm-logo\">\n        <div class=\"gameon-level-controls gameon-level-controls--small-tiles\">\n            <div class=\"mm-end-condition\">\n                <p>Time: <span class=\"gameon-clock\"></span></p>\n            </div>\n            <div class=\"mm-volume\">\n\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"mm-starbar\">\n\n            </div>\n        </div>\n    </div>\n    <div class=\"mm-level gameon-board gameon-board--small-tiles\">\n\n    </div>\n</div>\n";
+output += "<div class=\"main-game-wrapper\">\n\n    <div class=\"mm-logo\">\n        <div class=\"gameon-level-controls gameon-level-controls--small-tiles\">\n            <div class=\"mm-end-condition\">\n                <p>Time: <span class=\"gameon-clock\"></span></p>\n            </div>\n            <div class=\"mm-volume\">\n\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"mm-starbar\">\n\n            </div>\n            <div class=\"mm-starbar2\">\n\n            </div>\n        </div>\n    </div>\n    <div class=\"mm-level gameon-board gameon-board--small-tiles\">\n\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -168,6 +168,23 @@ var colno = null;
 var output = "";
 try {
 output += "<div id=\"instructions\" style=\"display:none\">\n    <h1 style=\"display:none\">Word Smashing</h1>\n\n    <p class=\"lead\" style=\"display:none\">Word smashing is a free online word search puzzle.</p>\n\n    <p class=\"lead\"><b>Instructions:</b><br/>\n        Make words! lots of words! two at once or heaps in a row for bonus points!<br/>\n        Get words up, down, forward and backwards!<br/>\n        To move, click a letter and click a space!<br/>\n        You can move if there's a clear path!<br/>\n        Each turn 3 more letters appear, when the board fills up its game over!<br/>\n        Some people &amp; place names don't count!<br/>\n    </p>\n</div>\n\n<div class=\"ws-main-content\">\n\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn btn btn-large btn-success gameon-btn-hg\" href=\"/campaign\">Play Now!</a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn btn btn-large btn-success gameon-btn-hg\" href=\"/classic\">Classic</a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn btn btn-large btn-success gameon-btn-hg\" href=\"/versus\">VS</a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn btn btn-large btn-success gameon-btn-hg\" href=\"/learn-english\">Learn English</a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <button class=\"ws-help-btn btn btn-large btn-danger gameon-btn-hg\" type=\"button\">?</button>\n    </div>\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/versus.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div id=\"instructions\" style=\"display: none\">\n    <h1>Pick A Computer Or Local Opponent</h1>\n\n    <p class=\"lead\">\n        Play head to head red vs blue.<br />\n        You can only control your own color but you can make words with anyone's letters!<br/>\n        Block your opponent off and use there letters so they can't move!\n    </p>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/versus/1player')\">1 Player\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/versus/2player')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>2 Player\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button class=\"ws-help-btn btn btn-large btn-danger gameon-btn-hg\" type=\"button\">?</button>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {

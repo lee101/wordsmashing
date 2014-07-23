@@ -53,30 +53,6 @@
 
 {% macro jsvars() -%}
     <script>
-        //fixtures
-
-        {% if level %}
-            num_blocked = {{ level.blocked_spaces|length }} + {{ level.locked_spaces|length }};
-            {% if level.blocked_spaces %}
-                blocked_spaces = {};
-                {% for pair in level.blocked_spaces %}
-                    {% set bx = pair[0] %}
-                    {% set by = pair[1] %}
-                    blocked_spaces['{{ bx }}-{{ by }}'] = true;
-                {% endfor %}
-            {% endif %}
-
-            {% if level.locked_spaces %}
-                num_locked = {{ level.locked_spaces|length }};
-                locked_spaces = {};
-                {% for pair in level.locked_spaces %}
-                    {% set bx = pair[0] %}
-                    {% set by = pair[1] %}
-                    locked_spaces['{{ bx }}-{{ by }}'] = true;
-                {% endfor %}
-            {% endif %}
-        {% endif %}
-
         fixtures = new (function () {
             "use strict";
             var self = this;
@@ -128,7 +104,6 @@
 
             return self;
         })();
-
 
     </script>
 {%- endmacro %}

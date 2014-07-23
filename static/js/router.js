@@ -109,8 +109,7 @@
         '/timed': 'timed',
         '/classic': 'classic',
         '/versus': 'versus',
-        '/versus/1player': 'versus/1player',
-        '/versus/2player': 'versus/2player',
+
         '/instructions': 'instructions',
         '/learn-english': 'learn-english',
         "/about": "about",
@@ -124,6 +123,8 @@
     });
     jQuery.extend(routes, {
         //pages needing js rendering
+        'versus/1player': 'versus/1player',
+        'versus/2player': 'versus/2player',
         'campaign/:difficulty': 'campaign/:difficulty',
         'campaign/:difficulty/:level': 'campaign/:difficulty/:level'
     });

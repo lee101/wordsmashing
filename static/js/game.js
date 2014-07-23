@@ -33,10 +33,20 @@ var wordsmashing = new (function () {
                 gameon.cleanBoards();
                 gameon.pauseSound("theme");
             };
-            gameState.starBar = new gameon.StarBar(level.star_rating);
+
+            if (level.is_multiplayer) {
+                gameState.starBar = new gameon.StarBar(level.star_rating, 'progress-bar-danger');
+                gameState.starBar.render($html.find('.mm-starbar'));
+                gameState.starBar2 = new gameon.StarBar(level.star_rating, 'progress-bar-primary');
+                gameState.starBar2.render($html.find('.mm-starbar2'));
+            }
+            else {
+                gameState.starBar = new gameon.StarBar(level.star_rating);
+
+                gameState.starBar.render($html.find('.mm-starbar'));
+            }
 
             gameon.renderVolumeTo($html.find('.mm-volume'));
-            gameState.starBar.render($html.find('.mm-starbar'));
 
             gameState.endHandler = new gameState.EndHandler();
             gameState.endHandler.render($html.find('.mm-end-condition'));
@@ -202,7 +212,10 @@ var wordsmashing = new (function () {
                 else if (self.isRed) {
                     btnStyle += 'btn-danger ';
                 }
-                else if (self.locked) {
+                else {
+                    btnStyle += 'btn-primary ';
+                }
+                if (self.locked) {
                     return '<button type="button" class="' + btnStyle + ' btn-lg" disabled="disabled"><span class="glyphicon glyphicon-lock"></span></button>';
                 }
                 if (self.halfgrown) {
@@ -544,7 +557,9 @@ var wordsmashing = new (function () {
                 if (numspaces <= 0) {
                     endSelf.gameOver()
                 }
-                endSelf.setMoves(endSelf.moves - 1);
+                if(level.moves) {
+                    endSelf.setMoves(endSelf.moves - 1);
+                }
                 //generate random 3 letter places
                 var growers = [];
                 for (var i = 0; i < numspaces - level.growth_rate; i++) {
@@ -569,7 +584,9 @@ var wordsmashing = new (function () {
                 if (level.is_multiplayer) {
                     if (gameState.players_turn == 1) {
                         gameState.players_turn = 2;
-                        makeAiMove();
+                        if (level.computer_blue_opponent) {
+                            makeAiMove();
+                        }
                     }
                     else {
                         gameState.players_turn = 1;

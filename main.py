@@ -81,6 +81,10 @@ class TermsHandler(BaseHandler):
     def get(self):
         self.render('templates/terms.jinja2')
 
+class VersusHandler(BaseHandler):
+    def get(self):
+        self.render('templates/versus.jinja2')
+
 
 class TimedHandler(BaseHandler):
     def get(self):
@@ -164,6 +168,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
                                                ('/facebook', FbHandler),
                                                ('/about', AboutHandler),
                                                ('/contact', ContactHandler),
+                                               ('/versus', VersusHandler),
                                                ('/timed', TimedHandler),
                                                ('/multiplayer', FriendsHandler),
                                                ('/games-multiplayer', GameMultiplayerHandler),
@@ -176,6 +181,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
                                                # need js rendering
                                                (r'/campaign/..*', MainHandler),
                                                (r'/campaign/..*/..*', MainHandler),
+                                               (r'/versus/..*', MainHandler),
 
                                                (r'/tests', TestsHandler),
 

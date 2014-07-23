@@ -191,6 +191,56 @@
 
     });
 
+    APP.Views['/versus'] = Backbone.View.extend({
+        initialize: function (options) {
+        },
+
+        render: function () {
+            this.$el.html(evutils.render('templates/shared/versus.jinja2'));
+            return this;
+        }
+    });
+
+    APP.Views['/versus/1player'] = Backbone.View.extend({
+        initialize: function (options) {
+        },
+
+        render: function () {
+            var self = this;
+
+            var level = {
+                "blocked_spaces": [],
+                "growth_rate": 3,
+                "id": null,
+                "moves": null,
+                "time_left": null,
+                "num_start_letters": 14,
+                "difficulty": 3,
+                "locked_spaces": [],
+                "height": 9,
+                "width": 9,
+                "star_rating": [900],
+                "is_multiplayer": true,
+                "computer_blue_opponent": true
+            };
+
+            self.game = new wordsmashing.Game(level);
+            self.game.render(self.$el);
+
+            return self;
+        }
+    });
+
+    APP.Views['/versus/2player'] = Backbone.View.extend({
+        initialize: function (options) {
+        },
+
+        render: function () {
+            this.$el.html(evutils.render('templates/shared/versus.jinja2'));
+            return this;
+        }
+    });
+
     APP.Views['/contact'] = Backbone.View.extend({
         initialize: function (options) {
         },
