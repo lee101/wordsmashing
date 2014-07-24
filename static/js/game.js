@@ -41,7 +41,7 @@ var wordsmashing = new (function () {
                 gameState.starBar2.render($html.find('.mm-starbar2'));
 
                 if (level.computer_blue_opponent) {
-                    gameState.aiHandler = new AIHandler();
+                    gameState.aiHandler = new gameState.AIHandler();
                 }
             }
             else {
@@ -162,7 +162,7 @@ var wordsmashing = new (function () {
                 var path = gameState.board.getPathFromTo(gameState.currentSelected, self);
                 if (path) {
                     var animationSpeed = 200;
-                    if (gameState.players_turn == 2) {
+                    if (gameState.players_turn == 2 && level.computer_blue_opponent) {
                         animationSpeed = 400;
                     }
                     gameState.board.animateTileAlongPath(gameState.currentSelected, path, animationSpeed, function () {
@@ -193,7 +193,12 @@ var wordsmashing = new (function () {
                 self.halfgrown = halfgrown;
                 self.canPassThrough = halfgrown;
                 if (!self.halfgrown) {
+                    self.oldClick = self.click;
                     self.click = function () {
+                        var canClick = (self.isRed && gameState.players_turn == 1) || (!self.isRed && gameState.players_turn == 2);
+                        if (!canClick) {
+                            return;
+                        }
                         if (!self.selected) {
                             gameState.unselectAll();
                             self.selected = true;
@@ -205,6 +210,11 @@ var wordsmashing = new (function () {
                         }
                         self.reRender();
                     };
+                }
+                else {
+                    if (self.oldClick) {
+                        self.click = self.oldClick;
+                    }
                 }
             };
 
@@ -379,7 +389,7 @@ var wordsmashing = new (function () {
                 ////////////////check horizontally then vertically
                 var numLeft = 0;
                 var numRight = 0;
-                x = endTile.xPos;
+                var x = endTile.xPos;
                 while (x > 0) {
                     x--;
                     if (!gameState.board.getTile(endTile.yPos, x).letter) {
@@ -387,7 +397,7 @@ var wordsmashing = new (function () {
                     }
                     numLeft++
                 }
-                x = endTile.xPos;
+                var x = endTile.xPos;
                 while (x < level.width - 1) {
                     x++;
                     if (!gameState.board.getTile(endTile.yPos, x).letter) {
@@ -396,7 +406,6 @@ var wordsmashing = new (function () {
                     numRight++
                 }
                 var startlen = numRight + numLeft + 1;
-                var maxlen = startlen;
 
                 //try all lengths down to level.difficulty (2 3 or 4)
                 //
@@ -449,7 +458,7 @@ var wordsmashing = new (function () {
                 ////////// Vertical check
                 var numTop = 0;
                 var numBottom = 0;
-                y = endTile.yPos;
+                var y = endTile.yPos;
                 while (y > 0) {
                     y--;
                     if (!gameState.board.getTile(y, endTile.xPos).letter) {
@@ -457,7 +466,7 @@ var wordsmashing = new (function () {
                     }
                     numTop++
                 }
-                y = endTile.yPos;
+                var y = endTile.yPos;
                 while (y < level.height - 1) {
                     y++;
                     if (!gameState.board.getTile(y, endTile.xPos).letter) {
@@ -466,7 +475,6 @@ var wordsmashing = new (function () {
                     numBottom++
                 }
                 var startlen = numBottom + numTop + 1;
-                var maxlen = startlen;
 
                 //try all lengths down to 3
                 //
@@ -603,22 +611,190 @@ var wordsmashing = new (function () {
 
                 gameState.board.render();
             };
+            endSelf.scoreMove = function (startTile, endTile) {
 
-            endSelf.gameOver = function () {
-                gameon.getUser(function (user) {
-                    user.saveScore(level.id, gameState.starBar.getScore());
-                    if (gameState.starBar.hasWon()) {
-                        if (user.levels_unlocked < level.id) {
-                            user.saveLevelsUnlocked(level.id);
-                            var numLevels = fixtures.getLevelsByDifficulty(level.difficulty).length;
-                            if (user.levels_unlocked % numLevels === 0) {
-                                user.saveDifficultiesUnlocked(user.difficulties_unlocked + 1);
+                // == 1 simulate move on the board
+
+                gameState.board.swapTiles(startTile, endTile);
+                var tmp = endTile;
+                endTile = startTile;
+                startTile = tmp;
+
+                growTiles();
+
+
+                // == 2 score the move
+                var currentMovesScore = 0;
+                ///////////////////////////////////
+                var matches = 0;
+                var scores = 0;
+                ////////////////check horizontally then vertically
+                var numLeft = 0;
+                var numRight = 0;
+                var x = endTile.xPos;
+                while (x > 0) {
+                    x--;
+                    if (!gameState.board.getTile(endTile.yPos, x).letter) {
+                        break;
+                    }
+                    numLeft++
+                }
+                var x = endTile.xPos;
+                while (x < level.width - 1) {
+                    x++;
+                    if (!gameState.board.getTile(endTile.yPos, x).letter) {
+                        break;
+                    }
+                    numRight++
+                }
+                var startlen = numRight + numLeft + 1;
+
+                //try all lengths down to difficulty (2 3 or 4)
+                //
+                //drag leftStart and rightStart alongto consider all possibilities
+                hfinder:
+                    while (startlen >= fixtures.EASY) {
+                        //try options
+                        //go as far left as pos while still including endTile.xPos
+                        var leftStart = endTile.xPos;
+                        for (var i = 0; i < startlen - 1 && leftStart - 1 >= 0; i++) {
+                            if (!gameState.board.getTile(endTile.yPos, leftStart - 1).letter) {
+                                break;
+                            }
+                            leftStart--
+                        }
+                        var rightStart = leftStart + startlen - 1;
+                        //consider all options from leftStart
+
+                        for (; leftStart <= endTile.xPos && rightStart <= numRight + endTile.xPos; leftStart++, rightStart++) {
+
+
+
+                            //take startlen characters starting at leftStart+i
+                            var possibleword = "";
+                            for (var j = leftStart; j <= rightStart; j++) {
+                                possibleword += gameState.board.getTile(endTile.yPos, j).letter
+                            }
+                            possibleword = possibleword.toLowerCase();
+
+                            if (words[possibleword]) {
+                                //scoreword
+                                matches = 1;
+                                scores = gameon.wordutils.scoreWord(possibleword);
+                                currentMovesScore += scores;
+                            }
+                            else if (words[possibleword.reverse()]) {
+                                //scoreword
+                                matches = 1;
+                                scores = gameon.wordutils.scoreWord(possibleword);
+                                currentMovesScore += scores;
+                            }
+                            if (matches >= 1) {
+                                break hfinder;
                             }
                         }
+
+                        startlen--
                     }
-                });
+                ////////// Vertical check
+                var numTop = 0;
+                var numBottom = 0;
+                var y = endTile.yPos;
+                while (y > 0) {
+                    y--;
+                    if (!gameState.board.getTile(y, endTile.xPos).letter) {
+                        break;
+                    }
+                    numTop++
+                }
+                var y = endTile.yPos;
+                while (y < level.height - 1) {
+                    y++;
+                    if (!gameState.board.getTile(y, endTile.xPos).letter) {
+                        break;
+                    }
+                    numBottom++
+                }
+                var startlen = numBottom + numTop + 1;
+
+                //try all lengths down to 3
+                //
+                //drag topStart and bottomStart alongto consider all possibilities
+                vfinder:
+                    while (startlen >= fixtures.EASY) {
+                        //try options
+                        //go as far left as pos while still including endTile.xPos
+                        var topStart = endTile.yPos;
+                        for (var i = 0; i < startlen - 1 && topStart - 1 >= 0; i++) {
+                            if (!gameState.board.getTile(topStart - 1, endTile.xPos).letter) {
+                                break;
+                            }
+                            topStart--
+                        }
+                        var bottomStart = topStart + startlen - 1;
+                        //consider all options from topStart
+
+                        for (; topStart <= endTile.yPos && bottomStart <= numBottom + endTile.yPos; topStart++, bottomStart++) {
+
+
+                            possibleword = "";
+                            for (var j = topStart; j <= bottomStart; j++) {
+                                possibleword += gameState.board.getTile(j, endTile.xPos).letter
+                            }
+                            possibleword = possibleword.toLowerCase();
+                            if (words[possibleword]) {
+                                //scoreword
+                                matches++;
+                                var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
+                                scores += currentWordsScore;
+                                currentMovesScore += currentWordsScore;
+                            }
+                            else if (words[possibleword.reverse()]) {
+                                //scoreword
+                                matches++;
+                                var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
+                                scores += currentWordsScore;
+                                currentMovesScore += currentWordsScore;
+                            }
+                            if (matches >= 1) {
+                                break vfinder;
+                            }
+                        }
+
+                        startlen--
+                    }
+                //getdouble
+                if (matches == 2) {
+                    currentMovesScore += scores;
+                }
+
+                ///////////////////////////////////
+                // == 3 rollback the board
+                gameState.board.swapTiles(startTile, endTile);
+                unGrowTiles();
+
+                return currentMovesScore
+            };
+
+
+            endSelf.gameOver = function () {
+                if ($.isNumeric(level.id)) {
+                    gameon.getUser(function (user) {
+                        user.saveScore(level.id, gameState.starBar.getScore());
+                        if (gameState.starBar.hasWon()) {
+                            if (user.levels_unlocked < level.id) {
+                                user.saveLevelsUnlocked(level.id);
+                                var numLevels = fixtures.getLevelsByDifficulty(level.difficulty).length;
+                                if (user.levels_unlocked % numLevels === 0) {
+                                    user.saveDifficultiesUnlocked(user.difficulties_unlocked + 1);
+                                }
+                            }
+                        }
+                    });
+                }
+
                 gameState.destruct();
-                APP.doneLevel(gameState.starBar, level);
+                APP.doneLevel(gameState.starBar, gameState.starBar2, level);
             };
             if (!level.moves) {
                 gameState.clock = gameon.clock(endSelf.gameOver, level.time);
@@ -642,7 +818,7 @@ var wordsmashing = new (function () {
                         if (currentTile.isRed == false &&
                             currentTile.letter && !currentTile.halfgrown) {
 
-                            blueTiles.push([y, x]);
+                            blueTiles.push(currentTile);
                         }
                     }
                 }
@@ -657,7 +833,7 @@ var wordsmashing = new (function () {
                     var allMovesFrom = gameState.board.getAllReachableTilesFrom(blueTiles[i]);
                     totalNumMovesFound += allMovesFrom.length;
                     for (var j = 0; j < allMovesFrom.length; j++) {
-                        var currentMovesScore = scoreMove(blueTiles[i], allMovesFrom[j]);
+                        var currentMovesScore = gameState.endHandler.scoreMove(blueTiles[i], allMovesFrom[j]);
                         if (currentMovesScore >= maxScore) {
                             maxScore = currentMovesScore;
                             maxScoreMove = [blueTiles[i], allMovesFrom[j]];
@@ -666,7 +842,8 @@ var wordsmashing = new (function () {
                 }
                 if (totalNumMovesFound == 0) {
                     //no moves! TODO something
-                    gameState.gameOver();
+                    gameState.endHandler.gameOver();
+                    gameon.unblockUI()
                 }
 
                 //update view
@@ -674,10 +851,11 @@ var wordsmashing = new (function () {
                 setTimeout(function () {
                     //move there
                     maxScoreMove[1].click();
-                    gameon.unblockUI();
+//                    gameon.unblockUI();
                     //gameState.unselectAll();
                 }, 800);
             };
+
 
             return AISelf;
         };

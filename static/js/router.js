@@ -9,6 +9,16 @@
     };
 
     APP.gotoLevel = function (level) {
+
+        if (level.computer_blue_opponent) {
+            APP.goto('/versus/1player');
+            return false;
+        }
+        else if (level.is_multiplayer) {
+            APP.goto('/versus/2player');
+            return false;
+        }
+
         //find level idx
         var levelsByDifficulty = fixtures.getLevelsByDifficulty(level.difficulty);
         var levelIdx = 1;
@@ -19,6 +29,29 @@
             levelIdx++;
         }
         APP.goto('/campaign/' + fixtures.difficultyIdToName(level.difficulty) + '/' + levelIdx);
+        return false
+    };
+
+    APP.gotoLevelSilently = function (level) {
+        if (level.computer_blue_opponent) {
+            APP.router.versus1player();
+            return false;
+        }
+        else if (level.is_multiplayer) {
+            APP.router.versus2player();
+            return false;
+        }
+
+        //find level idx
+        var levelsByDifficulty = fixtures.getLevelsByDifficulty(level.difficulty);
+        var levelIdx = 1;
+        for (var i = 0; i < levelsByDifficulty.length; i++) {
+            if (levelsByDifficulty[i].id == level.id) {
+                break;
+            }
+            levelIdx++;
+        }
+        APP.router.campaigndifficultylevel(fixtures.difficultyIdToName(level.difficulty), levelIdx);
         return false
     };
 
@@ -123,10 +156,10 @@
     });
     jQuery.extend(routes, {
         //pages needing js rendering
-        'versus/1player': 'versus/1player',
-        'versus/2player': 'versus/2player',
-        'campaign/:difficulty': 'campaign/:difficulty',
-        'campaign/:difficulty/:level': 'campaign/:difficulty/:level'
+        'versus/1player': 'versus1player',
+        'versus/2player': 'versus2player',
+        'campaign/:difficulty': 'campaigndifficulty',
+        'campaign/:difficulty/:level': 'campaigndifficultylevel'
     });
 
     var Router = Backbone.Router.extend({
@@ -134,13 +167,13 @@
         'routes': routes,
         'home': defaultHandler('/'),
         'campaign': defaultHandler('/campaign'),
-        'campaign/:difficulty': defaultHandler('/campaign/:difficulty'),
-        'campaign/:difficulty/:level': defaultHandler('/campaign/:difficulty/:level'),
+        'campaigndifficulty': defaultHandler('/campaign/:difficulty'),
+        'campaigndifficultylevel': defaultHandler('/campaign/:difficulty/:level'),
         'timed': defaultHandler('/timed'),
         'classic': defaultHandler('/classic'),
         'versus': defaultHandler('/versus'),
-        'versus/1player': defaultHandler('/versus/1player'),
-        'versus/2player': defaultHandler('/versus/2player'),
+        'versus1player': defaultHandler('/versus/1player'),
+        'versus2player': defaultHandler('/versus/2player'),
         'instructions': defaultHandler('/instructions'),
         'learn-english': defaultHandler('/learn-english'),
         'contact': defaultHandler('/contact'),

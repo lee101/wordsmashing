@@ -122,7 +122,8 @@
     APP.Views['/done-level'] = Backbone.View.extend({
         initialize: function (options) {
             this.starBar = options.args[0];
-            this.level = options.args[1];
+            this.starBar2 = options.args[1];
+            this.level = options.args[2];
         },
 
         render: function () {
@@ -147,11 +148,34 @@
                 $button.hide();
             }
             $html.find('#mm-replay').click(function () {
-                //todo fix this workaround for backbone not triggering the same route
-                APP.goto("/");
-                APP.gotoLevel(self.level);
+                APP.gotoLevelSilently(self.level);
             });
-            if (self.starBar.numStars == 0) {
+            if (self.level.is_multiplayer) {
+                if (self.level.computer_blue_opponent) {
+                    if(self.starBar.getScore() > self.starBar2.getScore()){
+                        $html.find('.mm-end-message p').html('You Win!!!!');
+                    }
+                    else if (self.starBar.getScore() == self.starBar2.getScore()){
+                        $html.find('.mm-end-message p').html('Tie!');
+                    }
+                    else{
+                        $html.find('.mm-end-message p').html('Blue Wins. Try Again!');
+                    }
+                }
+                else {
+                    if (self.starBar.getScore() > self.starBar2.getScore()) {
+                        $html.find('.mm-end-message p').html('Red Wins!');
+                    }
+                    else if (self.starBar.getScore() == self.starBar2.getScore()) {
+                        $html.find('.mm-end-message p').html('Tie!');
+                    }
+                    else {
+                        $html.find('.mm-end-message p').html('Blue Wins!');
+                    }
+                }
+
+            }
+            else if (self.starBar.numStars == 0) {
                 $html.find('.mm-end-message p').html('Try Again!');
             }
             else if (self.starBar.numStars == 1) {
@@ -212,7 +236,7 @@
                 "blocked_spaces": [],
                 "growth_rate": 3,
                 "id": null,
-                "moves": null,
+                "moves": 999,
                 "time_left": null,
                 "num_start_letters": 14,
                 "difficulty": 3,
@@ -236,8 +260,28 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/versus.jinja2'));
-            return this;
+            var self = this;
+
+            var level = {
+                "blocked_spaces": [],
+                "growth_rate": 3,
+                "id": null,
+                "moves": 999,
+                "time_left": null,
+                "num_start_letters": 14,
+                "difficulty": 3,
+                "locked_spaces": [],
+                "height": 9,
+                "width": 9,
+                "star_rating": [900],
+                "is_multiplayer": true,
+                "computer_blue_opponent": false
+            };
+
+            self.game = new wordsmashing.Game(level);
+            self.game.render(self.$el);
+
+            return self;
         }
     });
 
