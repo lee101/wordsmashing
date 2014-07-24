@@ -127,7 +127,19 @@ var wordsmashing = new (function () {
             for (var i = 0; i < numSpaces; i++) {
                 tiles.push(new EmptyTile());
             }
-            return gameon.shuffle(tiles);
+            tiles = gameon.shuffle(tiles);
+            var tilesWithLockedSpaces = []
+            for (var y = 0; y < level.height; y++) {
+                for (var x = 0; x < level.width; x++) {
+                    if (level.isLockedTileAt(y, x)) {
+                        tilesWithLockedSpaces.push(new LockedTile());
+                    }
+                    else {
+                        tilesWithLockedSpaces.push(tiles.pop());
+                    }
+                }
+            }
+            return tilesWithLockedSpaces;
         };
         function addGrowersTo(tiles) {
             for (var i = 0; i < level.growth_rate; i++) {
@@ -175,6 +187,17 @@ var wordsmashing = new (function () {
 
             self.render = function () {
                 return '<div class="btn btn-lg btn-link"></div>';
+            };
+        };
+
+        var LockedTile = function () {
+            var self = this;
+            self.canPassThrough = false;
+            self.locked = true;
+            self.blocked = true;
+
+            self.render = function () {
+                return '<div class="btn btn-default btn-lg"><i class="fa fa-lock"></i></div>';
             };
         };
 
@@ -333,7 +356,7 @@ var wordsmashing = new (function () {
 //                }
             }
 
-            function unlockHWord(startTile, endTile) {
+            function unlockVWord(startTile, endTile) {
                 //unlocks a horizontal word takes two xy coordinate pairs
                 //try left and right
                 unlock(startTile.yPos - 1, startTile.xPos);
@@ -344,7 +367,7 @@ var wordsmashing = new (function () {
                 }
             }
 
-            function unlockVWord(startTile, endTile) {
+            function unlockHWord(startTile, endTile) {
                 //unlocks a horizontal word takes two xy coordinate pairs
                 //try left and right
                 unlock(startTile.yPos, startTile.xPos - 1);

@@ -390,5 +390,15 @@ LEARN_ENGLISH_LEVELS = {
         "june",
         "july",
         "august",
+    ]),
+    "brands": EnglishLevel("brands", [
+        "nike",
+        "google",
+        "apple",
+        "kfc",
+        "ikea",
+        "addicting",
+        "word",
+        "games",
     ])
 }

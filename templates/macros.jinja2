@@ -102,6 +102,18 @@
                 return self.difficulty_to_levels_map[difficulty];
             };
 
+            for (var i = 0; i < self.LEVELS.length; i++) {
+                var level = self.LEVELS[i];
+                level.is_locked_space = {};
+                for (var j = 0; j < level.locked_spaces.length; j++) {
+                    var lockedSpace = level.locked_spaces[j];
+                    level.is_locked_space [lockedSpace[1] + '-' + lockedSpace[0]] = 1;
+                }
+                level.isLockedTileAt = function (y, x) {
+                    return this.is_locked_space[y + '-' + x];
+                }
+            }
+
             return self;
         })();
 
