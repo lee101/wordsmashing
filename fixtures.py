@@ -25,7 +25,7 @@ class Level(Fixture):
     locked_spaces = []
 
     def __init__(self, height=9, width=9, blocked_spaces=[], locked_spaces=[], growth_rate=3, difficulty=EASY,
-                 moves=None, time_left=None, star_rating=None, num_start_letters=14):
+                 moves=None, time_left=None, star_rating=None, num_start_letters=14, min_num_letters_in_a_word=3):
         '''
         blocked_spaces/locked_spaces array of (x,y) pairs
         '''
@@ -43,6 +43,7 @@ class Level(Fixture):
 
         self.star_rating = star_rating
         self.num_start_letters = num_start_letters
+        self.min_num_letters_in_a_word = min_num_letters_in_a_word
 
     def set_hardness(self, h):
         if self.star_rating:
@@ -59,27 +60,27 @@ class Level(Fixture):
 
 
 EASY_LEVELS = [
-    Level(height=4, width=4, growth_rate=0, moves=1),
-    Level(height=8, width=8, moves=15, num_start_letters=8),
-    Level(height=9, width=9, time_left=60 * 3),
-    Level(locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3)]),
+    Level(min_num_letters_in_a_word=2, height=4, width=4, growth_rate=0, moves=1),
+    Level(min_num_letters_in_a_word=2, height=8, width=8, moves=15, num_start_letters=8),
+    Level(min_num_letters_in_a_word=2, height=9, width=9, time_left=60 * 3),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3)]),
 
-    Level(locked_spaces=[(0, 4), (1, 4), (4, 4), (7, 4), (8, 4)]),
-    Level(locked_spaces=[(3, 3), (5, 3), (3, 5), (5, 5)]),
-    Level(locked_spaces=[(4, 4), (1, 1), (1, 7), (7, 1), (7, 7)]),
-    Level(locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3), (4, 5), (4, 6)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(0, 4), (1, 4), (4, 4), (7, 4), (8, 4)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(3, 3), (5, 3), (3, 5), (5, 5)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(4, 4), (1, 1), (1, 7), (7, 1), (7, 7)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3), (4, 5), (4, 6)]),
 
-    Level(locked_spaces=[(6, 4), (5, 5), (4, 6), (3, 7), (2, 8)]),
-    Level(
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(6, 4), (5, 5), (4, 6), (3, 7), (2, 8)]),
+    Level(min_num_letters_in_a_word=2,
         locked_spaces=[(0, 0), (0, 8), (8, 0), (8, 8), (0, 1), (1, 0), (7, 8), (8, 7), (7, 0), (0, 7), (8, 1), (1, 8)]),
-    Level(locked_spaces=[(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]),
-    Level(locked_spaces=[(0, 6), (1, 6), (2, 6), (3, 6), (6, 0), (6, 1), (6, 2), (6, 3)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(0, 6), (1, 6), (2, 6), (3, 6), (6, 0), (6, 1), (6, 2), (6, 3)]),
 
-    Level(
+    Level(min_num_letters_in_a_word=2,
         locked_spaces=[(2, 2), (2, 6), (6, 2), (6, 6), (1, 2), (2, 1), (6, 7), (7, 6), (6, 1), (1, 6), (7, 2), (2, 7)]),
-    Level(locked_spaces=[(3, 0), (3, 1), (3, 2), (3, 3), (5, 0), (5, 1), (5, 2), (5, 3)]),
-    Level(locked_spaces=[(2, 4), (3, 4), (4, 4), (5, 4), (6, 4), (6, 6), (2, 6), (6, 5), (2, 5)]),
-    Level(locked_spaces=[(0, 4), (1, 4), (2, 4), (3, 4), (4, 4), (5, 4), (6, 4), (7, 4), (7, 3)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(3, 0), (3, 1), (3, 2), (3, 3), (5, 0), (5, 1), (5, 2), (5, 3)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(2, 4), (3, 4), (4, 4), (5, 4), (6, 4), (6, 6), (2, 6), (6, 5), (2, 5)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(0, 4), (1, 4), (2, 4), (3, 4), (4, 4), (5, 4), (6, 4), (7, 4), (7, 3)]),
 ]
 
 MEDIUM_LEVELS = [

@@ -18,15 +18,18 @@ describe("fixtures", function () {
 });
 describe("WordSmashing", function () {
 
-    it('level 1', function () {
+    it('lets you navigate around', function () {
         APP.goto('/');
         APP.goto('/campaign');
         APP.goto('/campaign/easy');
         APP.goto('/campaign/easy/1');
+        APP.goto('/versus');
+        APP.goto('/versus/1player');
+        APP.goto('/versus/2player');
     });
 
 
-    it('go back to /tests', function () {
+    it('tears down', function () {
         APP.goto('/tests');
     });
 });

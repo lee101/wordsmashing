@@ -128,7 +128,10 @@ var wordsmashing = new (function () {
                 tiles.push(new EmptyTile());
             }
             tiles = gameon.shuffle(tiles);
-            var tilesWithLockedSpaces = []
+            if (level.locked_spaces.length == 0) {
+                return tiles;
+            }
+            var tilesWithLockedSpaces = [];
             for (var y = 0; y < level.height; y++) {
                 for (var x = 0; x < level.width; x++) {
                     if (level.isLockedTileAt(y, x)) {
@@ -434,7 +437,7 @@ var wordsmashing = new (function () {
                 //
                 //drag leftStart and rightStart alongto consider all possibilities
                 hfinder:
-                    while (startlen >= level.difficulty) {
+                    while (startlen >= level.min_num_letters_in_a_word) {
                         //try options
                         //go as far left as pos while still including endTile.xPos
                         var leftStart = endTile.xPos;
@@ -503,7 +506,7 @@ var wordsmashing = new (function () {
                 //
                 //drag topStart and bottomStart alongto consider all possibilities
                 vfinder:
-                    while (startlen >= level.difficulty) {
+                    while (startlen >= level.min_num_letters_in_a_word) {
                         //try options
                         //go as far left as pos while still including endTile.xPos
                         var topStart = endTile.yPos;
