@@ -152,13 +152,13 @@
             });
             if (self.level.is_multiplayer) {
                 if (self.level.computer_blue_opponent) {
-                    if(self.starBar.getScore() > self.starBar2.getScore()){
+                    if (self.starBar.getScore() > self.starBar2.getScore()) {
                         $html.find('.mm-end-message p').html('You Win!!!!');
                     }
-                    else if (self.starBar.getScore() == self.starBar2.getScore()){
+                    else if (self.starBar.getScore() == self.starBar2.getScore()) {
                         $html.find('.mm-end-message p').html('Tie!');
                     }
-                    else{
+                    else {
                         $html.find('.mm-end-message p').html('Blue Wins. Try Again!');
                     }
                 }
@@ -245,6 +245,7 @@
                 "width": 9,
                 "star_rating": [900],
                 "is_multiplayer": true,
+                "min_num_letters_in_a_word": 3,
                 "computer_blue_opponent": true
             };
 
@@ -275,6 +276,7 @@
                 "width": 9,
                 "star_rating": [900],
                 "is_multiplayer": true,
+                "min_num_letters_in_a_word": 3,
                 "computer_blue_opponent": false
             };
 
