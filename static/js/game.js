@@ -49,6 +49,8 @@ var wordsmashing = new (function () {
 
                 gameState.starBar.render($html.find('.mm-starbar'));
             }
+            gameState.starBar.setCenterMessage(level.min_num_letters_in_a_word + '+ letter words')
+
 
             gameon.renderVolumeTo($html.find('.mm-volume'));
 
