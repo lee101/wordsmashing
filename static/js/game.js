@@ -64,6 +64,23 @@ var wordsmashing = new (function () {
                     $firstLevelFirstTile.popover('show');
                 }, 400);
             }
+            else if (level.id == 2) {
+                window.setTimeout(function () {
+                    //todo find tile
+                    var halfgrownTile = gameState.board.viewWhere(function (tile) {
+                        return tile.halfgrown;
+                    }).get(0).getRenderedTile();
+                    halfgrownTile.attr('data-toggle', 'popover');
+                    halfgrownTile.attr('data-placement', 'top');
+                    halfgrownTile.attr('data-trigger', 'manual');
+                    halfgrownTile.attr('data-content', 'Each turn letters grow onto the board. When the board fills up its game over!');
+                    halfgrownTile.popover('show');
+
+                    window.setTimeout(function () {
+                        halfgrownTile.popover('hide');
+                    }, 8000);
+                }, 400);
+            }
         }
 
         gameState.initialBoardTiles = function () {
