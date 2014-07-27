@@ -18,14 +18,19 @@ describe("fixtures", function () {
 });
 describe("WordSmashing", function () {
 
-    it('lets you navigate around', function () {
+    it('lets you navigate around', function (done) {
         APP.goto('/');
-        APP.goto('/campaign');
-        APP.goto('/campaign/easy');
-        APP.goto('/campaign/easy/1');
         APP.goto('/versus');
         APP.goto('/versus/1player');
         APP.goto('/versus/2player');
+        APP.goto('/campaign');
+        APP.goto('/campaign/easy');
+        APP.goto('/campaign/easy/1');
+        specHelpers.once(function () {
+            APP.game.board.getTile(0, 0).click();
+            APP.game.board.getTile(3, 3).click();
+            done();
+        });
     });
 
 

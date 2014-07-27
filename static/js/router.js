@@ -97,15 +97,23 @@
             if (view.rendersAsync) {
                 view.renderCallback = function () {
                     $mainbody.html(view.el);
-                    $mainbody.fadeIn(duration);
+                    $mainbody.fadeIn(duration, function() {
+                        if (typeof specHelpers == 'object') {
+                            specHelpers.once();
+                        }
+                    });
                 };
                 view.render();
             }
             else {
                 $mainbody.html(view.render().el);
+
                 $mainbody.fadeIn(duration, function () {
                     //scroll to top
                     $("html, body").scrollTop(0);
+                    if (typeof specHelpers == 'object') {
+                        specHelpers.once();
+                    }
                 });
             }
         });

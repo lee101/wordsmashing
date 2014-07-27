@@ -403,6 +403,15 @@ var wordsmashing = new (function () {
             endSelf.addToScore = function (score) {
                 if (gameState.players_turn == 1) {
                     gameState.starBar.addMoveScoring(score);
+                    if (gameState.starBar.hasWon()) {
+                        if (!level.time) {
+                            gameState.starBar.addMovesBonus(gameState.endHandler.moves);
+                        }
+                        else {
+                            gameState.starBar.addTimeBonus(level.time, gameState.clock.seconds);
+                        }
+                        gameState.endHandler.gameOver();
+                    }
                 }
                 else {
                     gameState.starBar2.addMoveScoring(score)
@@ -600,8 +609,6 @@ var wordsmashing = new (function () {
                     }
                 }
 
-                endSelf.addToScore(scores);
-
                 gameState.unselectAll();
 
                 //look for 3 new spots
@@ -621,6 +628,8 @@ var wordsmashing = new (function () {
                 if (level.moves) {
                     endSelf.setMoves(endSelf.moves - 1);
                 }
+                endSelf.addToScore(scores);
+
                 //generate random 3 letter places
                 var growers = [];
                 for (var i = 0; i < numspaces - level.growth_rate; i++) {

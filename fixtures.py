@@ -51,11 +51,19 @@ class Level(Fixture):
         if h == 0:
             self.star_rating = [1, 1, 1, 1]
             return
+        if h < 4:
+            self.star_rating = [
+                5 * int(h / 4.0 * (7 * 4)),
+                5 * int(h / 4.0 * (8 * 4)),
+                5 * int(h / 4.0 * (9 * 4)),
+                5 * int(h / 4.0 * (10 * 4)),
+            ]
+            return
         self.star_rating = [
-            5 * int(h / 4.0 * (7 * 4)),
-            5 * int(h / 4.0 * (8 * 4)),
-            5 * int(h / 4.0 * (9 * 4)),
-            5 * int(h / 4.0 * (10 * 4)),
+            80,
+            90,
+            100,
+            110,
         ]
 
 
@@ -63,7 +71,7 @@ EASY_LEVELS = [
     Level(min_num_letters_in_a_word=2, height=4, width=4, growth_rate=0, moves=1),
     Level(min_num_letters_in_a_word=2, height=8, width=8, moves=15, num_start_letters=8),
     Level(min_num_letters_in_a_word=2, height=9, width=9, time_left=60 * 3),
-    Level(min_num_letters_in_a_word=2, locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3)]),
+    Level(min_num_letters_in_a_word=2, locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3)], moves=20),
 
     Level(min_num_letters_in_a_word=2, locked_spaces=[(0, 4), (1, 4), (4, 4), (7, 4), (8, 4)]),
     Level(min_num_letters_in_a_word=2, locked_spaces=[(3, 3), (5, 3), (3, 5), (5, 5)]),
@@ -123,7 +131,9 @@ HARD_LEVELS = [
     Level(locked_spaces=[(3, 2), (4, 2), (5, 2), (2, 3), (2, 4), (2, 5), (3, 6), (4, 6), (5, 6), (6, 3), (6, 5)]),
     Level(locked_spaces=[(3, 5), (2, 1), (5, 2), (5, 4), (4, 6), (2, 6), (3, 3), (4, 2), (6, 6), (7, 3)]),
     # # Gets TO HARD
+]
 
+EXPERT_LEVELS = [
 
     Level(locked_spaces=[(4, 7), (4, 6), (3, 8), (5, 8), (2, 7), (6, 7), (2, 6), (6, 6), (1, 5), (7, 5), (1, 4), (7, 4),
                          (0, 3),
@@ -163,9 +173,7 @@ HARD_LEVELS = [
                          (6, 5),
                          (5, 7), (6, 6), (6, 2), (2, 6)]),
 
-]
 
-EXPERT_LEVELS = [
     Level(locked_spaces=[(1, 1), (2, 2), (3, 0), (4, 0), (4, 1), (4, 3), (7, 0), (6, 1), (6, 4), (7, 3), (7, 5), (8, 8),
                          (7, 7),
                          (7, 8), (0, 6), (2, 6), (1, 7), (0, 8), (4, 6), (4, 7), (4, 8), (0, 3), (1, 4)])

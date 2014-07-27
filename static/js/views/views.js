@@ -112,8 +112,8 @@
 
             var level = fixtures.getLevelsByDifficulty(self.difficulty)[self.levelIdx];
 
-            self.game = new wordsmashing.Game(level);
-            self.game.render(self.$el);
+            APP.game = new wordsmashing.Game(level);
+            APP.game.render(self.$el);
 
             return self;
         }
@@ -150,54 +150,56 @@
             $html.find('#mm-replay').click(function () {
                 APP.gotoLevelSilently(self.level);
             });
+            var endMessage = $html.find('.mm-end-message p');
             if (self.level.is_multiplayer) {
                 if (self.level.computer_blue_opponent) {
                     if (self.starBar.getScore() > self.starBar2.getScore()) {
-                        $html.find('.mm-end-message p').html('You Win!!!!');
+                        endMessage.html('You Win!!!!');
                     }
                     else if (self.starBar.getScore() == self.starBar2.getScore()) {
-                        $html.find('.mm-end-message p').html('Tie!');
+                        endMessage.html('Tie!');
                     }
                     else {
-                        $html.find('.mm-end-message p').html('Blue Wins. Try Again!');
+                        endMessage.html('Blue Wins. Try Again!');
                     }
                 }
                 else {
                     if (self.starBar.getScore() > self.starBar2.getScore()) {
-                        $html.find('.mm-end-message p').html('Red Wins!');
+                        endMessage.html('Red Wins!');
                     }
                     else if (self.starBar.getScore() == self.starBar2.getScore()) {
-                        $html.find('.mm-end-message p').html('Tie!');
+                        endMessage.html('Tie!');
                     }
                     else {
-                        $html.find('.mm-end-message p').html('Blue Wins!');
+                        endMessage.html('Blue Wins!');
                     }
                 }
 
             }
             else if (self.starBar.numStars == 0) {
-                $html.find('.mm-end-message p').html('Try Again!');
+                endMessage.html('Try Again!');
             }
             else if (self.starBar.numStars == 1) {
-                $html.find('.mm-end-message p').html('Good!');
+                endMessage.html('Good!');
             }
             else if (self.starBar.numStars == 2) {
-                $html.find('.mm-end-message p').html('Great!');
+                endMessage.html('Great!');
             }
-            if (self.starBar.movesBonus) {
+            endMessage.fadeIn();
+            if (self.starBar.movesBonus && self.starBar.movesBonus.bonus) {
                 $html.find('.mm-bonus-message').append(
                         'Moves Bonus: ' + self.starBar.movesBonus.bonus +
                         ' Points!'
                 );
             }
-            else if (self.starBar.timeBonus) {
+            else if (self.starBar.timeBonus && self.starBar.timeBonus.bonus) {
                 $html.find('.mm-bonus-message').append(
                         'Time Bonus: ' + self.starBar.timeBonus.bonus +
                         ' Points!'
                 );
             }
             if (self.starBar.hasWon() && self.isLastLevel(self.level)) {
-                $html.find('.mm-end-message p').append(' <br /> Congratulations You have Won The Game!!!');
+                endMessage.append(' <br /> Congratulations You have Won The Game!!!');
             }
             if (self.starBar.hasWon()) {
                 gameon.loopSound('win');
@@ -249,8 +251,8 @@
                 "computer_blue_opponent": true
             };
 
-            self.game = new wordsmashing.Game(level);
-            self.game.render(self.$el);
+            APP.game = new wordsmashing.Game(level);
+            APP.game.render(self.$el);
 
             return self;
         }
@@ -280,8 +282,8 @@
                 "computer_blue_opponent": false
             };
 
-            self.game = new wordsmashing.Game(level);
-            self.game.render(self.$el);
+            APP.game = new wordsmashing.Game(level);
+            APP.game.render(self.$el);
 
             return self;
         }
