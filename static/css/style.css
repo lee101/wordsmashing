@@ -210,35 +210,17 @@
 .grower:hover {
   cursor: pointer;
 }
+.mm-end-message {
+  font-size: 20px;
+}
+.mm-bonus-message {
+  font-size: 20px;
+}
 body {
   font-family: Verdana, Helvetica, sans-serif;
   background-color: #f5f5f5;
   text-align: center;
   font-style: normal;
   height: 100%;
-}
-#showscore0 {
-  position: relative;
-  left: 203px;
-  top: -384px;
-  height: 0;
-}
-#showscore1 {
-  position: relative;
-  left: 53px;
-  top: -314px;
-  height: 0;
-}
-#showscore2 {
-  position: relative;
-  left: 203px;
-  top: -161px;
-  height: 0;
-}
-#showscore3 {
-  position: relative;
-  left: 53px;
-  top: -111px;
-  height: 0;
 }
 /*# sourceMappingURL=/static/css/style.css.map */
