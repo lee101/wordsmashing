@@ -66,7 +66,6 @@ var wordsmashing = new (function () {
             }
             else if (level.id == 2) {
                 window.setTimeout(function () {
-                    //todo find tile
                     var halfgrownTile = gameState.board.viewWhere(function (tile) {
                         return tile.halfgrown;
                     }).get(0).getRenderedTile();
@@ -79,6 +78,22 @@ var wordsmashing = new (function () {
                     window.setTimeout(function () {
                         halfgrownTile.popover('hide');
                     }, 8000);
+                }, 400);
+            }
+            else if (level.id == 4) {
+                window.setTimeout(function () {
+                    var lockedTile = gameState.board.viewWhere(function (tile) {
+                        return tile.locked;
+                    }).get(0).getRenderedTile();
+                    lockedTile.attr('data-toggle', 'popover');
+                    lockedTile.attr('data-placement', 'top');
+                    lockedTile.attr('data-trigger', 'manual');
+                    lockedTile.attr('data-content', 'Break locks by getting a word nearby!');
+                    lockedTile.popover('show');
+
+                    window.setTimeout(function () {
+                        lockedTile.popover('hide');
+                    }, 7000);
                 }, 400);
             }
         }
