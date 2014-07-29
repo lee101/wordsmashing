@@ -155,6 +155,7 @@
                 if (self.level.computer_blue_opponent) {
                     if (self.starBar.getScore() > self.starBar2.getScore()) {
                         endMessage.html('You Win!!!!');
+                        gameon.loopSound('win');
                     }
                     else if (self.starBar.getScore() == self.starBar2.getScore()) {
                         endMessage.html('Tie!');

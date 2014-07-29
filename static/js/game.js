@@ -21,6 +21,7 @@ var wordsmashing = new (function () {
         var gameState = this;
 
         function construct() {
+            gameon.pauseAll();
             gameon.loopSound("theme");
 
             gameState.players_turn = 1;
@@ -49,7 +50,7 @@ var wordsmashing = new (function () {
 
                 gameState.starBar.render($html.find('.mm-starbar'));
             }
-            gameState.starBar.setCenterMessage(level.min_num_letters_in_a_word + '+ letter words')
+            gameState.starBar.setCenterMessage(level.min_num_letters_in_a_word + '+ letter words');
 
 
             gameon.renderVolumeTo($html.find('.mm-volume'));
@@ -214,10 +215,13 @@ var wordsmashing = new (function () {
                     if (gameState.players_turn == 2 && level.computer_blue_opponent) {
                         animationSpeed = 400;
                     }
+                    gameon.unmuteSound('moving');
+                    gameon.playSound('moving');
                     gameState.board.animateTileAlongPath(gameState.currentSelected, path, animationSpeed, function () {
                         gameState.board.swapTiles(gameState.currentSelected, self);
                         gameState.endHandler.turnEnd(gameState.currentSelected);
-
+                        gameon.muteSound('moving');
+                        gameon.pauseSound('moving');
                     });
                 }
             };
@@ -416,6 +420,10 @@ var wordsmashing = new (function () {
             }
 
             endSelf.addToScore = function (score) {
+                gameon.playSound('moved');
+                if (score) {
+                    gameon.playSound('score');
+                }
                 if (gameState.players_turn == 1) {
                     gameState.starBar.addMoveScoring(score);
                     if (gameState.starBar.hasWon()) {
@@ -865,8 +873,9 @@ var wordsmashing = new (function () {
                 gameState.destruct();
                 APP.doneLevel(gameState.starBar, gameState.starBar2, level);
             };
+
             if (!level.moves) {
-                gameState.clock = gameon.clock(endSelf.gameOver, level.time);
+                gameState.clock = gameon.clock(endSelf.gameOver, level.time_left);
                 gameState.clock.start();
             }
         };
