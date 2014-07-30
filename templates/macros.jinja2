@@ -114,6 +114,8 @@
                 }
             }
 
+            self.LEARN_ENGLISH_LEVELS = {{ json.dumps(fixtures.LEARN_ENGLISH_LEVELS, cls=GameOnUtils.MyEncoder) }};
+
             return self;
         })();
 

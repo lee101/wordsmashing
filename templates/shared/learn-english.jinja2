@@ -1,0 +1,17 @@
+<div id="instructions" style="display: none">
+    <h1>Pick A Level</h1>
+
+    <p class="lead">
+        Which english words are you going to learn?<br/>
+        Make as many of that type of word as you can!<br/>
+        Get words up, down, back and forward but don't run out of space!
+    </p>
+</div>
+{% for key, level in LEARN_ENGLISH_LEVELS %}
+    <div class="ws-main-btn-container">
+        <a class="english-level-btn-link btn btn-success btn-lg"
+                href="/learn-english/{{ key }}"
+                title="Learn English {{ level.name }}">{{ level.name }}
+        </a>
+    </div>
+{% endfor %}

@@ -52,7 +52,8 @@ window.evutils = new (function () {
             url: window.location.href,
             urlencode: encodeURIComponent,
             window: window,
-            client_side: true
+            client_side: true,
+            fixtures: fixtures
         });
         return nunjucks.render(template, opts, callback);
     };

@@ -299,6 +299,15 @@
             return this;
         }
     });
+    APP.Views['/learn-english'] = Backbone.View.extend({
+        initialize: function (options) {
+        },
+
+        render: function () {
+            this.$el.html(evutils.render('templates/shared/learn-english.jinja2', {LEARN_ENGLISH_LEVELS: fixtures.LEARN_ENGLISH_LEVELS}));
+            return this;
+        }
+    });
 
     APP.Views['/about'] = Backbone.View.extend({
         initialize: function (options) {
