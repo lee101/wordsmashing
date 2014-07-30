@@ -29,6 +29,7 @@ class Level(Fixture):
         '''
         blocked_spaces/locked_spaces array of (x,y) pairs
         '''
+
         self.height = height
         self.width = width
 
@@ -40,6 +41,8 @@ class Level(Fixture):
 
         self.moves = moves
         self.time_left = time_left
+        if moves == None and time_left == None:
+            self.moves = 30
 
         self.star_rating = star_rating
         self.num_start_letters = num_start_letters
@@ -59,11 +62,13 @@ class Level(Fixture):
                 5 * int(h / 4.0 * (10 * 4)),
             ]
             return
+        if h <= 16:
+            self.star_rating = [
+                60, 70, 80, 90,
+            ]
+            return
         self.star_rating = [
-            80,
-            90,
-            100,
-            110,
+            80, 90, 100, 110,
         ]
 
 
@@ -78,7 +83,7 @@ EASY_LEVELS = [
     Level(min_num_letters_in_a_word=2, locked_spaces=[(4, 4), (1, 1), (1, 7), (7, 1), (7, 7)], time_left=60 * 3),
     Level(min_num_letters_in_a_word=2, locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3), (4, 5), (4, 6)], moves=20),
     Level(min_num_letters_in_a_word=2, locked_spaces=[(6, 4), (5, 5), (4, 6), (3, 7), (2, 8)], moves=25),
-    Level(min_num_letters_in_a_word=4, moves=25, growth_rate=2),
+    Level(min_num_letters_in_a_word=4, moves=29, growth_rate=2),
 
     Level(min_num_letters_in_a_word=2,
           locked_spaces=[(0, 0), (0, 8), (8, 0), (8, 8), (0, 1), (1, 0), (7, 8), (8, 7), (7, 0), (0, 7), (8, 1),
@@ -93,10 +98,10 @@ EASY_LEVELS = [
 ]
 
 MEDIUM_LEVELS = [
-    Level(min_num_letters_in_a_word=2,
+    Level(
           locked_spaces=[(2, 4), (3, 4), (4, 4), (5, 4), (6, 4), (6, 6), (2, 6), (6, 5), (2, 5)]),
 
-    Level(min_num_letters_in_a_word=2,
+    Level(
           locked_spaces=[(0, 4), (1, 4), (2, 4), (3, 4), (4, 4), (5, 4), (6, 4), (7, 4), (7, 3)]),
 
     Level(locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3), (2, 4), (3, 4), (4, 4), (5, 4), (6, 4)]),

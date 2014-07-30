@@ -426,7 +426,7 @@ var wordsmashing = new (function () {
                 }
                 if (gameState.players_turn == 1) {
                     gameState.starBar.addMoveScoring(score);
-                    if (gameState.starBar.hasWon()) {
+                    if (gameState.starBar.hasFullScore()) {
                         if (!level.time) {
                             gameState.starBar.addMovesBonus(gameState.endHandler.moves);
                         }
