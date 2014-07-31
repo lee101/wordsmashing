@@ -166,6 +166,7 @@
         //pages needing js rendering
         'versus/1player': 'versus1player',
         'versus/2player': 'versus2player',
+        'learn-english/:levelkey': 'learnenglishlevelkey',
         'campaign/:difficulty': 'campaigndifficulty',
         'campaign/:difficulty/:level': 'campaigndifficultylevel'
     });
@@ -180,6 +181,7 @@
         'timed': defaultHandler('/timed'),
         'classic': defaultHandler('/classic'),
         'versus': defaultHandler('/versus'),
+        'learnenglishlevelkey': defaultHandler('/learn-english/:levelkey'),
         'versus1player': defaultHandler('/versus/1player'),
         'versus2player': defaultHandler('/versus/2player'),
         'instructions': defaultHandler('/instructions'),

@@ -1,0 +1,29 @@
+{% extends 'templates/base.jinja2' %}
+
+{% block headers %}
+    {% set level = fixtures.LEARN_ENGLISH_LEVELS[urlkey] %}
+    {% set title = 'Learn English ' + level.name + ' - Word Smashing The Fun Word Game' -%}
+    {% set desc = 'Learn English With This Addicting New Word Puzzle, For Free! Make Words Related To ' + level.name -%}
+
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="description"
+          content="{{ desc }}">
+
+    <meta name="keywords"
+          content="learn english, english games for kids, english puzzle games, learn english words, free online puzzle games, word puzzle games for kids">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:url" content="http://www.wordsmashing.com">
+    <meta property="og:image" content="http://www.wordsmashing.com/img/wordsmashing_icon128.png">
+    <meta property="og:description"
+          content="{{ desc }}">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Word Smashing">
+    <meta property="fb:admins" content="337972272904903">
+
+
+{% endblock %}
+
+{% block mainbody %}
+    {% include "/templates/shared/learn-english-level.jinja2" %}
+{% endblock %}

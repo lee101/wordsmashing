@@ -308,6 +308,39 @@
             return this;
         }
     });
+    APP.Views['/learn-english/:levelkey'] = Backbone.View.extend({
+        initialize: function (options) {
+            this.levelkey = options.args[0];
+        },
+
+        render: function () {
+            var self = this;
+            self.$el.html(evutils.render('templates/shared/learn-english-level.jinja2', {level: fixtures.LEARN_ENGLISH_LEVELS[self.levelkey]}));
+
+            var level = {
+                "blocked_spaces": [],
+                "growth_rate": 2,
+                "id": null,
+                "moves": 999,
+                "time_left": null,
+                "num_start_letters": 14,
+                "difficulty": 3,
+                "locked_spaces": [],
+                "height": 9,
+                "width": 9,
+                "star_rating": [999],
+                "is_multiplayer": false,
+                "min_num_letters_in_a_word": 3,
+                "computer_blue_opponent": false
+            };
+            var learn_english_level = $.extend(fixtures.LEARN_ENGLISH_LEVELS[self.levelkey], level);
+
+            APP.game = new wordsmashing.Game(learn_english_level);
+            APP.game.render(self.$el.find('.learn-english-level_game'));
+
+            return self;
+        }
+    });
 
     APP.Views['/about'] = Backbone.View.extend({
         initialize: function (options) {

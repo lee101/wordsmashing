@@ -3,7 +3,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div id=\"instructions\" style=\"display: none\">\n    <h1>Pick A Level</h1>\n\n    <p class=\"lead\">\n        Play Word Smashing!<br/>\n        New boards and Smashable locks!\n    </p>\n\n    <p class=\"lead\">\n        <b>Instructions</b><br/>\n\n        Get words up, down, back and forward but don't run out of space!\n    </p>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/easy')\">Easy\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/medium')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Medium\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/hard')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Hard\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/expert')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Expert\n    </button>\n</div>\n";
+output += "<div id=\"instructions\" style=\"display: none\">\n    <h1>Pick A Level</h1>\n\n    <p class=\"lead\">\n        Play Word Smashing!<br/>\n        New boards and Smashable locks!\n    </p>\n\n    <p class=\"lead\">\n        <b>Instructions</b><br/>\n\n        Get words up, down, back and forward but don't run out of space!\n    </p>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/easy')\">Easy\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/medium')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Medium\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/hard')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Hard\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/expert')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Expert\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button class=\"ws-help-btn btn btn-large btn-danger gameon-btn-hg\" type=\"button\">?</button>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -107,7 +107,7 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"main-game-wrapper\">\n\n    <div class=\"mm-logo\">\n        <div class=\"gameon-level-controls gameon-level-controls--small-tiles\">\n            <div class=\"mm-end-condition\">\n                <p>Time: <span class=\"gameon-clock\"></span></p>\n            </div>\n            <div class=\"mm-volume\">\n\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"mm-starbar\">\n\n            </div>\n            <div class=\"mm-starbar2\">\n\n            </div>\n        </div>\n    </div>\n    <div class=\"mm-level gameon-board gameon-board--small-tiles\">\n\n    </div>\n</div>\n";
+output += "<div class=\"main-game-wrapper\">\n\n    <div class=\"mm-logo\">\n        <div class=\"gameon-level-controls gameon-level-controls--small-tiles\">\n            <div class=\"mm-end-condition\">\n                <p>Time: <span class=\"gameon-clock\"></span></p>\n            </div>\n            <div class=\"mm-volume\">\n\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"mm-starbar\">\n\n            </div>\n            <div class=\"mm-starbar2\">\n\n            </div>\n            <div class=\"learn-english-level_required-words\">\n\n            </div>\n        </div>\n    </div>\n    <div class=\"mm-level gameon-board gameon-board--small-tiles\">\n\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -145,6 +145,27 @@ root: root
 };
 })();
 })();
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/learn-english-level.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+output += "<div id=\"instructions\" style=\"display: none\">\n    <h1>Learn English ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "level")),"name", env.autoesc), env.autoesc);
+output += "</h1>\n\n    <p class=\"lead\">\n        Which english words are you going to learn?<br/>\n        Make as many ";
+output += runtime.suppressValue(env.getFilter("lower").call(context, runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "level")),"name", env.autoesc)), env.autoesc);
+output += " as you can!<br/>\n        Get words up, down, back and forward but don't run out of space!\n    </p>\n</div>\n<div class=\"learn-english-level_game\">\n\n</div>\n<div class=\"ws-main-btn-container\">\n    <button class=\"ws-help-btn btn btn-large btn-danger gameon-btn-hg\" type=\"button\">?</button>\n</div>\n";
+cb(null, output);
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+})();
+})();
 (function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["templates/shared/learn-english.jinja2"] = (function() {function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -160,7 +181,7 @@ var t_4 = t_3[t_1][0]
 frame.set("key", t_3[t_1][0]);
 var t_5 = t_3[t_1][1]
 frame.set("level", t_3[t_1][1]);
-output += "\n    <div class=\"ws-main-btn-container\">\n        <a class=\"english-level-btn-link btn btn-success btn-lg\"\n                href=\"/learn-english/";
+output += "<div class=\"ws-main-btn-container\">\n        <a class=\"english-level-btn-link btn btn-success btn-lg\"\n                href=\"/learn-english/";
 output += runtime.suppressValue(t_4, env.autoesc);
 output += "\"\n                title=\"Learn English ";
 output += runtime.suppressValue(runtime.memberLookup((t_5),"name", env.autoesc), env.autoesc);
@@ -176,7 +197,7 @@ t_1++;
 var t_7 = t_3[t_6];
 frame.set("key", t_6);
 frame.set("level", t_7);
-output += "\n    <div class=\"ws-main-btn-container\">\n        <a class=\"english-level-btn-link btn btn-success btn-lg\"\n                href=\"/learn-english/";
+output += "<div class=\"ws-main-btn-container\">\n        <a class=\"english-level-btn-link btn btn-success btn-lg\"\n                href=\"/learn-english/";
 output += runtime.suppressValue(t_6, env.autoesc);
 output += "\"\n                title=\"Learn English ";
 output += runtime.suppressValue(runtime.memberLookup((t_7),"name", env.autoesc), env.autoesc);
@@ -188,7 +209,7 @@ output += "\n        </a>\n    </div>\n";
 }
 }
 frame = frame.pop();
-output += "\n";
+output += "\n<div class=\"ws-main-btn-container\">\n    <button class=\"ws-help-btn btn btn-large btn-danger gameon-btn-hg\" type=\"button\">?</button>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {

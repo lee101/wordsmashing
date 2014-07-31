@@ -55,6 +55,16 @@ var wordsmashing = new (function () {
 
             gameon.renderVolumeTo($html.find('.mm-volume'));
 
+            gameState.requiredWords = [].concat(level.required_words);
+            var requiredWordsDiv = $html.find('.learn-english-level_required-words');
+
+            for (var i = 0; i < gameState.requiredWords.length; i++) {
+                var word = gameState.requiredWords[i];
+                requiredWordsDiv.append('<button type="button" id="learn-english-words-' + word + '" class="learn-english-level_required-word btn">' +
+                        word + '</button>'
+                )
+            }
+
             gameState.endHandler = new gameState.EndHandler();
             gameState.endHandler.render($html.find('.mm-end-condition'));
             gameState.$html = $html;
@@ -388,13 +398,6 @@ var wordsmashing = new (function () {
                 }
                 gameState.board.setTile(y, x, new EmptyTile());
 
-//                num_blocked--;
-//                num_locked--;
-//                if (num_locked <= 0) {
-//                    if (typeof winViaBreakingAllLocks == "function") {
-//                        winViaBreakingAllLocks();
-//                    }
-//                }
             }
 
             function unlockVWord(startTile, endTile) {
@@ -440,6 +443,52 @@ var wordsmashing = new (function () {
                     gameState.starBar2.addMoveScoring(score)
                 }
             };
+
+
+            function inRequiredWord(word) {
+                var reverseword = word.reverse();
+                for (var i = 0; i < gameState.requiredWords.length; i++) {
+                    if (gameState.requiredWords[i].indexOf(word) != -1) {
+                        return true;
+                    }
+                    if (gameState.requiredWords[i].indexOf(reverseword) != -1) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function isRequiredWord(word) {
+                for (var i = 0; i < gameState.requiredWords.length; i++) {
+                    if (gameState.requiredWords[i] === word) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function removeRequiredWord(word) {
+                for (var i = 0; i < gameState.requiredWords.length; i++) {
+                    if (gameState.requiredWords[i] === word) {
+                        //preserve end then pop off
+                        var endPos = gameState.requiredWords.length - 1;
+                        gameState.requiredWords[i] = gameState.requiredWords[endPos];
+                        gameState.requiredWords.pop();
+                        return;
+                    }
+                }
+            }
+
+            var numRequiredWordsFound = 0;
+
+            function updateRequiredWordsView(word) {
+                removeRequiredWord(word);
+                numRequiredWordsFound++;
+                $('#learn-english-words-' + word).addClass('btn-success');
+                if (numRequiredWordsFound >= level.required_words.length) {
+                    gameState.endHandler.gameOver();
+                }
+            }
 
             endSelf.turnEnd = function (endTile) {
                 function removeHword(start, end) {
@@ -511,18 +560,36 @@ var wordsmashing = new (function () {
                                 possibleword += gameState.board.getTile(endTile.yPos, j).letter
                             }
                             possibleword = possibleword.toLowerCase();
+                            var reversepossibleword = possibleword.reverse();
+
 
                             if (words[possibleword]) {
-                                matches = 1;
-                                scores = gameon.wordutils.scoreWord(possibleword);
-                                removeTheHword = true;
-                                showScore(possibleword, gameon.wordutils.scoreWord(possibleword))
+
+                                var isRequired = isRequiredWord(possibleword);
+                                if (isRequired) {
+                                    updateRequiredWordsView(possibleword)
+                                }
+                                if (isRequired || !inRequiredWord(possibleword)) {
+                                    matches = 1;
+                                    var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
+                                    scores += currentWordsScore;
+                                    removeTheHword = true;
+                                    showScore(possibleword, currentWordsScore)
+                                }
                             }
-                            else if (words[possibleword.reverse()]) {
-                                matches = 1;
-                                scores = gameon.wordutils.scoreWord(possibleword);
-                                removeTheHword = true;
-                                showScore(possibleword.reverse(), gameon.wordutils.scoreWord(possibleword))
+                            else if (words[reversepossibleword]) {
+
+                                var isRequired = isRequiredWord(reversepossibleword);
+                                if (isRequired) {
+                                    updateRequiredWordsView(reversepossibleword)
+                                }
+                                if (isRequired || !inRequiredWord(reversepossibleword)) {
+                                    matches = 1;
+                                    var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
+                                    scores += currentWordsScore;
+                                    removeTheHword = true;
+                                    showScore(reversepossibleword, currentWordsScore)
+                                }
                             }
                             if (matches >= 1) {
                                 unlockHWord(gameState.board.getTile(endTile.yPos, leftStart), gameState.board.getTile(endTile.yPos, rightStart));
@@ -578,19 +645,34 @@ var wordsmashing = new (function () {
                                 possibleword += gameState.board.getTile(j, endTile.xPos).letter
                             }
                             possibleword = possibleword.toLowerCase();
+                            var reversepossibleword = possibleword.reverse();
                             if (words[possibleword]) {
-                                matches++;
-                                var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
-                                scores += currentWordsScore;
-                                removeVword(topStart, bottomStart);
-                                showScore(possibleword, currentWordsScore)
+
+                                var isRequired = isRequiredWord(possibleword);
+                                if (isRequired) {
+                                    updateRequiredWordsView(possibleword)
+                                }
+                                if (isRequired || !inRequiredWord(possibleword)) {
+                                    matches++;
+                                    var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
+                                    scores += currentWordsScore;
+                                    removeVword(topStart, bottomStart);
+                                    showScore(possibleword, currentWordsScore)
+                                }
                             }
-                            else if (words[possibleword.reverse()]) {
-                                matches++;
-                                var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
-                                scores += currentWordsScore;
-                                removeVword(topStart, bottomStart);
-                                showScore(possibleword.reverse(), currentWordsScore)
+                            else if (words[reversepossibleword]) {
+
+                                var isRequired = isRequiredWord(reversepossibleword);
+                                if (isRequired) {
+                                    updateRequiredWordsView(reversepossibleword)
+                                }
+                                if (isRequired || !inRequiredWord(reversepossibleword)) {
+                                    matches++;
+                                    var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
+                                    scores += currentWordsScore;
+                                    removeVword(topStart, bottomStart);
+                                    showScore(reversepossibleword, currentWordsScore)
+                                }
                             }
                             if (matches >= 1) {
                                 unlockVWord(gameState.board.getTile(topStart, endTile.xPos), gameState.board.getTile(bottomStart, endTile.xPos));

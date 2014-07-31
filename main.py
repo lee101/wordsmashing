@@ -110,13 +110,15 @@ class LearnEnglishHandler(BaseHandler):
     def get(self):
         self.render('templates/learn-english.jinja2', {
             "json": json,
-            'LEARN_ENGLISH_LEVELS': [(key, level) for key, level in fixtures.LEARN_ENGLISH_LEVELS.iteritems()]
+            'LEARN_ENGLISH_LEVELS': ((key, level) for key, level in fixtures.LEARN_ENGLISH_LEVELS.iteritems())
         })
 
 
 class EnglishLevelHandler(BaseHandler):
     def get(self, urlkey):
         self.render('templates/learn-english-level.jinja2', {
+            'level': fixtures.LEARN_ENGLISH_LEVELS[urlkey],
+            'urlkey': urlkey,
         })
 
 
