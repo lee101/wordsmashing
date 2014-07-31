@@ -237,7 +237,7 @@
 
             var level = {
                 "blocked_spaces": [],
-                "growth_rate": 3,
+                "growth_rate": 4,
                 "id": null,
                 "moves": 999,
                 "time_left": null,
@@ -268,7 +268,7 @@
 
             var level = {
                 "blocked_spaces": [],
-                "growth_rate": 3,
+                "growth_rate": 4,
                 "id": null,
                 "moves": 999,
                 "time_left": null,

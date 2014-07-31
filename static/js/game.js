@@ -55,7 +55,7 @@ var wordsmashing = new (function () {
 
             gameon.renderVolumeTo($html.find('.mm-volume'));
 
-            gameState.requiredWords = [].concat(level.required_words);
+            gameState.requiredWords = [].concat(level.required_words || []);
             var requiredWordsDiv = $html.find('.learn-english-level_required-words');
 
             for (var i = 0; i < gameState.requiredWords.length; i++) {
