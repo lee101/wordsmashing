@@ -135,6 +135,9 @@
 
 
             self.starBar.render($html.find('.mm-starbar'));
+            if (self.starBar2) {
+                self.starBar2.render($html.find('.mm-starbar2'));
+            }
 
             var $button = $html.find('#mm-next-level');
             if (self.starBar.hasWon()) {
