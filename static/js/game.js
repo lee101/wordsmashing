@@ -6,7 +6,7 @@ gameon.loadSound('moving', '/static/music/moving-letter.m4a');
 
 //TODO move to fixtures.words
 words = {};
-jQuery.get('/static/js/words.txt', function (data) {
+jQuery.get('/static/js/american-english.txt', function (data) {
     wordslist = data.split('\n');
     for (var i = 0; i < wordslist.length; i++) {
         words[wordslist[i]] = 1;
