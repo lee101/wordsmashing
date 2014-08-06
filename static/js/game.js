@@ -308,16 +308,19 @@ var wordsmashing = new (function () {
                     btnStyle += 'btn-primary ';
                 }
                 if (self.locked) {
-                    return '<button type="button" class="' + btnStyle + ' btn-lg" disabled="disabled"><span class="glyphicon glyphicon-lock"></span></button>';
+                    return '<button type="button" class="' + btnStyle + ' btn-lg" disabled="disabled">' +
+                        '<span class="glyphicon glyphicon-lock"></span></button>';
                 }
                 if (self.halfgrown) {
                     btnStyle += ' btn-sm disabled';
-                    return '<div class="grower"><button type="button" class="' + btnStyle + '">' + self.letter + '</button></div>';
+                    return '<div class="grower"><button type="button" class="' + btnStyle + '">' + self.letter +
+                        '</button></div>';
                 }
                 else {
                     btnStyle += ' btn-lg';
                 }
-                return '<button type="button" class="' + btnStyle + '">' + self.letter + '<div class="gameon-btn-extra">' + self.points + '</div></button>';
+                return '<button type="button" class="' + btnStyle + '">' + self.letter +
+                    '<div class="gameon-btn-extra">' + self.points + '</div></button>';
             };
             return self;
         };
@@ -354,7 +357,7 @@ var wordsmashing = new (function () {
             }
 
             function getCombo(comboCount) {
-                gameState.board.fadingPopup('<button type="button" class="btn btn-success">' + comboCount + 'X Combo.' + comboCount + ' Points!</button>');
+                gameState.board.fadingPopup('<button type="button" class="btn btn-success">' + comboCount + 'X Combo. ' + comboCount + ' Points!</button>');
                 return comboCount;
             }
 

@@ -114,6 +114,25 @@
                 }
             }
 
+            self.getLevelById = function (id) {
+                return self.LEVELS[id - 1];
+            };
+
+
+            self.getLevelIdx = function (level) {
+                if ($.isNumeric(level)) {
+                    level = self.getLevelById(level)
+                }
+                var levelsByDifficulty = self.getLevelsByDifficulty(level.difficulty);
+                var levelIdx = 1;
+                for (var i = 0; i < levelsByDifficulty.length; i++) {
+                    if (levelsByDifficulty[i].id == level.id) {
+                        break;
+                    }
+                    levelIdx++;
+                }
+                return levelIdx
+            };
             self.LEARN_ENGLISH_LEVELS = {{ json.dumps(fixtures.LEARN_ENGLISH_LEVELS, cls=GameOnUtils.MyEncoder) }};
 
             return self;

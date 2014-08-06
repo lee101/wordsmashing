@@ -7,6 +7,14 @@ describe("fixtures", function () {
         expect(fixtures.getLevelsByDifficulty(fixtures.HARD).length).toBeGreaterThan(0);
         expect(fixtures.getLevelsByDifficulty(fixtures.EXPERT).length).toBeGreaterThan(0);
     });
+
+    it('gets Levels', function () {
+        expect(fixtures.getLevelById(1).id).toBe(1);
+        expect(fixtures.getLevelById(20).id).toBe(20);
+        expect(fixtures.getLevelById(40).id).toBe(40);
+        expect(fixtures.getLevelIdx(40)).toBe(40-16-16);
+
+    });
     it('other stuff', function () {
         var numEasyLevels = fixtures.EASY_LEVELS.length;
         var numMediumLevels = fixtures.MEDIUM_LEVELS.length;
@@ -29,10 +37,24 @@ describe("WordSmashing", function () {
         specHelpers.once(function () {
             APP.game.board.getTile(0, 0).click();
             APP.game.board.getTile(3, 3).click();
-            done();
+            specHelpers.once(function () {
+                done();
+            })
         });
     });
+    it('THEN you clock the game!', function (done) {
+        var level = fixtures.EXPERT_LEVELS[fixtures.EXPERT_LEVELS.length -1];
+        APP.gotoLevel(level);
+//        APP.goto('/campaign/expert/12');
+        specHelpers.once(function () {
+            APP.game.starBar.setScore(9999999999999);
+            APP.game.endHandler.setMoves(0);
 
+            var isNextButtonVisible = $('#mm-next-level').is(':visible');
+            expect(isNextButtonVisible).toBe(false);
+            done();
+        })
+    });
 
     it('tears down', function () {
         APP.goto('/tests');

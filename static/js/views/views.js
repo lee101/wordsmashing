@@ -55,7 +55,8 @@
                 };
 
                 self.click = function () {
-                    APP.goto('/campaign/' + levelsSelf.difficulty + '/' + self.id);
+                    var levelIdx = fixtures.getLevelIdx(self.id);
+                    APP.goto('/campaign/' + levelsSelf.difficulty + '/' + levelIdx);
                 };
 
                 self.render = function () {

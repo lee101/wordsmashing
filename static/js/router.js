@@ -41,16 +41,12 @@
             APP.router.versus2player();
             return false;
         }
-
-        //find level idx
-        var levelsByDifficulty = fixtures.getLevelsByDifficulty(level.difficulty);
-        var levelIdx = 1;
-        for (var i = 0; i < levelsByDifficulty.length; i++) {
-            if (levelsByDifficulty[i].id == level.id) {
-                break;
-            }
-            levelIdx++;
+        else if (level.required_words) {
+            APP.router.learnenglishlevelkey(level.urlkey);
+            return false
         }
+
+        var levelIdx = fixtures.getLevelIdx(level);
         APP.router.campaigndifficultylevel(fixtures.difficultyIdToName(level.difficulty), levelIdx);
         return false
     };
@@ -97,7 +93,7 @@
             if (view.rendersAsync) {
                 view.renderCallback = function () {
                     $mainbody.html(view.el);
-                    $mainbody.fadeIn(duration, function() {
+                    $mainbody.fadeIn(duration, function () {
                         if (typeof specHelpers == 'object') {
                             specHelpers.once();
                         }
