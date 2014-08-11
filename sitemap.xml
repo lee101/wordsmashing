@@ -5,12 +5,22 @@
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/multiplayer</loc>
+		<loc>http://www.wordsmashing.com/versus</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/timed</loc>
+		<loc>http://www.wordsmashing.com/versus/1player</loc>
+		<changefreq>weekly</changefreq>
+		<priority>1</priority>
+	</url>
+	<url>
+		<loc>http://www.wordsmashing.com/versus/2player</loc>
+		<changefreq>weekly</changefreq>
+		<priority>1</priority>
+	</url>
+	<url>
+		<loc>http://www.wordsmashing.com/campaign</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
@@ -37,7 +47,7 @@
 		<priority>0</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/privacy-policy</loc>
+		<loc>http://www.wordsmashing.com/privacy</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
