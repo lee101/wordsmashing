@@ -14,6 +14,9 @@ window.evutils = new (function () {
         $modal.on('show.bs.modal', function (e) {
             self.modalHidden = false;
         });
+        $('.mm-hide-btn').click(function () {
+            $(this).parent().hide();
+        });
     });
     self.showModal = function () {
         $('#modal').modal('show');

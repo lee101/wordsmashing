@@ -85,6 +85,7 @@
 .mm-responsivead-bottom {
   margin: 0 auto;
   text-align: center;
+  display: none;
 }
 .mm-responsivead-right {
   width: 0px;
@@ -96,22 +97,28 @@
   margin-right: 50px;
   display: none;
 }
-@media (min-width: 600px) and (max-width: 1130px) {
+@media (min-width: 600px) {
   .mm-responsivead-right {
+    margin-right: 1px;
     width: 160px;
     display: block;
   }
 }
-@media (min-width: 1131px) and (max-width: 1449px) {
+@media (min-width: 720px) {
+  .mm-responsivead-right {
+    margin-right: 50px;
+    width: 160px;
+    display: block;
+  }
+}
+@media (min-width: 1131px) {
   .mm-responsivead-right {
     width: 250px;
-    display: block;
   }
 }
 @media (min-width: 1500px) {
   .mm-responsivead-right {
     width: 400px;
-    display: block;
   }
 }
 .mm-hide-btn {
@@ -119,11 +126,6 @@
   left: 0;
   right: 0;
   top: -45px;
-}
-@media (min-width: 481px) {
-  .mm-hide-btn {
-    display: none;
-  }
 }
 .mm-like {
   position: fixed;

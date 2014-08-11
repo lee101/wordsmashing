@@ -209,6 +209,7 @@
             if (self.starBar.hasWon()) {
                 gameon.loopSound('win');
             }
+            $('.mm-responsivead-bottom').show();
 
             return self;
         },
