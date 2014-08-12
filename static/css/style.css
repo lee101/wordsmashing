@@ -85,7 +85,6 @@
 .mm-responsivead-bottom {
   margin: 0 auto;
   text-align: center;
-  display: none;
 }
 .mm-responsivead-right {
   width: 0px;
@@ -125,7 +124,6 @@
   position: relative;
   left: 0;
   right: 0;
-  top: -45px;
 }
 .mm-like {
   position: fixed;
