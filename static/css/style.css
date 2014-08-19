@@ -138,6 +138,56 @@
     display: none;
   }
 }
+.mm-sharing-btns {
+  font-size: 21.66px;
+}
+@media (min-width: 481px) {
+  .mm-sharing-btns {
+    font-size: 27.36px;
+  }
+}
+@media (min-width: 641px) {
+  .mm-sharing-btns {
+    font-size: 29.64px;
+  }
+}
+@media (min-width: 961px) {
+  .mm-sharing-btns {
+    font-size: 30.78px;
+  }
+}
+@media (min-width: 1025px) {
+  .mm-sharing-btns {
+    font-size: 31.92px;
+  }
+}
+@media (min-width: 1281px) {
+  .mm-sharing-btns {
+    font-size: 34.2px;
+  }
+}
+.mm-share-btn {
+  margin-top: 10px;
+  font-size: 36px;
+}
+.mm-share-btn--twitter {
+  color: #4098fd;
+}
+.mm-share-btn--google-plus {
+  color: #ed142e;
+}
+.mm-share-btn--pinterest {
+  color: #ca2027;
+}
+.mm-share-btn--linked-in {
+  color: #1a84bc;
+}
+.mm-share-btn--reddit {
+  color: #cee3f8;
+}
+.mm-share-btn--stumbleupon {
+  color: #ea4b24;
+}
 .ws-header {
   background-color: white;
   border-bottom: 1px solid #CCCCCC;

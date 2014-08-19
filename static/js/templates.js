@@ -37,7 +37,44 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div class=\"main-game-wrapper\">\n\n    <div class=\"mm-logo\">\n        <div class=\"mm-starbar mm-starbar--center\">\n\n        </div>\n        <div class=\"mm-starbar2 mm-starbar--center\">\n\n        </div>\n        <div class=\"mm-bonus-message\">\n        </div>\n        <div class=\"mm-end-message\">\n            <p>Excellent!</p>\n        </div>\n        <div class=\"gameon-level-controls\">\n            <div class=\"left\">\n                <a id=\"mm-replay\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg\"\n                        >Replay\n                </a>\n            </div>\n            <div class=\"right\">\n                <a id=\"mm-next-level\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg disabled\"\n                        ><span\n                        class=\"fa fa-lock\"></span>Next\n                </a>\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"text-center\">\n                <a href=\"/\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg\"\n                        >Menu\n                </a>\n            </div>\n        </div>\n    </div>\n</div>\n";
+output += "<div class=\"main-game-wrapper\">\n\n    <div class=\"mm-logo\">\n        <div class=\"mm-starbar mm-starbar--center\">\n\n        </div>\n        <div class=\"mm-starbar2 mm-starbar--center\">\n\n        </div>\n        <div class=\"mm-bonus-message\">\n        </div>\n        <div class=\"mm-end-message\">\n            <p>Excellent!</p>\n        </div>\n        <div class=\"gameon-level-controls\">\n            <div class=\"left\">\n                <a id=\"mm-replay\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg\"\n                        >Replay\n                </a>\n            </div>\n            <div class=\"right\">\n                <a id=\"mm-next-level\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg disabled\"\n                        ><span\n                        class=\"fa fa-lock\"></span>Next\n                </a>\n            </div>\n            <div class=\"clear\"></div>\n            <div class=\"text-center\">\n                <a href=\"/\" class=\"mm-difficulty__btn gameon-btn-hg btn btn-success btn-lg\"\n                        >Menu\n                </a>\n            </div>\n        </div>\n        <p class=\"mm-sharing-btns\">\n            ";
+var t_1;
+t_1 = (lineno = 34, colno = 41, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "urlencode"), "urlencode", [""]));
+frame.set("encoded_desc", t_1);
+if(!frame.parent) {
+context.setVariable("encoded_desc", t_1);
+context.addExport("encoded_desc");
+}
+var t_2;
+t_2 = (lineno = 35, colno = 47, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "urlencode"), "urlencode", [""]));
+frame.set("encoded_desc_short", t_2);
+if(!frame.parent) {
+context.setVariable("encoded_desc_short", t_2);
+context.addExport("encoded_desc_short");
+}
+output += "Share <a href=\"#\" class=\"facebook-share-btn\" title=\"Share on Facebook\"><i\n                class=\"fa fa-facebook-square mm-share-btn\"></i> </a>\n            <a href=\"https://twitter.com/intent/tweet?url=";
+output += runtime.suppressValue((lineno = 38, colno = 68, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "urlencode"), "urlencode", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
+output += "&text=";
+output += runtime.suppressValue(t_2, env.autoesc);
+output += "\"\n               target=\"_blank\" rel=\"nofollow\" title=\"Tweet on Twitter\">\n                <i class=\"fa fa-twitter-square mm-share-btn mm-share-btn--twitter\"></i>\n            </a>\n            <a href=\"https://pinterest.com/pin/create/bookmarklet/?url=";
+output += runtime.suppressValue((lineno = 42, colno = 81, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "urlencode"), "urlencode", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
+output += "&description=";
+output += runtime.suppressValue(t_1, env.autoesc);
+output += "\"\n               target=\"_blank\" rel=\"nofollow\" title=\"Pin on pinterest\">\n                <i class=\"fa fa-pinterest-square mm-share-btn mm-share-btn--pinterest\"></i>\n            </a>\n            <a href=\"https://plus.google.com/share?url=";
+output += runtime.suppressValue((lineno = 46, colno = 65, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "urlencode"), "urlencode", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
+output += "\"\n               target=\"_blank\" rel=\"nofollow\" title=\"Share on Google Plus\">\n                <i class=\"fa fa-google-plus-square mm-share-btn mm-share-btn--google-plus\"></i>\n            </a>\n            <a href=\"http://www.linkedin.com/shareArticle?url=";
+output += runtime.suppressValue((lineno = 50, colno = 72, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "urlencode"), "urlencode", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
+output += "&title=";
+output += runtime.suppressValue(t_1, env.autoesc);
+output += "\"\n               target=\"_blank\" rel=\"nofollow\" title=\"Share on Linkedin\">\n                <i class=\"fa fa-linkedin-square mm-share-btn mm-share-btn--linked-in\"></i>\n            </a>\n            <a href=\"http://www.stumbleupon.com/submit?url=";
+output += runtime.suppressValue((lineno = 54, colno = 69, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "urlencode"), "urlencode", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
+output += "&title=";
+output += runtime.suppressValue(t_1, env.autoesc);
+output += "\"\n               target=\"_blank\" rel=\"nofollow\" title=\"Share on Stumble Upon\">\n                <i class=\"fa fa-stumbleupon-circle mm-share-btn mm-share-btn--stumbleupon\"></i>\n            </a>\n            <a href=\"http://reddit.com/submit?url=";
+output += runtime.suppressValue((lineno = 58, colno = 60, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "urlencode"), "urlencode", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
+output += "&title=";
+output += runtime.suppressValue(t_2, env.autoesc);
+output += "\"\n               target=\"_blank\" rel=\"nofollow\" title=\"Share on reddit\">\n                <i class=\"fa fa-reddit mm-share-btn\"></i>\n            </a>\n        </p>\n\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {

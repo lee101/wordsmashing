@@ -1,0 +1,16 @@
+{
+  "name": "wordsmashing",
+  "version": "0.0.0",
+  "homepage": "https://github.com/lee101/wordsmashing",
+  "authors": [
+    "Lee Penkman <leepenkman@gmail.com>"
+  ],
+  "description": "word puzzle",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "backbone": "~1.1.2",
+    "lesshat": "~3.0.2",
+    "nunjucks": "~1.0.5"
+  }
+}

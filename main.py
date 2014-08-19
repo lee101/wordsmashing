@@ -2,6 +2,7 @@
 
 import os
 import json
+import urllib
 
 from google.appengine.ext import ndb
 import webapp2
@@ -36,6 +37,7 @@ class BaseHandler(webapp2.RequestHandler):
             # 'glogout_url': users.create_logout_url(self.request.uri),
             'url': self.request.uri,
             'path': self.request.path,
+            'urlencode': urllib.quote_plus,
             # 'num_levels': len(LEVELS)
         }
         template_values.update(extraParams)
