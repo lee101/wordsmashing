@@ -12386,7 +12386,6 @@ quixotisms
 qumran
 quonset
 québecois
-rs
 rafs
 rams
 rca
@@ -12397,7 +12396,6 @@ rnas
 roms
 rotcs
 rvs
-ra
 ras
 rabat
 rabats
