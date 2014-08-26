@@ -18,17 +18,19 @@
         },
 
         render: function () {
-            this.$el.html(evutils.render('templates/shared/campaign.jinja2'));
+            var $html = $(evutils.render('templates/shared/campaign.jinja2'));
+            this.$el.html($html);
+
             gameon.getUser(function (user) {
                 var difficultiesUnlocked = user.difficulties_unlocked;
                 if (difficultiesUnlocked >= 1) {
-                    gameon.unlock('.mm-difficulty--' + fixtures.MEDIUM);
+                    gameon.unlock($html.find('.mm-difficulty--' + fixtures.MEDIUM));
                 }
                 if (difficultiesUnlocked >= 2) {
-                    gameon.unlock('.mm-difficulty--' + fixtures.HARD);
+                    gameon.unlock($html.find('.mm-difficulty--' + fixtures.HARD));
                 }
                 if (difficultiesUnlocked >= 3) {
-                    gameon.unlock('.mm-difficulty--' + fixtures.EXPERT);
+                    gameon.unlock($html.find('.mm-difficulty--' + fixtures.EXPERT));
                 }
             });
 

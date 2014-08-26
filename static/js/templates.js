@@ -3,7 +3,13 @@ var lineno = null;
 var colno = null;
 var output = "";
 try {
-output += "<div id=\"instructions\" style=\"display: none\">\n    <h1>Pick A Level</h1>\n\n    <p class=\"lead\">\n        Play Word Smashing!<br/>\n        New boards and Smashable locks!\n    </p>\n\n    <p class=\"lead\">\n        <b>Instructions</b><br/>\n\n        Get words up, down, back and forward but don't run out of space!\n    </p>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/easy')\">Easy\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/medium')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Medium\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/hard')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Hard\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n            onclick=\"APP.goto('/campaign/expert')\"\n            disabled=\"disabled\"><span\n            class=\"glyphicon glyphicon-lock\"></span>Expert\n    </button>\n</div>\n<div class=\"ws-main-btn-container\">\n    <button class=\"ws-help-btn btn btn-large btn-danger gameon-btn-hg\" type=\"button\">?</button>\n</div>\n";
+output += "<div>\n    <div id=\"instructions\" style=\"display: none\">\n        <h1>Pick A Level</h1>\n\n        <p class=\"lead\">\n            Play Word Smashing!<br/>\n            New boards and Smashable locks!\n        </p>\n\n        <p class=\"lead\">\n            <b>Instructions</b><br/>\n\n            Get words up, down, back and forward but don't run out of space!\n        </p>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a type=\"button\" class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg\"\n           href=\"/campaign/easy\">Easy\n        </a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg disabled mm-difficulty--";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "fixtures")),"MEDIUM", env.autoesc), env.autoesc);
+output += "\"\n           href=\"/campaign/medium\"\n                ><span\n                class=\"glyphicon glyphicon-lock\"></span>Medium\n        </a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg disabled mm-difficulty--";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "fixtures")),"HARD", env.autoesc), env.autoesc);
+output += "\"\n           href=\"/campaign/hard\"\n                ><span\n                class=\"glyphicon glyphicon-lock\"></span>Hard\n        </a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <a class=\"ws-main-btn gameon-btn-hg btn btn-success btn-lg disabled mm-difficulty--";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "fixtures")),"EXPERT", env.autoesc), env.autoesc);
+output += "\"\n           href=\"/campaign/expert\"\n                ><span\n                class=\"glyphicon glyphicon-lock\"></span>Expert\n        </a>\n    </div>\n    <div class=\"ws-main-btn-container\">\n        <button class=\"ws-help-btn btn btn-large btn-danger gameon-btn-hg\" type=\"button\">?</button>\n    </div>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -97,7 +103,7 @@ output += "\n            <span>Contact</span>\n        ";
 ;
 }
 else {
-output += "\n            <a class=\"footer__link\" href=\"/contact\" title=\"Contact Us\">Contact</a>\n        ";
+output += "\n            <a class=\"footer__link\" href=\"/contact\" title=\"Contact Us\" onclick=\"return gameon.gotoLink(this)\"\n               target=\"_blank\" data-bypass=\"1\">Contact</a>\n        ";
 ;
 }
 output += "\n        ";
@@ -106,7 +112,7 @@ output += "\n            <span>About Us</span>\n        ";
 ;
 }
 else {
-output += "\n            <a class=\"footer__link\" href=\"/about\" title=\"About Word Smashing\">About Us</a>\n        ";
+output += "\n            <a class=\"footer__link\" href=\"/about\" title=\"About Word Smashing\" onclick=\"return gameon.gotoLink(this)\"\n               target=\"_blank\" data-bypass=\"1\">About Us</a>\n        ";
 ;
 }
 output += "\n        ";
@@ -115,7 +121,7 @@ output += "\n            <span>Terms &amp; Conditions</span>\n        ";
 ;
 }
 else {
-output += "\n            <a class=\"footer__link\" href=\"/terms\" title=\"Terms &amp; Conditions\">Terms &amp; Conditions</a>\n        ";
+output += "\n            <a class=\"footer__link\" href=\"/terms\" title=\"Terms &amp; Conditions\" onclick=\"return gameon.gotoLink(this)\"\n               target=\"_blank\" data-bypass=\"1\">Terms &amp; Conditions</a>\n        ";
 ;
 }
 output += "\n        ";
@@ -124,10 +130,10 @@ output += "\n            <span>Privacy Policy</span>\n        ";
 ;
 }
 else {
-output += "\n            <a class=\"footer__link\" href=\"/privacy\" title=\"Privacy Policy\">Privacy Policy</a>\n        ";
+output += "\n            <a class=\"footer__link\" href=\"/privacy\" title=\"Privacy Policy\" onclick=\"return gameon.gotoLink(this)\"\n               target=\"_blank\" data-bypass=\"1\">Privacy Policy</a>\n        ";
 ;
 }
-output += "\n\n        <span>© 2013 <a class=\"footer__link\" href=\"http://www.addictingwordgames.com\" title=\"Addicting Word Games\"\n                        target=\"_blank\">Addicting Word Games</a></span>\n        <a href=\"http://www.facebook.com/WordSmashing\" title=\"Word Smashing on Facebook\" target=\"_blank\">\n            <img src=\"/static/img/facebook.jpg\" alt=\"Word Smashing on Facebook\" width=\"144px\" height=\"44px\">\n        </a>\n\n    <div class=\"g-plus\" data-href=\"//plus.google.com/116949277834973226564\" data-rel=\"publisher\"></div>\n\n    <!-- Place this tag after the last badge tag. -->\n    <script type=\"text/javascript\">\n        (function () {\n            var po = document.createElement('script');\n            po.type = 'text/javascript';\n            po.async = true;\n            po.src = 'https://apis.google.com/js/plusone.js';\n            var s = document.getElementsByTagName('script')[0];\n            s.parentNode.insertBefore(po, s);\n        })();\n    </script>\n    <br/>\n    <a href=\"https://twitter.com/Wordsmashing\" class=\"twitter-follow-button\" data-show-count=\"false\"\n       data-size=\"large\">Follow @Wordsmashing</a>\n    <script>!function (d, s, id) {\n        var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';\n        if (!d.getElementById(id)) {\n            js = d.createElement(s);\n            js.id = id;\n            js.src = p + '://platform.twitter.com/widgets.js';\n            fjs.parentNode.insertBefore(js, fjs);\n        }\n    }(document, 'script', 'twitter-wjs');</script>\n    </p>\n</div>\n";
+output += "\n\n        <span>© 2013 <a class=\"footer__link\" href=\"http://www.addictingwordgames.com\" title=\"Addicting Word Games\"\n                        target=\"_blank\">Addicting Word Games</a></span>\n        <a href=\"http://www.facebook.com/WordSmashing\" title=\"Word Smashing on Facebook\" target=\"_blank\">\n            <img src=\"/static/img/facebook.jpg\" alt=\"Word Smashing on Facebook\" width=\"144\" height=\"44\">\n        </a>\n\n    <div class=\"g-plus\" data-href=\"//plus.google.com/116949277834973226564\" data-rel=\"publisher\"></div>\n\n    <!-- Place this tag after the last badge tag. -->\n    <script type=\"text/javascript\">\n        (function () {\n            var po = document.createElement('script');\n            po.type = 'text/javascript';\n            po.async = true;\n            po.src = 'https://apis.google.com/js/plusone.js';\n            var s = document.getElementsByTagName('script')[0];\n            s.parentNode.insertBefore(po, s);\n        })();\n    </script>\n    <br/>\n    <a href=\"https://twitter.com/Wordsmashing\" class=\"twitter-follow-button\" data-show-count=\"false\"\n       data-size=\"large\">Follow @Wordsmashing</a>\n    <script>!function (d, s, id) {\n        var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';\n        if (!d.getElementById(id)) {\n            js = d.createElement(s);\n            js.id = id;\n            js.src = p + '://platform.twitter.com/widgets.js';\n            fjs.parentNode.insertBefore(js, fjs);\n        }\n    }(document, 'script', 'twitter-wjs');</script>\n    </p>\n</div>\n";
 cb(null, output);
 ;
 } catch (e) {
@@ -170,8 +176,8 @@ else {
 output += "\n        <div class=\"ws-header--item\">&nbsp;\n            <button type=\"button\" class=\"back-btn gameon-btn-hg btn btn-danger btn-lg\" disabled=\"disabled\">\n                <i\n                        class=\"fa fa-arrow-left\"></i></button>\n\n        </div>\n    ";
 ;
 }
-output += "\n    <a href=\"/\" title=\"Word Smashing Word Puzzle\" class=\"ws-header--item\">\n        <img class=\"gameon-hidden-xs\" src=\"/static/img/wordsmashing_logo.png\" alt=\"Word Smashing\" title=\"Word Smashing\" width=\"250\" height=\"184\" />\n        <img class=\"gameon-visible-xs\" src=\"/static/img/wordsmashing_icon60.png\" alt=\"Word Smashing\" title=\"Word Smashing\" width=\"60\" height=\"60\" />\n    </a>\n\n    <div class=\"ws-header--item\">\n";
-output += "\n";
+output += "\n    <a href=\"/\" title=\"Word Smashing Word Puzzle\" class=\"ws-header--item\" onclick=\"return gameon.gotoLink(this)\"\n       target=\"_blank\" data-bypass=\"1\">\n        <img class=\"gameon-hidden-xs\" src=\"/static/img/wordsmashing_logo.png\" alt=\"Word Smashing\" title=\"Word Smashing\"\n             width=\"250\" height=\"184\"/>\n        <img class=\"gameon-visible-xs\" src=\"/static/img/wordsmashing_icon60.png\" alt=\"Word Smashing\"\n             title=\"Word Smashing\" width=\"60\" height=\"60\"/>\n    </a>\n\n    <div class=\"ws-header--item\">\n        ";
+output += "\n        ";
 output += "\n    </div>\n</div>\n";
 cb(null, output);
 ;
