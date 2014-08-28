@@ -27,8 +27,14 @@
   padding: 40px 0;
 }
 .mm-difficulty__btn {
-  width: 150px;
+  width: 120px;
   margin: 10px 0;
+}
+@media (min-width: 310px) and (min-height: 380px) {
+  .mm-difficulty__btn {
+    width: 150px;
+    margin: 10px 0;
+  }
 }
 .mm-level-controls {
   margin: 0 auto;
@@ -49,7 +55,7 @@
 }
 .mm-starbar--center {
   margin: 15px auto;
-  width: 300px;
+  max-width: 300px;
 }
 .gameon-volume-template {
   display: none;
@@ -201,7 +207,15 @@
 }
 .ws-main-btn {
   width: 200px;
-  font-size: 26px;
+  font-size: 18px;
+  padding: 6px 12px;
+}
+@media (min-height: 420px) {
+  .ws-main-btn {
+    width: 200px;
+    font-size: 26px;
+    padding: 10px 16px;
+  }
 }
 .ws-main-btn-container {
   margin: 5px 0;
