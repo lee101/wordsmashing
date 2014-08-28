@@ -78,6 +78,18 @@
         }
     });
 
+    APP.gotoLink = function (link) {
+        if(gameon.isInIFrame()) {
+            return true;
+        }
+        var href = $(link).prop('href');
+        var root = location.protocol + '//' + location.host + '/';
+        if (root === href.slice(0, root.length)) {
+            APP.goto(href.slice(root.length));
+            return false;
+        }
+    };
+
     var currentView;
 
     function animateTo(view) {
