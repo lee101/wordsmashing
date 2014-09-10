@@ -820,7 +820,6 @@ aquino
 aquinos
 aquitaine
 aquitaines
-ar
 ars
 ara
 aras
@@ -1223,7 +1222,6 @@ aztecans
 aztecs
 aztlan
 aztlans
-bs
 bas
 basics
 bbs
@@ -1233,7 +1231,6 @@ bms
 bmw
 bmws
 bss
-ba
 bas
 baal
 baals
@@ -1840,7 +1837,6 @@ bjerknes
 bjerkness
 bjork
 bjorks
-bk
 bks
 black
 blacks
@@ -2063,8 +2059,6 @@ boyers
 boyle
 boötes
 boötess
-br
-brs
 brad
 brads
 bradbury
@@ -2905,8 +2899,6 @@ cetus
 ceylon
 ceylons
 cezanne
-cf
-cfs
 chin
 chablis
 chabliss
@@ -3192,7 +3184,6 @@ churriguera
 churrigueras
 chuvash
 chuvashs
-ci
 cicero
 ciceros
 cid
@@ -3316,10 +3307,6 @@ clyde
 clydesdale
 clydesdales
 clytemnestra
-cm
-cms
-co
-cos
 cobain
 cobains
 cobb
@@ -3621,8 +3608,6 @@ coy
 coys
 cozumel
 cozumels
-cr
-crs
 crabbe
 craft
 crafts
@@ -3711,13 +3696,11 @@ cryptozoic
 cryptozoics
 crystal
 crystals
-cs
 csonka
 csonkas
 ctesiphon
 cthulhu
 cthulhus
-cu
 cus
 cuba
 cubas
@@ -4826,8 +4809,6 @@ epson
 epsons
 epstein
 equuleus
-er
-ers
 erasmus
 erasmuss
 erato
@@ -4960,8 +4941,6 @@ etruria
 etruscan
 etta
 ettas
-eu
-eus
 eucharist
 eucharists
 eucharistic
@@ -5061,7 +5040,6 @@ eysenck
 eysencks
 ezekiel
 ezra
-fs
 fbis
 fdics
 fdr
@@ -5147,8 +5125,6 @@ fay
 fays
 faye
 fayes
-fe
-fes
 feb
 febs
 februaries
@@ -5302,8 +5278,6 @@ flowers
 floyd
 flynn
 flynns
-fm
-fms
 foch
 fokker
 foley
@@ -5343,8 +5317,6 @@ fourneyrons
 fowler
 fox
 foxs
-fr
-frs
 fragonard
 fran
 frans
@@ -5658,12 +5630,8 @@ gayle
 gayles
 gaza
 gaziantep
-gd
-gds
 gdansk
 gdansks
-ge
-ges
 geffen
 geffens
 gehenna
@@ -6196,8 +6164,6 @@ gödel
 gödels
 göteborg
 göteborgs
-hs
-hfs
 hivs
 hmos
 hps
@@ -7243,7 +7209,6 @@ izod
 izods
 izvestia
 izvestias
-js
 jfk
 jfks
 jack
@@ -7733,7 +7698,6 @@ justinians
 jutland
 jutlands
 juvenal
-ks
 kfc
 kfcs
 kkks
@@ -8185,8 +8149,6 @@ kosygin
 koufax
 koufaxs
 kowloon
-kr
-krs
 kraft
 krafts
 krakatoa
@@ -10244,11 +10206,9 @@ mitzi
 mitzis
 mixtec
 mizar
-mn
 mns
 mnemosyne
 mnemosynes
-mo
 mos
 mobil
 mobils
@@ -10618,7 +10578,6 @@ myst
 mysts
 münchhausen
 münchhausens
-ns
 nasas
 nascar
 nascars
@@ -10759,14 +10718,8 @@ nazis
 nazism
 nazisms
 nazisms
-nb
-nbs
-nd
-nds
 ndjamena
 ndjamenas
-ne
-nes
 neal
 neals
 neanderthal
@@ -10878,7 +10831,6 @@ ngaliema
 ngaliemas
 nguyen
 nguyens
-ni
 niagara
 niagaras
 niamey
@@ -11089,8 +11041,6 @@ noyce
 noyces
 noyes
 noyess
-np
-nps
 nubia
 nubian
 nukualofa
@@ -11124,7 +11074,6 @@ oneil
 oneill
 orourke
 otoole
-os
 oass
 ods
 ohsa
@@ -11142,8 +11091,6 @@ oakley
 oates
 oaxaca
 oaxacas
-ob
-obs
 obadiah
 obama
 obamas
@@ -11444,7 +11391,6 @@ ozymandias
 ozymandiass
 ozzie
 ozzies
-ps
 pas
 pacs
 pbss
@@ -11661,10 +11607,6 @@ payne
 paynes
 paypal
 paypals
-pb
-pbs
-pd
-pds
 peabody
 peabodys
 peace
@@ -11947,7 +11889,6 @@ pius
 piuss
 pizarro
 pkwy
-pl
 planck
 plantagenet
 plantagenets
@@ -11989,10 +11930,6 @@ pluto
 plutos
 plymouth
 plymouths
-pm
-pms
-po
-pos
 pocahontas
 pocahontass
 pocono
@@ -12242,16 +12179,12 @@ psalters
 psalters
 psyche
 psyches
-pt
-pts
 ptah
 ptahs
 ptolemaic
 ptolemies
 ptolemy
 ptolemys
-pu
-pus
 puccini
 puck
 puckett
@@ -12509,8 +12442,6 @@ raymonds
 raymundo
 raymundos
 rbs
-re
-res
 reagan
 reagans
 reaganomics
@@ -12612,8 +12543,6 @@ reynas
 reynaldo
 reynaldos
 reynolds
-rh
-rhs
 rhea
 rhee
 rheingau
@@ -12713,8 +12642,6 @@ rivieras
 riyadh
 riyadhs
 rizal
-rn
-rns
 roach
 roachs
 rob
@@ -12971,8 +12898,6 @@ royce
 rozelle
 rozelles
 rte
-ru
-rus
 rubaiyat
 rubaiyats
 rubbermaid
@@ -13055,7 +12980,6 @@ rwandan
 rwandans
 rwandans
 rwandas
-rx
 ryan
 ryans
 rydberg
@@ -13063,7 +12987,6 @@ rydbergs
 ryder
 ryukyu
 ryukyus
-ss
 salts
 sams
 sap
@@ -13340,10 +13263,6 @@ saxons
 saxony
 saxonys
 sayers
-sb
-sbs
-sc
-scs
 scandinavia
 scandinavias
 scandinavian
@@ -13469,8 +13388,6 @@ scylla
 scyllas
 scythia
 scythian
-se
-ses
 seaborg
 seagram
 seagrams
@@ -13782,7 +13699,6 @@ shulas
 shylock
 shylockian
 shylockians
-si
 siam
 siams
 siamese
@@ -13919,8 +13835,6 @@ slovenians
 slovenians
 slurpee
 slurpees
-sm
-sms
 small
 smalls
 smetana
@@ -13935,8 +13849,6 @@ smokeys
 smolensk
 smollett
 smuts
-sn
-sns
 snake
 snakes
 snapple
@@ -14457,7 +14369,6 @@ szymborska
 szymborskas
 sèvres
 tang
-ts
 tbs
 tkos
 tlcs
@@ -14465,7 +14376,6 @@ tnts
 tvs
 twa
 twas
-ta
 tas
 tabasco
 tabascos
@@ -14639,12 +14549,9 @@ tauruses
 tawney
 taylor
 taylors
-tb
 tbs
 tbilisi
 tbilisis
-tc
-tcs
 tchaikovsky
 teasdale
 teasdales
@@ -14733,8 +14640,6 @@ texans
 texans
 texas
 texass
-th
-ths
 thackeray
 thad
 thads
@@ -14924,8 +14829,6 @@ tlaloc
 tlalocs
 tlingit
 tlingits
-tm
-tms
 tobago
 tobagos
 toby
@@ -15224,8 +15127,6 @@ twitter
 twitters
 twizzlers
 twizzlerss
-ty
-tys
 tycho
 tylenol
 tylenols
@@ -16031,8 +15932,6 @@ witts
 wittgenstein
 wittgensteins
 witwatersrand
-wm
-wms
 wobegon
 wobegons
 wodehouse
@@ -16098,8 +15997,6 @@ wrigley
 wrigleys
 wroclaw
 wroclaws
-wu
-wus
 wuhan
 wurlitzer
 wurlitzers
@@ -16126,8 +16023,6 @@ xls
 xanadu
 xanthippe
 xavier
-xe
-xes
 xenakis
 xenakiss
 xenia
@@ -16154,7 +16049,6 @@ xochipilli
 xochipillis
 xuzhou
 xuzhous
-ys
 yacc
 yaccs
 yahoo
@@ -16200,8 +16094,6 @@ yaroslavl
 yataro
 yataros
 yates
-yb
-ybs
 yeager
 yeagers
 yeats
@@ -16292,7 +16184,6 @@ yvette
 yvettes
 yvonne
 yvonnes
-zs
 zachariah
 zachariahs
 zachary
@@ -16385,8 +16276,6 @@ zionists
 zionists
 zions
 ziploc
-zn
-zns
 zoe
 zoes
 zola
@@ -16407,8 +16296,6 @@ zorro
 zorros
 zosma
 zosmas
-zr
-zrs
 zsigmondy
 zubenelgenubi
 zubenelgenubis
@@ -98722,7 +98609,6 @@ yawning
 yawns
 yaws
 yawss
-ye
 yea
 yeas
 yeah
@@ -98816,7 +98702,6 @@ yipped
 yippee
 yipping
 yips
-yo
 yock
 yocks
 yocks

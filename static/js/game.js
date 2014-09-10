@@ -33,6 +33,9 @@ var wordsmashing = new (function () {
             gameState.destruct = function () {
                 gameon.cleanBoards();
                 gameon.pauseSound("theme");
+                if (gameState.clock) {
+                    gameState.clock.reset();
+                }
             };
 
             if (level.is_multiplayer) {
@@ -337,7 +340,7 @@ var wordsmashing = new (function () {
         };
 
         gameState.EndHandler = function () {
-            var endSelf = this;
+            var endSelf = {};
             endSelf.moves = level.moves;
             endSelf.render = function (target) {
                 endSelf.$target = $(target);
@@ -987,10 +990,11 @@ var wordsmashing = new (function () {
                 gameState.clock = gameon.clock(endSelf.gameOver, level.time_left);
                 gameState.clock.start();
             }
+            return endSelf;
         };
 
         gameState.AIHandler = function () {
-            var AISelf = this;
+            var AISelf = {};
 
             AISelf.makeAiMove = function () {
                 //TODO figure out if people can move!
