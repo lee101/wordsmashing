@@ -20944,8 +20944,6 @@ awoke
 awoken
 awol
 awry
-ax
-axs
 axe
 axes
 axed
@@ -20965,8 +20963,6 @@ axles
 axon
 axons
 axons
-ay
-ays
 ayatollah
 ayatollahs
 ayatollahs
@@ -42394,8 +42390,6 @@ eyewitnesses
 eying
 eyrie
 eyries
-fa
-fas
 fable
 fables
 fabled
@@ -48492,7 +48486,6 @@ grunts
 gryphon
 gryphons
 gryphons
-gs
 guacamole
 guacamoles
 guano
@@ -56073,7 +56066,6 @@ kayaks
 kazoo
 kazoos
 kazoos
-kc
 kebab
 kebabs
 kebabs
@@ -56618,7 +56610,6 @@ kryptons
 króna
 krónas
 krónur
-ks
 kudos
 kudoss
 kudzu
@@ -58953,7 +58944,6 @@ loyaltys
 lozenge
 lozenges
 lozenges
-ls
 luau
 luaus
 luaus
@@ -74893,8 +74883,6 @@ razzs
 razzed
 razzes
 razzing
-re
-res
 reach
 reachs
 reachable
@@ -78640,7 +78628,6 @@ royalties
 royaltiess
 royalty
 royaltys
-rs
 rub
 rubs
 rubbed
