@@ -232,12 +232,12 @@
 .modal-header {
   border-bottom: none;
 }
-@media (max-width: 698px) {
+@media (max-height: 698px) {
   .gameon-hidden-xs {
     display: none;
   }
 }
-@media (min-width: 699px) {
+@media (min-height: 699px) {
   .gameon-visible-xs {
     display: none;
   }
