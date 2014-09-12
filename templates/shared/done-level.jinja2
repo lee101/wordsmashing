@@ -32,8 +32,8 @@
             </div>
         </div>
         <p class="mm-sharing-btns">
-            {% set encoded_desc = urlencode('') -%}
-            {% set encoded_desc_short = urlencode('') -%}
+            {% set encoded_desc = urlencode(title) -%}
+            {% set encoded_desc_short = urlencode(description) -%}
             Share <a href="#" class="facebook-share-btn" title="Share on Facebook"><i
                 class="fa fa-facebook-square mm-share-btn"></i> </a>
             <a href="https://twitter.com/intent/tweet?url={{ urlencode(url) }}&text={{ encoded_desc_short }}"

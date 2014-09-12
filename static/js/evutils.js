@@ -51,13 +51,15 @@ window.evutils = new (function () {
         if (typeof opts === 'undefined') {
             opts = {};
         }
-        $.extend(opts, {
+        opts = $.extend({
             url: window.location.href,
             urlencode: encodeURIComponent,
             window: window,
             client_side: true,
-            fixtures: fixtures
-        });
+            fixtures: fixtures,
+            title: document.title,
+            description: $('meta[name=description]').attr('content')
+        }, opts);
         return nunjucks.render(template, opts, callback);
     };
 
