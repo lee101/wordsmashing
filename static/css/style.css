@@ -237,7 +237,12 @@
     display: none;
   }
 }
-@media (min-height: 699px) {
+@media (max-width: 698px) {
+  .gameon-hidden-xs {
+    display: none;
+  }
+}
+@media (min-height: 699px) and (min-width: 699px) {
   .gameon-visible-xs {
     display: none;
   }

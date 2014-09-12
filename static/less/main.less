@@ -54,10 +54,13 @@
     @media (max-height: 698px) {
         display: none;
     }
+    @media (max-width: 698px) {
+        display: none;
+    }
 }
 
 .gameon-visible-xs {
-    @media (min-height: 699px) {
+    @media (min-height: 699px) and (min-width: 699px) {
         display: none;
     }
 }
