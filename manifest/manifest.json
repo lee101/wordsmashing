@@ -12,10 +12,11 @@
         }
     },
     "icons": {
-        "128": "/img/wordsmashing_icon128.png",
-        "60": "/img/wordsmashing_icon60.png"
+        "128": "/static/img/wordsmashing_icon128.png",
+        "64": "/static/img/wordsmashing_icon64.png",
+        "60": "/static/img/wordsmashing_icon60.png"
     },
-    "fullscreen": true,
+    "fullscreen": "true",
     "developer": {
         "name": "Word Smashing",
         "url": "http://www.wordsmashing.com"
