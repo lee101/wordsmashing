@@ -65,8 +65,13 @@
 }
 .mm-end-condition {
   float: left;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: bold;
+}
+@media (min-width: 300px) {
+  .mm-end-condition {
+    font-size: 18px;
+  }
 }
 @media (min-width: 961px) {
   .mm-end-condition {
