@@ -58,6 +58,9 @@
 
                 self.click = function () {
                     var levelIdx = fixtures.getLevelIdx(self.id);
+                    if (!levelIdx) {
+                        levelIdx = 1;
+                    }
                     APP.goto('/campaign/' + levelsSelf.difficulty + '/' + levelIdx);
                 };
 
