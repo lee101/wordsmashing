@@ -15,6 +15,7 @@
 
     {% block css %}
     {% endblock %}
+    {{ macros.rollbar() }}
 
     {{ gameon.jsheaders() }}
 
@@ -67,6 +68,5 @@
         {{ macros.responsiveAd() }}
     </div>
 {% endif %}
-
 </body>
 </html>
