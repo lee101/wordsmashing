@@ -53,9 +53,9 @@
 
 {% macro jsvars() -%}
     <script>
-        fixtures = new (function () {
+        window.fixtures = (function () {
             "use strict";
-            var self = this;
+            var self = {};
 
             self.EASY = {{ fixtures.EASY }};
             self.MEDIUM = {{ fixtures.MEDIUM }};
