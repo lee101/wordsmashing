@@ -5,6 +5,7 @@ import json
 import urllib
 
 from google.appengine.ext import ndb
+import logging
 import webapp2
 import jinja2
 
@@ -136,6 +137,9 @@ class LearnEnglishHandler(BaseHandler):
 class EnglishLevelHandler(BaseHandler):
     def get(self, urlkey):
         noads = self.request.get('noads', False)
+        if urlkey == 'undefined':
+            logging.error('learn english key is undefined??')
+            return self.redirect('/learn-english/girls-names')
         self.render('templates/learn-english-level.jinja2', {
             'noads': noads,
             'level': fixtures.LEARN_ENGLISH_LEVELS[urlkey],
