@@ -71,3 +71,6 @@ pagespeed:
 
 inbound_services:
 - warmup
+
+builtins:
+- appstats: on
