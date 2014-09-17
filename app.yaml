@@ -31,6 +31,10 @@ handlers:
   static_files: transient/robots.txt
   upload: transient/robots.txt
 
+- url: /apple-touch-icon.png
+  static_files: static/img/apple-touch-icon.png
+  upload: static/img/apple-touch-icon.png
+
 - url: /BingSiteAuth.xml
   static_files: static/BingSiteAuth.xml
   upload: static/BingSiteAuth.xml
