@@ -13,6 +13,12 @@ handlers:
   http_headers:
     Content-Type: application/x-web-app-manifest+json
 
+- url: /manifest-noads.webapp
+  static_files: manifest/manifest-noads.json
+  upload: manifest/manifest-noads.json
+  http_headers:
+    Content-Type: application/x-web-app-manifest+json
+
 - url: /static/*
   static_dir: static
   http_headers:
