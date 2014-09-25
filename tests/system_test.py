@@ -28,8 +28,8 @@ from mock import patch
 # from boilerplate.lib import utils
 # from boilerplate.lib import captcha
 # from boilerplate.lib import i18n
-from tests import test_helpers
 import main
+import webtest
 
 # setting HTTP_HOST in extra_environ parameter for TestApp is not enough for taskqueue stub
 os.environ['HTTP_HOST'] = 'localhost'
@@ -37,7 +37,7 @@ os.environ['HTTP_HOST'] = 'localhost'
 # globals
 network = False
 
-class AppTest(unittest.TestCase, test_helpers.HandlerHelpers):
+class AppTest(unittest.TestCase):
     def setUp(self):
 
         # webapp2_config = boilerplate_config.config
@@ -47,7 +47,7 @@ class AppTest(unittest.TestCase, test_helpers.HandlerHelpers):
         # routes.add_routes(self.app)
         # boilerplate_routes.add_routes(self.app)
         # self.testapp = webtest.TestApp(self.app, extra_environ={'REMOTE_ADDR' : '127.0.0.1'})
-        
+
         # activate GAE stubs
         self.testbed = testbed.Testbed()
         self.testbed.activate()
@@ -62,6 +62,7 @@ class AppTest(unittest.TestCase, test_helpers.HandlerHelpers):
 
         self.headers = {'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) Version/6.0 Safari/536.25',
                         'Accept-Language' : 'en_US'}
+        self.app = webtest.TestApp(main.app)
 
         # fix configuration if this is still a raw boilerplate code - required by test with mails
         # if not utils.is_email_valid(self.app.config.get('contact_sender')):
@@ -73,5 +74,6 @@ class AppTest(unittest.TestCase, test_helpers.HandlerHelpers):
         self.testbed.deactivate()
 
     def test_homepage(self):
-        response = self.get('/')
-        self.assertIn('Congratulations on your Google App Engine Boilerplate powered page.', response)
+        response = self.app.get('/')
+        self.assertEqual(response.status_int, 200)
+        self.assertTrue(response.html())
