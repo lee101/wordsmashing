@@ -269,6 +269,11 @@
     font-size: 18px;
   }
 }
+@media (min-width: 600px) {
+  .article-theme {
+    width: 80%;
+  }
+}
 .footer {
   display: inline;
   margin-top: 20px;
