@@ -284,7 +284,7 @@ LEARN_ENGLISH_LEVELS = {
     "birds": EnglishLevel("birds", [
         "pidgion",
         "seagull",
-        "tui",
+        "dove",
         "sparrow",
         "robin",
         "crow",
