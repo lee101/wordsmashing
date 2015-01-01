@@ -262,7 +262,7 @@ LEARN_ENGLISH_LEVELS = {
         "whale",
         "lion",
         "deer",
-        "rabit",
+        "rabbit",
         "human",
         "dolphin",
         "seal",
