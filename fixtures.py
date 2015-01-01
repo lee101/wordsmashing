@@ -282,7 +282,7 @@ LEARN_ENGLISH_LEVELS = {
         "eel",
     ]),
     "birds": EnglishLevel("birds", [
-        "pigeon",
+        "pidgin",
         "seagull",
         "dove",
         "sparrow",
