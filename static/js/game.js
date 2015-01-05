@@ -80,11 +80,17 @@ var wordsmashing = new (function () {
             }
             if (level.id == 2) {
                 window.setTimeout(function () {
+                    var $firstPopup = $('#firstPopup');
+                    $firstPopup.popover('show');
+                }, 400);
+            }
+            if (level.id == 3) {
+                window.setTimeout(function () {
                     var $canMoveIfClearPath = $('#canMoveIfClearPath');
                     $canMoveIfClearPath.popover('show');
                 }, 400);
             }
-            else if (level.id == 3) {
+            else if (level.id == 4) {
                 window.setTimeout(function () {
                     var halfgrownTile = gameState.board.viewWhere(function (tile) {
                         return tile.halfgrown;
@@ -100,7 +106,7 @@ var wordsmashing = new (function () {
                     }, 8000);
                 }, 400);
             }
-            else if (level.id == 5) {
+            else if (level.id == 6) {
                 window.setTimeout(function () {
                     var lockedTile = gameState.board.viewWhere(function (tile) {
                         return tile.locked;
@@ -180,6 +186,41 @@ var wordsmashing = new (function () {
                 return tiles
             }
             else if (level.id == 2) {
+
+
+                var showPopupTile = new MainTile('Q', true);
+                var showPopupTileParentRender = showPopupTile.render;
+                showPopupTile.render = function () {
+                    var $renderedTile = $(showPopupTileParentRender());
+                    $renderedTile.attr('id', 'firstPopup');
+                    $renderedTile.attr('data-toggle', 'popover');
+                    $renderedTile.attr('data-placement', 'top');
+                    $renderedTile.attr('data-trigger', 'manual');
+                    $renderedTile.attr('data-content', 'Some letters are worth more than others!');
+
+                    return $renderedTile;
+                };
+                tiles.push(showPopupTile);
+
+                tiles.push(new MainTile('U', true));
+                tiles.push(new MainTile('E', true));
+                tiles.push(new MainTile('E', true));
+                tiles.push(new EmptyTile());
+
+                tiles.push(new MainTile('F', true));
+                tiles.push(new MainTile('R', true));
+                tiles.push(new MainTile('O', true));
+                tiles.push(new MainTile('W', true));
+                tiles.push(new EmptyTile());
+
+                tiles.push(new MainTile('N', true));
+                tiles.push(new EmptyTile());
+                tiles.push(new EmptyTile());
+                tiles.push(new EmptyTile());
+                tiles.push(new EmptyTile());
+                return tiles;
+            }
+            else if (level.id == 3) {
                 tiles.push(new EmptyTile());
                 tiles.push(new MainTile('A', true));
                 tiles.push(new EmptyTile());
@@ -211,8 +252,7 @@ var wordsmashing = new (function () {
                 tiles.push(new MainTile('O', true));
                 tiles.push(new EmptyTile());
                 tiles.push(new EmptyTile());
-                return tiles
-
+                return tiles;
             }
             for (var i = 0; i < level.num_start_letters; i++) {
                 var isRed = true;
