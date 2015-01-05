@@ -78,7 +78,13 @@ var wordsmashing = new (function () {
                     $firstLevelFirstTile.popover('show');
                 }, 400);
             }
-            else if (level.id == 2) {
+            if (level.id == 2) {
+                window.setTimeout(function () {
+                    var $canMoveIfClearPath = $('#canMoveIfClearPath');
+                    $canMoveIfClearPath.popover('show');
+                }, 400);
+            }
+            else if (level.id == 3) {
                 window.setTimeout(function () {
                     var halfgrownTile = gameState.board.viewWhere(function (tile) {
                         return tile.halfgrown;
@@ -94,7 +100,7 @@ var wordsmashing = new (function () {
                     }, 8000);
                 }, 400);
             }
-            else if (level.id == 4) {
+            else if (level.id == 5) {
                 window.setTimeout(function () {
                     var lockedTile = gameState.board.viewWhere(function (tile) {
                         return tile.locked;
@@ -172,6 +178,41 @@ var wordsmashing = new (function () {
                 tiles.push(new MainTile('R', true));
                 tiles.push(lastTile);
                 return tiles
+            }
+            else if (level.id == 2) {
+                tiles.push(new EmptyTile());
+                tiles.push(new MainTile('A', true));
+                tiles.push(new EmptyTile());
+                var showPopupTile = new MainTile('R', true);
+                var showPopupTileParentRender = showPopupTile.render;
+                showPopupTile.render = function () {
+                    var $renderedTile = $(showPopupTileParentRender());
+                    $renderedTile.attr('id', 'canMoveIfClearPath');
+                    $renderedTile.attr('data-toggle', 'popover');
+                    $renderedTile.attr('data-placement', 'top');
+                    $renderedTile.attr('data-trigger', 'manual');
+                    $renderedTile.attr('data-content', 'You can slide tiles only if there is a clear path!');
+
+                    return $renderedTile;
+                };
+                tiles.push(showPopupTile);
+
+                tiles.push(new MainTile('F', true));
+                tiles.push(new EmptyTile());
+                tiles.push(new MainTile('O', true));
+                tiles.push(new MainTile('M', true));
+
+                tiles.push(new EmptyTile());
+                tiles.push(new EmptyTile());
+                tiles.push(new EmptyTile());
+                tiles.push(new EmptyTile());
+
+                tiles.push(new EmptyTile());
+                tiles.push(new MainTile('O', true));
+                tiles.push(new EmptyTile());
+                tiles.push(new EmptyTile());
+                return tiles
+
             }
             for (var i = 0; i < level.num_start_letters; i++) {
                 var isRed = true;
@@ -733,7 +774,6 @@ var wordsmashing = new (function () {
 
                 gameState.unselectAll();
 
-                //look for 3 new spots
                 var numspaces = 0;
                 for (var i = 0; i < level.height; i++) {
                     for (var j = 0; j < level.width; j++) {
@@ -743,16 +783,19 @@ var wordsmashing = new (function () {
                         }
                     }
                 }
-                //if 0 or less spaces then you loose
                 if (numspaces <= 0) {
-                    endSelf.gameOver()
+                    endSelf.gameOver();
+                }
+                if (numspaces == level.width * level.height && level.growth_rate == 0) {
+                    //TODO end the game/skip if someone cant move in two player
+                    endSelf.gameOver();
                 }
                 if (level.moves) {
                     endSelf.setMoves(endSelf.moves - 1);
                 }
                 endSelf.addToScore(scores);
 
-                //generate random 3 letter places
+                //generate random growers
                 var growers = [];
                 for (var i = 0; i < numspaces - level.growth_rate; i++) {
                     growers.push(new EmptyTile())

@@ -144,6 +144,7 @@
             if (self.starBar2) {
                 self.starBar2.render($html.find('.mm-starbar2'));
             }
+            $html.find('.gameon-starbar__center-message').hide();
 
             var $button = $html.find('#mm-next-level');
             if (self.starBar.hasWon()) {
