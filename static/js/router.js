@@ -136,7 +136,14 @@
     APP.refresh = function () {
         APP.footer.path = location.pathname;
         APP.header.path = location.pathname;
-        $('#headerbody').html(APP.header.render().el);
+        var $headerbody = $('#headerbody');
+        var $backBtn = $headerbody.find('#ws-back-btn');
+        if ($backBtn.length) {
+            $backBtn.html($(APP.header.render().el).find('#ws-back-btn'));
+        }
+        else {
+            $headerbody.html(APP.header.render().el);
+        }
         $('#footerbody').html(APP.footer.render().el);
         $.ajax({ url: 'http://platform.twitter.com/widgets.js', dataType: 'script', cache: true});
     };

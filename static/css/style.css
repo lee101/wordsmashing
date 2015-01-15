@@ -307,4 +307,16 @@ body {
   font-style: normal;
   height: 100%;
 }
+.fb-like {
+  float: left;
+}
+.ws-share-buttons {
+  position: absolute;
+  top: 10px;
+}
+@media (max-width: 500px) {
+  .ws-share-buttons {
+    display: none;
+  }
+}
 /*# sourceMappingURL=/static/css/style.css.map */

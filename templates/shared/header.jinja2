@@ -1,13 +1,13 @@
 <div class="ws-header">
     {% if path|length > 1 %}
-        <div class="ws-header--item">&nbsp;
+        <div id="ws-back-btn" class="ws-header--item">&nbsp;
             <button type="button" class="back-btn gameon-btn-hg btn btn-danger btn-lg" onclick="return APP.stepBack()">
                 <i
                         class="fa fa-arrow-left"></i></button>
 
         </div>
     {% else %}
-        <div class="ws-header--item">&nbsp;
+        <div id="ws-back-btn" class="ws-header--item">&nbsp;
             <button type="button" class="back-btn gameon-btn-hg btn btn-danger btn-lg" disabled="disabled">
                 <i
                         class="fa fa-arrow-left"></i></button>
@@ -20,7 +20,16 @@
              width="250" height="130"/>
         <img class="gameon-visible-xs" src="/static/img/wordsmashing_icon60.png" alt="Word Smashing"
              title="Word Smashing" width="60" height="60"/>
+
     </a>
+    <div class="ws-header--item text-left ws-share-buttons">
+
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="LeeLeepenkman"
+           data-related="Wordsmashing" data-hashtags="addictingwordgames">Tweet</a>
+
+        <div class="fb-like" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+
+    </div>
 
     <div class="ws-header--item">
         {#        todo #}
