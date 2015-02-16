@@ -74,6 +74,7 @@ pagespeed:
   - http://www.wordsmashing.com/static/music/*
   - http://www.wordsmashing.com/sitemap
   - http://www.wordsmashing.com/manifest.webapp
+  - http://www.wordsmashing.com/manifest-noads.webapp
   - https://wordsmashing.appspot.com/buy
   # enabled_rewriters:
   # - CollapseWhitespace
