@@ -90,3 +90,11 @@ inbound_services:
 
 builtins:
 - appstats: on
+
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^node_modules.*$
