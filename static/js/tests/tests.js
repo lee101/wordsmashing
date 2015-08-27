@@ -12,7 +12,7 @@ describe("fixtures", function () {
         expect(fixtures.getLevelById(1).id).toBe(1);
         expect(fixtures.getLevelById(20).id).toBe(20);
         expect(fixtures.getLevelById(40).id).toBe(40);
-        expect(fixtures.getLevelIdx(40)).toBe(40-16-16);
+        expect(fixtures.getLevelIdx(40)).toBe(40 - 16 - 16);
 
     });
     it('other stuff', function () {
@@ -25,6 +25,12 @@ describe("fixtures", function () {
 
 });
 describe("WordSmashing", function () {
+    beforeEach(function () {
+        jasmine.clock().install();
+    });
+    afterEach(function () {
+        jasmine.clock().uninstall();
+    });
 
     it('lets you navigate around', function (done) {
         APP.goto('/');
@@ -34,29 +40,27 @@ describe("WordSmashing", function () {
         APP.goto('/campaign');
         APP.goto('/campaign/easy');
         APP.goto('/campaign/easy/1');
-        specHelpers.once(function () {
-            APP.game.board.getTile(0, 0).click();
-            APP.game.board.getTile(3, 3).click();
-            specHelpers.once(function () {
-                done();
-            })
-        });
+        jasmine.clock().tick(999999); // shows the popup
+
+        APP.game.board.getTile(0, 0).click();
+        APP.game.board.getTile(3, 3).click();
+
+        done();
     });
     it('THEN you clock the game!', function (done) {
-        var level = fixtures.EXPERT_LEVELS[fixtures.EXPERT_LEVELS.length -1];
+        var level = fixtures.EXPERT_LEVELS[fixtures.EXPERT_LEVELS.length - 1];
         APP.gotoLevel(level);
-//        APP.goto('/campaign/expert/12');
-        specHelpers.once(function () {
-            APP.game.starBar.setScore(9999999999999);
-            APP.game.endHandler.setMoves(0);
+        jasmine.clock().tick(999999);
 
-            var isNextButtonVisible = $('#mm-next-level').is(':visible');
-            expect(isNextButtonVisible).toBe(false);
-            gameon.getUser(function(user){
-                user.saveDifficultiesUnlocked(9)
-            });
-            done();
-        })
+        APP.game.starBar.setScore(9999999999999);
+        APP.game.endHandler.setMoves(0);
+
+        var isNextButtonVisible = $('#mm-next-level').is(':visible');
+        expect(isNextButtonVisible).toBe(false);
+        gameon.getUser(function (user) {
+            user.saveDifficultiesUnlocked(9)
+        });
+        done();
     });
 
     it('tears down', function () {
