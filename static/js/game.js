@@ -334,6 +334,7 @@ var wordsmashing = new (function () {
             self.render = function () {
                 return '<div class="btn btn-lg btn-link"></div>';
             };
+            return self;
         };
 
         var LockedTile = function () {
