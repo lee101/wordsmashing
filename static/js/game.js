@@ -15,10 +15,10 @@ jQuery.get('/static/js/american-english.txt', function (data) {
 
 var wordsmashing = new (function () {
     "use strict";
-    var self = this;
+    var self = {};
 
     self.Game = function (level) {
-        var gameState = this;
+        var gameState = {};
 
         function construct() {
             gameon.pauseAll();
@@ -309,7 +309,7 @@ var wordsmashing = new (function () {
         };
 
         var EmptyTile = function () {
-            var self = this;
+            var self = {};
             self.canPassThrough = true;
 
             self.click = function () {
@@ -1141,7 +1141,7 @@ var wordsmashing = new (function () {
 
         construct();
         return gameState;
-    }
+    };
 
-
+    return self;
 })();

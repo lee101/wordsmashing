@@ -231,13 +231,16 @@
 
     APP.Views['/versus'] = Backbone.View.extend({
         initialize: function (options) {
+
         },
 
         render: function () {
             this.$el.html(evutils.render('templates/shared/versus.jinja2'));
+
             return this;
         }
     });
+
 
     APP.Views['/versus/1player'] = Backbone.View.extend({
         initialize: function (options) {
