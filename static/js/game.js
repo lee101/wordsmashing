@@ -322,11 +322,13 @@ var wordsmashing = new (function () {
                     }
                     gameon.unmuteSound('moving');
                     gameon.playSound('moving');
+                    gameon.blockUI();
                     gameState.board.animateTileAlongPath(gameState.currentSelected, path, animationSpeed, function () {
                         gameState.board.swapTiles(gameState.currentSelected, self);
                         gameState.endHandler.turnEnd(gameState.currentSelected);
                         gameon.muteSound('moving');
                         gameon.pauseSound('moving');
+                        gameon.unblockUI();
                     });
                 }
             };
