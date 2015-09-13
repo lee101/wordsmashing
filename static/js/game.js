@@ -64,7 +64,7 @@ var wordsmashing = new (function () {
             for (var i = 0; i < gameState.requiredWords.length; i++) {
                 var word = gameState.requiredWords[i];
                 requiredWordsDiv.append('<button type="button" id="learn-english-words-' + word + '" class="learn-english-level_required-word btn">' +
-                        word + '</button>'
+                    word + '</button>'
                 )
             }
 
@@ -422,6 +422,9 @@ var wordsmashing = new (function () {
             };
             return self;
         };
+        gameState.MainTile = MainTile;
+        gameState.EmptyTile = EmptyTile;
+
 
         gameState.EndHandler = function () {
             var endSelf = {};
@@ -545,16 +548,28 @@ var wordsmashing = new (function () {
                 }
             };
 
-
+            /**
+             * if word is in a required word or if a required word is in word
+             * @param word
+             * @returns {boolean}
+             */
             function inRequiredWord(word) {
                 var reverseword = word.reverse();
                 for (var i = 0; i < gameState.requiredWords.length; i++) {
-                    if (gameState.requiredWords[i].indexOf(word) != -1) {
+                    var requiredWord = gameState.requiredWords[i];
+                    if (requiredWord.indexOf(word) != -1) {
                         return true;
                     }
-                    if (gameState.requiredWords[i].indexOf(reverseword) != -1) {
+                    if (requiredWord.indexOf(reverseword) != -1) {
                         return true;
                     }
+                    if (word.indexOf(requiredWord) != -1) {
+                        return true;
+                    }
+                    if (word.indexOf(reverseword) != -1) {
+                        return true;
+                    }
+
                 }
                 return false;
             }
@@ -642,7 +657,7 @@ var wordsmashing = new (function () {
                         //try options
                         //go as far left as pos while still including endTile.xPos
                         var leftStart = endTile.xPos;
-                        for (var i = 0; i < startlen - 1 && leftStart - 1 >= 0; i++) {
+                        for (var i = 0; i < startlen - 1 && leftStart > 0; i++) {
                             if (!gameState.board.getTile(endTile.yPos, leftStart - 1).letter) {
                                 break;
                             }
@@ -662,7 +677,7 @@ var wordsmashing = new (function () {
                             }
                             possibleword = possibleword.toLowerCase();
                             var reversepossibleword = possibleword.reverse();
-
+                            var currentWordScores = false;
 
                             if (words[possibleword]) {
 
@@ -671,6 +686,7 @@ var wordsmashing = new (function () {
                                     updateRequiredWordsView(possibleword)
                                 }
                                 if (isRequired || !inRequiredWord(possibleword)) {
+                                    currentWordScores = true;
                                     matches = 1;
                                     var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
                                     scores += currentWordsScore;
@@ -678,7 +694,7 @@ var wordsmashing = new (function () {
                                     showScore(possibleword, currentWordsScore)
                                 }
                             }
-                            else if (words[reversepossibleword]) {
+                            if (!currentWordScores && words[reversepossibleword]) {
 
                                 var isRequired = isRequiredWord(reversepossibleword);
                                 if (isRequired) {
@@ -729,7 +745,7 @@ var wordsmashing = new (function () {
                         //try options
                         //go as far left as pos while still including endTile.xPos
                         var topStart = endTile.yPos;
-                        for (var i = 0; i < startlen - 1 && topStart - 1 >= 0; i++) {
+                        for (var i = 0; i < startlen - 1 && topStart > 0; i++) {
                             if (!gameState.board.getTile(topStart - 1, endTile.xPos).letter) {
                                 break;
                             }
@@ -747,6 +763,7 @@ var wordsmashing = new (function () {
                             }
                             possibleword = possibleword.toLowerCase();
                             var reversepossibleword = possibleword.reverse();
+                            var currentWordScores = false;
                             if (words[possibleword]) {
 
                                 var isRequired = isRequiredWord(possibleword);
@@ -754,6 +771,7 @@ var wordsmashing = new (function () {
                                     updateRequiredWordsView(possibleword)
                                 }
                                 if (isRequired || !inRequiredWord(possibleword)) {
+                                    currentWordScores = true;
                                     matches++;
                                     var currentWordsScore = gameon.wordutils.scoreWord(possibleword);
                                     scores += currentWordsScore;
@@ -761,7 +779,7 @@ var wordsmashing = new (function () {
                                     showScore(possibleword, currentWordsScore)
                                 }
                             }
-                            else if (words[reversepossibleword]) {
+                            if (!currentWordScores && words[reversepossibleword]) {
 
                                 var isRequired = isRequiredWord(reversepossibleword);
                                 if (isRequired) {
@@ -923,7 +941,7 @@ var wordsmashing = new (function () {
                             if (!gameState.board.getTile(endTile.yPos, leftStart - 1).letter) {
                                 break;
                             }
-                            leftStart--
+                            leftStart--;
                         }
                         var rightStart = leftStart + startlen - 1;
                         //consider all options from leftStart

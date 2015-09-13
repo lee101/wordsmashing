@@ -47,6 +47,51 @@ describe("WordSmashing", function () {
 
         done();
     });
+
+    it('plays Learn English', function (done) {
+        APP.goto('/');
+        APP.goto('/learn-english');
+        APP.goto('/learn-english/fish');
+        jasmine.clock().tick(999999); // shows the popup
+
+        var game = APP.game;
+        var board = game.board;
+        var tiles = board.tiles;
+
+
+        board.setTile([0, 0], new game.MainTile('L', true));
+        board.setTile([0, 1], new game.MainTile('E', true));
+        board.setTile([0, 2], new game.MainTile('E', true));
+
+        board.setTile([1, 2], new game.MainTile('S', true));
+        board.setTile([5, 2], new game.MainTile('A', true));
+
+
+        APP.game.board.getTile(1, 2).click();
+        APP.game.board.getTile(0, 2).click();
+
+        expect(APP.game.starBar.getScore()).toBe(0);
+
+        board.setTile([1, 0], new game.EmptyTile());
+
+        APP.game.board.getTile(0, 0).click();
+        APP.game.board.getTile(1, 0).click();
+
+        expect(APP.game.starBar.getScore()).toBe(0);
+
+        APP.game.board.getTile(1, 0).click();
+        APP.game.board.getTile(0, 0).click();
+
+        //should have gotten EEL!
+        expect(APP.game.starBar.getScore()).toBe(3);
+
+        APP.game.board.getTile(0, 0).click();
+        APP.game.board.getTile(3, 3).click();
+
+        done();
+    });
+
+
     it('THEN you clock the game!', function (done) {
         var level = fixtures.EXPERT_LEVELS[fixtures.EXPERT_LEVELS.length - 1];
         APP.gotoLevel(level);
