@@ -58,7 +58,8 @@ describe("WordSmashing", function () {
         var isNextButtonVisible = $('#mm-next-level').is(':visible');
         expect(isNextButtonVisible).toBe(false);
         gameon.getUser(function (user) {
-            user.saveDifficultiesUnlocked(9)
+            user.saveDifficultiesUnlocked(9);
+            user.saveLevelsUnlocked(99999);
         });
         done();
     });
