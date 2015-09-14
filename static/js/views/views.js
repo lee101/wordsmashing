@@ -171,7 +171,7 @@
                         endMessage.html('Tie!');
                     }
                     else {
-                        endMessage.html('Blue Wins. Try Again!');
+                        endMessage.html('Blue Wins. Play Again!');
                     }
                 }
                 else {
@@ -188,7 +188,7 @@
 
             }
             else if (self.starBar.numStars == 0) {
-                endMessage.html('Try Again!');
+                endMessage.html('Play Again!');
             }
             else if (self.starBar.numStars == 1) {
                 endMessage.html('Good!');
