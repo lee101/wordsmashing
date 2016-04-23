@@ -123,16 +123,6 @@ var wordsmashing = new (function () {
                 }, 400);
             }
 
-            if (typeof GAMESAPI === 'object') {
-                GAMESAPI.beginGameSession(
-                    function (response) {
-                        // success callback.  response.statusCode == 200
-                    },
-                    function (response) {
-                        // error handler callback.  response.statusCode != 200
-                    }
-                );
-            }
         }
 
         gameState.initialBoardTiles = function () {
@@ -1075,19 +1065,6 @@ var wordsmashing = new (function () {
 
                 gameState.destruct();
                 APP.doneLevel(gameState.starBar, gameState.starBar2, level);
-                if (typeof GAMESAPI === 'object') {
-                    GAMESAPI.postScore(gameState.starBar.getScore(), function () {
-                    }, function () {
-                    });
-                    GAMESAPI.endGameSession(
-                        function (response) {
-                            // success callback.  response.statusCode == 200
-                        },
-                        function (response) {
-                            // error handler callback.  response.statusCode != 200
-                        }
-                    );
-                }
             };
 
             if (!level.moves) {
