@@ -68,23 +68,6 @@ automatic_scaling:
 #   min_idle_instances: 2
 #   max_pending_latency: 4.5s
 
-pagespeed:
-
-  url_blacklist:
-  - http://www.wordsmashing.com/static/music/*
-  - http://www.wordsmashing.com/sitemap
-  - http://www.wordsmashing.com/manifest.webapp
-  - http://www.wordsmashing.com/manifest-noads.webapp
-  - https://wordsmashing.appspot.com/buy
-  # enabled_rewriters:
-  # - CollapseWhitespace
-  # - CombineHeads
-  # - ElideAttributes
-  # - RemoveComments
-  # - MinifyCss
-  # - InlineJs
-  # - LeftTrimUrls
-
 inbound_services:
 - warmup
 
