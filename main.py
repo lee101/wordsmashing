@@ -49,7 +49,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 class MainHandler(BaseHandler):
     def get(self):
-        noads = self.request.get('noads', False)
+        noads = self.request.get('noads', True)
         self.render('templates/index.jinja2', {'noads': noads})
 
 
