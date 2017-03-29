@@ -136,7 +136,10 @@ class LearnEnglishHandler(BaseHandler):
 
 class EnglishLevelHandler(BaseHandler):
     def get(self, urlkey):
-        noads = self.request.get('noads', True)
+        noads = self.request.get('noads', False)
+        android_app = self.request.headers.get('HTTP_X_REQUESTED_WITH', False)
+        if android_app:
+            noads = True
         if urlkey == 'undefined':
             logging.error('learn english key is undefined??')
             return self.redirect('/learn-english/girls-names')
