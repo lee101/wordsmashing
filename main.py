@@ -27,7 +27,12 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 
 class BaseHandler(webapp2.RequestHandler):
+
     def render(self, view_name, extraParams={}):
+        noads = self.request.get('noads', False)
+        android_app = self.request.headers.get('HTTP_X_REQUESTED_WITH', False)
+        if android_app:
+            noads = True
         template_values = {
             'fixtures': fixtures,
             'ws': ws,
@@ -36,6 +41,7 @@ class BaseHandler(webapp2.RequestHandler):
             # 'facebook_app_id': FACEBOOK_APP_ID,
             # 'glogin_url': users.create_login_url(self.request.uri),
             # 'glogout_url': users.create_logout_url(self.request.uri),
+            'noads': noads,
             'url': self.request.uri,
             'path': self.request.path,
             'urlencode': urllib.quote_plus,
@@ -136,7 +142,10 @@ class LearnEnglishHandler(BaseHandler):
 
 class EnglishLevelHandler(BaseHandler):
     def get(self, urlkey):
-        noads = self.request.get('noads', True)
+        noads = self.request.get('noads', False)
+        android_app = self.request.headers.get('HTTP_X_REQUESTED_WITH', False)
+        if android_app:
+            noads = True
         if urlkey == 'undefined':
             logging.error('learn english key is undefined??')
             return self.redirect('/learn-english/girls-names')
