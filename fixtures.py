@@ -76,7 +76,7 @@ EASY_LEVELS = [
     Level(min_num_letters_in_a_word=2, height=4, width=4, growth_rate=0, moves=1),
     Level(min_num_letters_in_a_word=2, height=3, width=5, growth_rate=0, moves=1, star_rating=[7, 12, 14, 14]),
     Level(min_num_letters_in_a_word=2, height=4, width=4, growth_rate=0, moves=3, star_rating=[7, 11, 24, 24]),
-    Level(min_num_letters_in_a_word=2, height=8, width=8, moves=15, num_start_letters=8),
+    Level(min_num_letters_in_a_word=2, height=8, width=8, moves=15, num_start_letters=8, star_rating=[70, 80, 85, 90]),
     Level(min_num_letters_in_a_word=2, time_left=60 * 3),
     Level(min_num_letters_in_a_word=2, locked_spaces=[(4, 0), (4, 1), (4, 2), (4, 3)], moves=20),
     Level(min_num_letters_in_a_word=2, locked_spaces=[(0, 4), (1, 4), (4, 4), (7, 4), (8, 4)], moves=20),
