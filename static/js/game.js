@@ -103,7 +103,7 @@ var wordsmashing = new (function () {
 
                     window.setTimeout(function () {
                         halfgrownTile.popover('hide');
-                    }, 8000);
+                    }, 14000);
                 }, 400);
             }
             else if (level.id == 6) {
@@ -119,7 +119,7 @@ var wordsmashing = new (function () {
 
                     window.setTimeout(function () {
                         lockedTile.popover('hide');
-                    }, 7000);
+                    }, 10000);
                 }, 400);
             }
 
