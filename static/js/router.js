@@ -227,5 +227,32 @@
             $modal.find('.modal-body').html($('#instructions').html());
             $modal.modal('show');
         });
+        function inIframe () {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+
+        if (!inIframe()) {
+            window.showPaywall = function () {
+                var $modal = $('#modal');
+                $modal.find('.modal-body').html("<h4 class=\"mdl-dialog__title lead\">Please support us! Play on <a href=\"https://www.addictingwordgames.com\">AddictingWordGames.com</a></h4>" +
+                    "        <div class=\"mdl-dialog__content lead\">" +
+                    "            <p>" +
+                    "                $7 to buy this game and all 694 Addicting Word Games forever + any future" +
+                    "                releases!" +
+                    "            </p>" +
+                    "        </div>" +
+                    "        <div class=\"mdl-dialog__actions\">" +
+                    "            <a type=\"button\" class=\"btn btn-danger mdl-button mdl-button--colored mdl-button--accent mdl-js-button mdl-js-ripple-effect closes-modal\" href=\"https://www.addictingwordgames.com/sign-up\" target=\"_blank\">Buy Now</a>" +
+                    "        </div>");
+                $modal.modal('show');
+                window.setTimeout(window.showPaywall, 60 * 1000);
+            };
+            window.setTimeout(window.showPaywall, 60 * 1000);
+        }
+
     });
 }());
