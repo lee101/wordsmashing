@@ -206,24 +206,24 @@ EXPERT_LEVELS = [
     # 2 more
 ]
 
-for i in xrange(len(EASY_LEVELS)):
+for i in range(len(EASY_LEVELS)):
     EASY_LEVELS[i].set_hardness(i)
 
-for i in xrange(len(MEDIUM_LEVELS)):
+for i in range(len(MEDIUM_LEVELS)):
     MEDIUM_LEVELS[i].set_hardness(i + len(EASY_LEVELS))
     MEDIUM_LEVELS[i].difficulty = MEDIUM
 
-for i in xrange(len(HARD_LEVELS)):
+for i in range(len(HARD_LEVELS)):
     HARD_LEVELS[i].set_hardness(i + len(EASY_LEVELS) + len(MEDIUM_LEVELS))
     HARD_LEVELS[i].difficulty = HARD
 
-for i in xrange(len(EXPERT_LEVELS)):
+for i in range(len(EXPERT_LEVELS)):
     EXPERT_LEVELS[i].set_hardness(i + len(EASY_LEVELS) + len(MEDIUM_LEVELS) + len(HARD_LEVELS))
     EXPERT_LEVELS[i].difficulty = EXPERT
 
 LEVELS = EASY_LEVELS + MEDIUM_LEVELS + HARD_LEVELS + EXPERT_LEVELS
 
-for i in xrange(len(LEVELS)):
+for i in range(len(LEVELS)):
     LEVELS[i].id = i + 1
 
 

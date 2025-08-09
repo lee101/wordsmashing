@@ -1,10 +1,14 @@
 wordsmashing
 ============
 
-WordSmashing.com an online word search puzzle game and app
+WordSmashing.com an online word search puzzle game and app.
 
-Word Smashing uses Twitter Bootstrap, JQuery and Python running on the Google app engine.
+The application now runs using a local SQLite database and can upload files to a Cloudflare R2 bucket using the S3 API.
 
-dependencies are managed through pip     ```pip install -r requirements.txt```
+Dependencies are managed through pip:
+
+```
+pip install -r requirements.txt
+```
 
 

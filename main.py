@@ -4,15 +4,13 @@ import os
 import json
 import urllib
 
-from google.appengine.ext import ndb
 import logging
 import webapp2
 import jinja2
 
 import fixtures
-from gameon import gameon
-from gameon.gameon_utils import GameOnUtils
 from ws import ws
+import database
 
 
 FACEBOOK_APP_ID = "138831849632195"
@@ -24,6 +22,8 @@ config['webapp2_extras.sessions'] = dict(secret_key='93986c9cdd240540f70efaea56a
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'])
+
+database.init_db()
 
 
 class BaseHandler(webapp2.RequestHandler):
@@ -37,7 +37,6 @@ class BaseHandler(webapp2.RequestHandler):
             'fixtures': fixtures,
             'ws': ws,
             'json': json,
-            'GameOnUtils': GameOnUtils,
             # 'facebook_app_id': FACEBOOK_APP_ID,
             # 'glogin_url': users.create_login_url(self.request.uri),
             # 'glogout_url': users.create_logout_url(self.request.uri),
@@ -50,6 +49,7 @@ class BaseHandler(webapp2.RequestHandler):
         template_values.update(extraParams)
 
         template = JINJA_ENVIRONMENT.get_template(view_name)
+        database.record_page_view(self.request.path)
         self.response.write(template.render(template_values))
 
 
@@ -189,12 +189,18 @@ class SitemapHandler(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
+class StatsHandler(BaseHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(database.get_page_views()))
+
+
 class SlashMurdererApp(webapp2.RequestHandler):
     def get(self, url):
         self.redirect(url)
 
 
-app = ndb.toplevel(webapp2.WSGIApplication([
+app = webapp2.WSGIApplication([
                                                ('/', MainHandler),
                                                ('(.*)/$', SlashMurdererApp),
 
@@ -223,5 +229,6 @@ app = ndb.toplevel(webapp2.WSGIApplication([
 
                                                ('/buy', BuyHandler),
                                                ('/sitemap', SitemapHandler),
+                                               ('/stats', StatsHandler),
 
-                                           ] + gameon.routes, debug=ws.debug, config=config))
+                                           ], debug=ws.debug, config=config)
