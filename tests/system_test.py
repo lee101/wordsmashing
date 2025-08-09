@@ -14,20 +14,11 @@ Options:
 import unittest
 import os
 
-from google.appengine.ext import testbed
-
-
-# import boilerplate
-# from boilerplate import models
-# from boilerplate import routes
-# from boilerplate import routes as boilerplate_routes
-# from boilerplate import config as boilerplate_config
-# from boilerplate.lib import utils
-# from boilerplate.lib import captcha
-# from boilerplate.lib import i18n
 import yaml
 import main
 import webtest
+import database
+import json
 
 # setting HTTP_HOST in extra_environ parameter for TestApp is not enough for taskqueue stub
 os.environ['HTTP_HOST'] = 'localhost'
@@ -46,18 +37,8 @@ class AppTest(unittest.TestCase):
         # boilerplate_routes.add_routes(self.app)
         # self.testapp = webtest.TestApp(self.app, extra_environ={'REMOTE_ADDR' : '127.0.0.1'})
 
-        # activate GAE stubs
-        self.testbed = testbed.Testbed()
-        self.testbed.activate()
-        self.testbed.init_datastore_v3_stub()
-        self.testbed.init_memcache_stub()
-        self.testbed.init_urlfetch_stub()
-        self.testbed.init_taskqueue_stub()
-        self.testbed.init_mail_stub()
-        self.mail_stub = self.testbed.get_stub(testbed.MAIL_SERVICE_NAME)
-        self.taskqueue_stub = self.testbed.get_stub(testbed.TASKQUEUE_SERVICE_NAME)
-        self.testbed.init_user_stub()
-
+        os.environ['DATABASE_URL'] = ':memory:'
+        database.init_db()
         self.headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_4) Version/6.0 Safari/536.25',
                         'Accept-Language': 'en_US'}
         self.app = webtest.TestApp(main.app)
@@ -69,7 +50,7 @@ class AppTest(unittest.TestCase):
         #     self.app.config['contact_recipient'] = "support-testapp@example.com"
 
     def tearDown(self):
-        self.testbed.deactivate()
+        pass
 
 
 class WebsiteUnitTest(AppTest):
@@ -89,3 +70,9 @@ class WebsiteUnitTest(AppTest):
         response = self.app.get('/')
         self.assertEqual(response.status_int, 200)
         self.assertTrue(response.html())
+
+    def test_stats_endpoint(self):
+        self.app.get('/')
+        response = self.app.get('/stats')
+        data = json.loads(response.body)
+        self.assertEqual(data.get('/'), 1)
