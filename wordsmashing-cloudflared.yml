@@ -1,0 +1,7 @@
+tunnel: wordsmashingprod2
+credentials-file: /home/lee/.cloudflared/91845a76-d46c-410c-b307-b5d6b66efaac.json
+
+ingress:
+  - hostname: wordsmashing.v5games.com
+    service: http://localhost:9799
+  - service: http_status:404

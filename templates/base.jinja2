@@ -1,4 +1,4 @@
-{% import "gameon/templates/templates.jinja2" as gameon %}
+{% import "gameon/templates/templates.jinja2" as gameon with context %}
 {% import "templates/macros.jinja2" as macros with context %}
 <!doctype html>
 <html>
@@ -23,6 +23,8 @@
 
     {% block js %}
     {% endblock %}
+
+    {{ macros.adsenseHeaders() }}
 </head>
 <body>
 {{ gameon.templates() }}

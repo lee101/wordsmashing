@@ -1,33 +1,31 @@
 {% macro headers() -%}
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
     <link rel="manifest" href="/manifest.webapp">
-    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon"/>
-    <link rel="apple-touch-icon" href="/static/img/word-smashing-icon-iphone.png"/>
-    <link rel="apple-touch-icon" sizes="72x72" href="/static/img/word-smashing-icon-ipad.png"/>
-    <link rel="apple-touch-icon" sizes="114x114" href="/static/img/word-smashing-icon-iphone-retina.png"/>
-    <link rel="apple-touch-icon" sizes="144x144" href="/static/img/word-smashing-icon-ipad-retina.png"/>
-    <link rel="icon" sizes="144x144" href="/static/img/word-smashing-icon-ipad-retina.png"/>
+    <link rel="shortcut icon" href="{{ static_url }}/static/favicon.ico" type="image/x-icon"/>
+    <link rel="apple-touch-icon" href="{{ static_url }}/static/img/word-smashing-icon-iphone.webp"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ static_url }}/static/img/word-smashing-icon-ipad.webp"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ static_url }}/static/img/word-smashing-icon-iphone-retina.webp"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ static_url }}/static/img/word-smashing-icon-ipad-retina.webp"/>
+    <link rel="icon" sizes="144x144" href="{{ static_url }}/static/img/word-smashing-icon-ipad-retina.webp"/>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 {%- endmacro %}
 
 {% macro cssheaders() -%}
-
-    <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="{{ static_url }}/static/css/style.css"/>
 {%- endmacro %}
 
 {% macro jsheaders() -%}
-    <script type="text/javascript" src="/static/bower_components/underscore/underscore.js"></script>
-    <script type="text/javascript" src="/static/bower_components/backbone/backbone.js"></script>
-    <script type="text/javascript" src="/static/bower_components/nunjucks/browser/nunjucks.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/bower_components/underscore/underscore.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/bower_components/backbone/backbone.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/bower_components/nunjucks/browser/nunjucks.js"></script>
 
-    {#    <script type="text/javascript" src="/static/js/nunjucks-slim.js"></script>#}
-    <script type="text/javascript" src="/static/js/templates.js"></script>
-    <script type="text/javascript" src="/static/js/router.js"></script>
-    <script type="text/javascript" src="/static/js/evutils.js"></script>
-    <script type="text/javascript" src="/static/js/views/views.js"></script>
-    <script type="text/javascript" src="/static/js/game.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/templates.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/router.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/evutils.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/views/views.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/game.js"></script>
 
     <script>
 
@@ -52,6 +50,7 @@
 
 {% macro jsvars() -%}
     <script>
+        window.STATIC_URL = "{{ static_url }}";
         window.fixtures = (function () {
             "use strict";
             var self = {};
@@ -80,10 +79,10 @@
                 return difficultyIdToNameMap[id];
             };
 
-            self.EASY_LEVELS = {{ json.dumps(fixtures.EASY_LEVELS, cls=GameOnUtils.MyEncoder) }};
-            self.MEDIUM_LEVELS = {{ json.dumps(fixtures.MEDIUM_LEVELS, cls=GameOnUtils.MyEncoder) }};
-            self.HARD_LEVELS = {{ json.dumps(fixtures.HARD_LEVELS, cls=GameOnUtils.MyEncoder) }};
-            self.EXPERT_LEVELS = {{ json.dumps(fixtures.EXPERT_LEVELS, cls=GameOnUtils.MyEncoder) }};
+            self.EASY_LEVELS = {{ json.dumps(fixtures.EASY_LEVELS, cls=GameOnUtils.MyEncoder)|safe }};
+            self.MEDIUM_LEVELS = {{ json.dumps(fixtures.MEDIUM_LEVELS, cls=GameOnUtils.MyEncoder)|safe }};
+            self.HARD_LEVELS = {{ json.dumps(fixtures.HARD_LEVELS, cls=GameOnUtils.MyEncoder)|safe }};
+            self.EXPERT_LEVELS = {{ json.dumps(fixtures.EXPERT_LEVELS, cls=GameOnUtils.MyEncoder)|safe }};
             self.LEVELS = self.EASY_LEVELS
                     .concat(self.MEDIUM_LEVELS)
                     .concat(self.HARD_LEVELS)
@@ -132,7 +131,7 @@
                 }
                 return levelIdx
             };
-            self.LEARN_ENGLISH_LEVELS = {{ json.dumps(fixtures.LEARN_ENGLISH_LEVELS, cls=GameOnUtils.MyEncoder) }};
+            self.LEARN_ENGLISH_LEVELS = {{ json.dumps(fixtures.LEARN_ENGLISH_LEVELS, cls=GameOnUtils.MyEncoder)|safe }};
 
             return self;
         })();
@@ -141,16 +140,21 @@
 {%- endmacro %}
 
 
-{%- macro responsiveAd() %}
-{#    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>#}
-{#    <script>#}
-{#        (adsbygoogle = window.adsbygoogle || []).push({#}
-{#            google_ad_client: "ca-pub-4165561384932757",#}
-{#            enable_page_level_ads: true#}
-{#        });#}
-{#    </script>#}
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8598649123553748"
-            crossorigin="anonymous"></script>
+{%- macro adsenseHeaders() %}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8598649123553748" crossorigin="anonymous"></script>
+    <script>window.adsbygoogle = window.adsbygoogle || [];</script>
+{%- endmacro %}
+
+{%- macro responsiveAd(slot="7003733604") %}
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8598649123553748"
+         data-ad-slot="{{ slot }}"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 {%- endmacro %}
 
 {%- macro rollbar() %}

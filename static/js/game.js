@@ -1,12 +1,12 @@
-gameon.loadSound('theme', 'http://commondatastorage.googleapis.com/wordsmashing%2Fws-piano-theme2.mp3');
-gameon.loadSound('score', '/gameon/static/music/star.mp3');
-gameon.loadSound('win', '/gameon/static/music/winning-level.mp3');
-gameon.loadSound('moved', '/static/music/moved-letter.m4a');
-gameon.loadSound('moving', '/static/music/moving-letter.m4a');
+var S = window.STATIC_URL || '';
+gameon.loadSound('theme', 'https://commondatastorage.googleapis.com/wordsmashing%2Fws-piano-theme2.mp3');
+gameon.loadSound('score', S + '/gameon/static/music/star.mp3');
+gameon.loadSound('win', S + '/gameon/static/music/winning-level.mp3');
+gameon.loadSound('moved', S + '/static/music/moved-letter.m4a');
+gameon.loadSound('moving', S + '/static/music/moving-letter.m4a');
 
-//TODO move to fixtures.words
 words = {};
-jQuery.get('/static/js/american-english.txt', function (data) {
+jQuery.get(S + '/static/js/american-english.txt', function (data) {
     wordslist = data.split('\n');
     for (var i = 0; i < wordslist.length; i++) {
         words[wordslist[i]] = 1;

@@ -29,7 +29,7 @@
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
-	{% for key, level in learnenglishlevels.iteritems() %}
+	{% for key, level in learnenglishlevels.items() %}
 	<url>
 		<loc>http://www.wordsmashing.com/learn-english/{{ key }}</loc>
 		<changefreq>weekly</changefreq>

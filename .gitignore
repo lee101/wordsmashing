@@ -34,3 +34,5 @@ nosetests.xml
 .DS_Store
 sellerinfo.py
 static/js/templates.js
+wordsmashing.db
+monitors/monitor_site.log
