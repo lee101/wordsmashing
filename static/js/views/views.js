@@ -145,6 +145,12 @@
                 self.starBar2.render($html.find('.mm-starbar2'));
             }
             $html.find('.gameon-starbar__center-message').hide();
+            var shareText = self.level && self.level.is_multiplayer ?
+                'I just played a Word Smashing versus match. Think you can beat me?' :
+                'I scored ' + self.starBar.getScore() + ' points on Word Smashing' +
+                (self.level && self.level.difficulty ? ' (' + fixtures.difficultyIdToName(self.level.difficulty) + ' level ' + fixtures.getLevelIdx(self.level) + ')' : '') +
+                '. Can you beat me?';
+            $html.find('[data-share]').attr('data-share-text', shareText);
 
             var $button = $html.find('#mm-next-level');
             if (self.starBar.hasWon()) {

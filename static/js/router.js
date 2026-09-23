@@ -145,7 +145,6 @@
             $headerbody.html(APP.header.render().el);
         }
         $('#footerbody').html(APP.footer.render().el);
-        $.ajax({ url: 'http://platform.twitter.com/widgets.js', dataType: 'script', cache: true});
     };
 
 

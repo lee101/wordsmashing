@@ -13,7 +13,7 @@
 {%- endmacro %}
 
 {% macro cssheaders() -%}
-    <link type="text/css" rel="stylesheet" href="{{ static_url }}/static/css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="{{ static_url }}/static/css/style.css?v={{ static_v }}"/>
 {%- endmacro %}
 
 {% macro jsheaders() -%}
@@ -21,11 +21,11 @@
     <script type="text/javascript" src="{{ static_url }}/static/bower_components/backbone/backbone.js"></script>
     <script type="text/javascript" src="{{ static_url }}/static/bower_components/nunjucks/browser/nunjucks.js"></script>
 
-    <script type="text/javascript" src="{{ static_url }}/static/js/templates.js"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/js/router.js"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/js/evutils.js"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/js/views/views.js"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/js/game.js"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/templates.js?v={{ static_v }}"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/router.js?v={{ static_v }}"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/evutils.js?v={{ static_v }}"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/views/views.js?v={{ static_v }}"></script>
+    <script type="text/javascript" src="{{ static_url }}/static/js/game.js?v={{ static_v }}"></script>
 
     <script>
 

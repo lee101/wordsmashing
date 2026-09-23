@@ -13,6 +13,7 @@ import logging
 import fixtures
 from ws import ws
 from database import init_db
+from static_version import STATIC_V
 from gameon.gameon_routes import router as gameon_router
 
 class GameOnUtils:
@@ -58,6 +59,7 @@ def get_template_values(request: Request, **kwargs):
         'path': request.url.path,
         'urlencode': urllib.parse.quote_plus,
         'static_url': STATIC_URL,
+        'static_v': STATIC_V,
         **kwargs
     }
 

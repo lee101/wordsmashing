@@ -99,19 +99,6 @@
     if (intro && main && window.MutationObserver) {
         new MutationObserver(function () { intro.hidden = location.pathname !== '/'; }).observe(main, {childList: true});
     }
-    if (main && window.MutationObserver) {
-        new MutationObserver(function () {
-            var ctl = main.querySelector('.gameon-level-controls');
-            if (!ctl || main.querySelector('.vb-endshare')) return;
-            var sc = main.querySelector('.mm-starbar .gameon-starbar__score');
-            var n = sc ? parseInt(sc.textContent, 10) : NaN;
-            var box = d.createElement('p');
-            box.className = 'vb-share vb-endshare';
-            box.innerHTML = '<button type="button" class="vb-btn" data-share>Share my score</button> <button type="button" class="vb-btn vb-btn--ghost" data-copy>Copy link</button><span class="vb-toast" role="status" aria-live="polite"></span>';
-            box.firstChild.setAttribute('data-share-text', (isNaN(n) ? 'I just played Word Smashing' : 'I scored ' + n + ' points on Word Smashing') + '. Can you beat me?');
-            ctl.parentNode.insertBefore(box, ctl.nextSibling);
-        }).observe(main, {childList: true, subtree: true});
-    }
 })();
 </script>
 {%- endmacro %}
