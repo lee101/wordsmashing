@@ -143,6 +143,7 @@ async def buy(request: Request):
     return templates.TemplateResponse('templates/buy.jinja2', get_template_values(request))
 
 @app.get('/sitemap')
+@app.get('/sitemap.xml')
 async def sitemap(request: Request):
     content = templates.get_template('sitemap.xml').render(get_template_values(
         request,

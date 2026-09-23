@@ -1,0 +1,117 @@
+{% set site_url = 'https://' ~ request.url.netloc %}
+{% macro head() -%}
+    <link rel="canonical" href="{{ site_url }}{{ path if path != '/' else '/' }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ site_url }}/static/img/og-wordsmashing.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[
+      {"@type":"WebSite","name":"Word Smashing","url":"{{ site_url }}/"},
+      {"@type":["VideoGame","WebApplication"],"name":"Word Smashing","url":"{{ site_url }}/",
+       "description":"Free word puzzle game: move letter tiles to make words up, down, forwards and backwards before the board fills up.",
+       "image":"{{ site_url }}/static/img/og-wordsmashing.png","genre":["Word game","Puzzle"],
+       "gamePlatform":"Web browser","applicationCategory":"GameApplication","operatingSystem":"Any",
+       "playMode":["SinglePlayer","MultiPlayer"],"inLanguage":"en",
+       "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+       "publisher":{"@type":"Organization","name":"V5 Games","url":"https://v5games.com"}}
+    ]}
+    </script>
+    <style>
+        .btn.btn-success{background-color:#2d7a2d;border-color:#276b27}
+        .btn.btn-success:hover,.btn.btn-success:focus,.btn.btn-success:active{background-color:#236023;border-color:#1d521d}
+        #footerbody a{color:#1f5a8f}
+        #footerbody .footer__link{color:#555}
+        .google-anno-t{color:#1f5a8f!important}
+        main:has(.vb-endshare) .vb-wrap > .vb-share{display:none}
+        .vb-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+        .vb-wrap{max-width:720px;margin:0 auto;padding:0 16px;text-align:center;color:#333}
+        .vb-intro[hidden]{display:none}
+        .vb-intro h1{font-size:28px;margin:18px 0 6px;font-weight:700;color:#8e1b1b}
+        .vb-lead{font-size:17px;margin:0 0 12px}
+        .vb-howto{display:inline-block;text-align:left;margin:0 0 8px;padding-left:22px;font-size:15px;line-height:1.5}
+        .vb-share{margin:18px 0 8px}
+        .vb-share p{margin:0 0 8px;font-weight:600}
+        .vb-btn{display:inline-block;min-height:44px;padding:10px 20px;margin:4px;border-radius:22px;border:2px solid #8e1b1b;background:#8e1b1b;color:#fff;font-size:16px;font-weight:600;cursor:pointer}
+        .vb-btn--ghost{background:#fff;color:#8e1b1b}
+        .vb-toast{display:block;min-height:20px;font-size:14px;color:#1d521d}
+        .vb-more h2{font-size:20px;margin:18px 0 10px}
+        .vb-games{list-style:none;padding:0;margin:0 0 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+        .vb-games a{display:block;height:100%;padding:12px 14px;border-radius:10px;background:#fff;border:1px solid #ddd;color:#1f5a8f;font-weight:700;text-align:left;text-decoration:none}
+        .vb-games a:hover{border-color:#1f5a8f}
+        .vb-games span{display:block;font-weight:400;font-size:14px;color:#444;margin-top:2px}
+    </style>
+{%- endmacro %}
+
+{% macro body() -%}
+<div class="vb-wrap">
+    {% if path == '/' %}
+    <section class="vb-intro" id="vb-intro">
+        <h1>Word Smashing</h1>
+        <p class="vb-lead">A free word puzzle game. Hit <b>Play Now</b> to start in one tap.</p>
+        <ol class="vb-howto">
+            <li>Tap a letter, then tap an empty square to move it (it needs a clear path).</li>
+            <li>Line up 3+ letters to make words across, down, forwards or backwards.</li>
+            <li>3 new letters appear each turn. When the board fills up, it's game over.</li>
+        </ol>
+    </section>
+    {% else %}
+    <h1 class="vb-sr">Word Smashing</h1>
+    {% endif %}
+    <section class="vb-share" aria-label="Share">
+        <p>Think a friend can beat your score? Send them a challenge.</p>
+        <button type="button" class="vb-btn" data-share data-share-text="Play Word Smashing with me, a free word puzzle game. Can you beat my score?">Challenge a friend</button>
+        <button type="button" class="vb-btn vb-btn--ghost" data-copy>Copy link</button>
+        <span class="vb-toast" role="status" aria-live="polite"></span>
+    </section>
+    <section class="vb-more">
+        <h2>More free games</h2>
+        <ul class="vb-games">
+            <li><a href="https://addictingwordgames.com/?ref=wordsmashing">Addicting Word Games<span>More word puzzle games</span></a></li>
+            <li><a href="https://rewordgame.com/?ref=wordsmashing">reWord Game<span>Swap words until the sentence makes sense</span></a></li>
+            <li><a href="https://multiplicationmaster.com/?ref=wordsmashing">Multiplication Master<span>Times-tables maths game</span></a></li>
+            <li><a href="https://bigmultiplayerchess.com/?ref=wordsmashing">Big Multiplayer Chess<span>Chess for up to 6 players</span></a></li>
+            <li><a href="https://v5games.com/?ref=wordsmashing">V5 Games<span>AI text adventure games</span></a></li>
+        </ul>
+    </section>
+</div>
+<script>
+(function () {
+    var d = document;
+    function link(el) { return el.getAttribute('data-share-url') || location.origin + '/'; }
+    function say(el, m) {
+        var t = el.parentNode.querySelector('.vb-toast');
+        if (t) { t.textContent = m; setTimeout(function () { t.textContent = ''; }, 2500); }
+    }
+    function copy(el) {
+        var u = link(el);
+        var p = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(u) : Promise.reject();
+        p.then(function () { say(el, 'Link copied!'); }, function () { window.prompt('Copy this link', u); });
+    }
+    d.addEventListener('click', function (e) {
+        var el = e.target.closest && e.target.closest('[data-share],[data-copy]');
+        if (!el) return;
+        e.preventDefault();
+        if (el.hasAttribute('data-copy') || !navigator.share) return copy(el);
+        navigator.share({title: 'Word Smashing', text: el.getAttribute('data-share-text') || '', url: link(el)}).catch(function () {});
+    });
+    var intro = d.getElementById('vb-intro'), main = d.getElementById('mainbody');
+    if (intro && main && window.MutationObserver) {
+        new MutationObserver(function () { intro.hidden = location.pathname !== '/'; }).observe(main, {childList: true});
+    }
+    if (main && window.MutationObserver) {
+        new MutationObserver(function () {
+            var ctl = main.querySelector('.gameon-level-controls');
+            if (!ctl || main.querySelector('.vb-endshare')) return;
+            var sc = main.querySelector('.mm-starbar .gameon-starbar__score');
+            var n = sc ? parseInt(sc.textContent, 10) : NaN;
+            var box = d.createElement('p');
+            box.className = 'vb-share vb-endshare';
+            box.innerHTML = '<button type="button" class="vb-btn" data-share>Share my score</button> <button type="button" class="vb-btn vb-btn--ghost" data-copy>Copy link</button><span class="vb-toast" role="status" aria-live="polite"></span>';
+            box.firstChild.setAttribute('data-share-text', (isNaN(n) ? 'I just played Word Smashing' : 'I scored ' + n + ' points on Word Smashing') + '. Can you beat me?');
+            ctl.parentNode.insertBefore(box, ctl.nextSibling);
+        }).observe(main, {childList: true, subtree: true});
+    }
+})();
+</script>
+{%- endmacro %}

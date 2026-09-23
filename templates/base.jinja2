@@ -1,7 +1,8 @@
 {% import "gameon/templates/templates.jinja2" as gameon with context %}
 {% import "templates/macros.jinja2" as macros with context %}
+{% import "templates/growth.jinja2" as growth with context %}
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
 
@@ -9,6 +10,7 @@
     {% endblock %}
 
     {{ macros.headers() }}
+    {{ growth.head() }}
 
     {{ gameon.cssheaders() }}
     {{ macros.cssheaders() }}
@@ -49,11 +51,14 @@
         {% include "/templates/shared/header.jinja2" %}
     </div>
 
+    <main>
     <div id="mainbody">
         {% block mainbody %}
 
         {% endblock %}
     </div>
+    {{ growth.body() }}
+    </main>
 
     <div id="footerbody">
         {% include "/templates/shared/footer.jinja2" with context %}

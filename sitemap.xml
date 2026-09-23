@@ -1,58 +1,58 @@
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% set site_url = "https://" ~ request.url.netloc %}<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>http://www.wordsmashing.com</loc>
+		<loc>{{ site_url }}</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/versus</loc>
+		<loc>{{ site_url }}/versus</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/versus/1player</loc>
+		<loc>{{ site_url }}/versus/1player</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/versus/2player</loc>
+		<loc>{{ site_url }}/versus/2player</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/campaign</loc>
+		<loc>{{ site_url }}/campaign</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/learn-english</loc>
+		<loc>{{ site_url }}/learn-english</loc>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	{% for key, level in learnenglishlevels.items() %}
 	<url>
-		<loc>http://www.wordsmashing.com/learn-english/{{ key }}</loc>
+		<loc>{{ site_url }}/learn-english/{{ key }}</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0.8</priority>
 	</url>
 	{% endfor %}
 	<url>
-		<loc>http://www.wordsmashing.com/about</loc>
+		<loc>{{ site_url }}/about</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0.1</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/terms</loc>
+		<loc>{{ site_url }}/terms</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/privacy</loc>
+		<loc>{{ site_url }}/privacy</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
 	<url>
-		<loc>http://www.wordsmashing.com/contact</loc>
+		<loc>{{ site_url }}/contact</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
