@@ -16,36 +16,33 @@
     <link type="text/css" rel="stylesheet" href="{{ static_url }}/static/css/style.css?v={{ static_v }}"/>
 {%- endmacro %}
 
+{% macro th() -%}
+    <script>window.__thConfig={siteId:'thw_epy2vY-nmv09zJto3sjf6FVUShzX65fm'};window.th=window.th||function(){(window.th.q=window.th.q||[]).push(arguments)};</script>
+    <script async src="https://twohelixes.com/static/th.js"></script>
+{%- endmacro %}
+
+{% macro gameonjs() -%}
+    <script defer src="{{ static_url }}/gameon/static/js/jquery-1.9.1.min.js"></script>
+    <script defer src="{{ static_url }}/gameon/static/js/jquery.blockUI.js"></script>
+    <script defer src="{{ static_url }}/gameon/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script defer src="{{ static_url }}/gameon/static/js/lib/soundmanager/script/soundmanager2.js"></script>
+    <script defer src="{{ static_url }}/gameon/static/js/lib/loopj-jquery-simple-slider-fa64f59/js/simple-slider.min.js"></script>
+    <script defer src="{{ static_url }}/gameon/static/js/Queue.js"></script>
+    <script defer src="{{ static_url }}/gameon/static/js/utils.js"></script>
+    <script defer src="{{ static_url }}/gameon/static/js/wordutils.js"></script>
+    <script defer src="{{ static_url }}/gameon/static/js/gameon.js"></script>
+{%- endmacro %}
+
 {% macro jsheaders() -%}
-    <script type="text/javascript" src="{{ static_url }}/static/bower_components/underscore/underscore.js"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/bower_components/backbone/backbone.js"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/bower_components/nunjucks/browser/nunjucks.js"></script>
+    <script defer src="{{ static_url }}/static/bower_components/underscore/underscore.js"></script>
+    <script defer src="{{ static_url }}/static/bower_components/backbone/backbone.js"></script>
+    <script defer src="{{ static_url }}/static/bower_components/nunjucks/browser/nunjucks.js"></script>
 
-    <script type="text/javascript" src="{{ static_url }}/static/js/templates.js?v={{ static_v }}"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/js/router.js?v={{ static_v }}"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/js/evutils.js?v={{ static_v }}"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/js/views/views.js?v={{ static_v }}"></script>
-    <script type="text/javascript" src="{{ static_url }}/static/js/game.js?v={{ static_v }}"></script>
-
-    <script>
-
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-41301467-1', 'wordsmashing.com');
-        ga('send', 'pageview');
-
-    </script>
-
+    <script defer src="{{ static_url }}/static/js/templates.js?v={{ static_v }}"></script>
+    <script defer src="{{ static_url }}/static/js/router.js?v={{ static_v }}"></script>
+    <script defer src="{{ static_url }}/static/js/evutils.js?v={{ static_v }}"></script>
+    <script defer src="{{ static_url }}/static/js/views/views.js?v={{ static_v }}"></script>
+    <script defer src="{{ static_url }}/static/js/game.js?v={{ static_v }}"></script>
 {%- endmacro %}
 
 {% macro jsvars() -%}

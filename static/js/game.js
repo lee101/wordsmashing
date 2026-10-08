@@ -13,6 +13,14 @@ jQuery.get(S + '/static/js/american-english.txt', function (data) {
     }
 });
 
+function thGame(e, level, extra) {
+    var p = {game: 'wordsmashing', level: level.urlkey || (level.is_multiplayer ? 'versus' : level.id),
+        mode: level.urlkey ? 'learn-english' : (level.is_multiplayer ? (level.computer_blue_opponent ? 'versus-1player' : 'versus-2player') : 'campaign')};
+    if (level.difficulty && window.fixtures) p.difficulty = fixtures.difficultyIdToName(level.difficulty);
+    for (var k in extra) p[k] = extra[k];
+    try { window.th && window.th('track', e, p); } catch (x) {}
+}
+
 var wordsmashing = new (function () {
     "use strict";
     var self = {};
@@ -21,6 +29,7 @@ var wordsmashing = new (function () {
         var gameState = {};
 
         function construct() {
+            thGame('game_started', level);
             gameon.pauseAll();
             gameon.loopSound("theme");
 
@@ -1048,6 +1057,10 @@ var wordsmashing = new (function () {
 
 
             endSelf.gameOver = function () {
+                if (!gameState.thDone) {
+                    gameState.thDone = true;
+                    thGame('game_completed', level, {score: gameState.starBar.getScore(), stars: gameState.starBar.numStars, won: !!gameState.starBar.hasWon()});
+                }
                 if ($.isNumeric(level.id)) {
                     gameon.getUser(function (user) {
                         user.saveScore(level.id, gameState.starBar.getScore());
