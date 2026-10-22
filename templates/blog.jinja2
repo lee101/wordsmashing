@@ -1,0 +1,32 @@
+{% extends 'templates/base.jinja2' %}
+
+{% block headers %}
+    {% set title = 'Word Smashing Blog: Puzzle Tips and Vocabulary Ideas' -%}
+    {% set description = 'Tips for Word Smashing players: board strategy, themed vocabulary practice and spelling pattern ideas, with links to play free.' -%}
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ description }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:url" content="https://{{ request.url.netloc }}{{ path }}">
+    <meta property="og:image" content="https://{{ request.url.netloc }}/static/img/og-wordsmashing.png">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Word Smashing">
+    <script type="application/ld+json">{{ blog_ld|safe }}</script>
+    {% include "templates/blog-style.jinja2" %}
+{% endblock %}
+
+{% block mainbody %}
+<div class="wsb">
+    <h1>Word Smashing Blog</h1>
+    <p class="wsb-lead">Friendly tips for getting more from every board.</p>
+    {% for p in posts %}
+    <article class="wsb-card">
+        <h2><a data-bypass="1" href="/blog/{{ p.slug }}">{{ p.title }}</a></h2>
+        <p>{{ p.summary }}</p>
+        <a class="wsb-more" data-bypass="1" href="/blog/{{ p.slug }}">Read the post</a>
+    </article>
+    {% endfor %}
+    <p class="wsb-cta"><a class="btn btn-success btn-lg" data-bypass="1" href="/campaign">Play Word Smashing free</a></p>
+</div>
+{% endblock %}

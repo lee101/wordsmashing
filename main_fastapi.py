@@ -4,13 +4,15 @@ import os
 import json
 import urllib.parse
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from starlette.routing import Match
 import logging
 
 import fixtures
+import blog
 from ws import ws
 from database import init_db
 from static_version import STATIC_V
@@ -27,6 +29,18 @@ FACEBOOK_APP_ID = "138831849632195"
 FACEBOOK_APP_SECRET = "93986c9cdd240540f70efaea56a9e3f2"
 
 app = FastAPI()
+
+from fastapi.responses import RedirectResponse as _Redir
+
+@app.middleware("http")
+async def legacy_domain_redirect(request, call_next):
+    host = request.headers.get("host", "").split(":")[0].lower()
+    if host == "wordsmashing.com" or host == "www.wordsmashing.com":
+        url = "https://wordsmashing.v5games.com" + request.url.path
+        if request.url.query:
+            url += "?" + request.url.query
+        return _Redir(url, status_code=301)
+    return await call_next(request)
 templates = Jinja2Templates(directory=".")
 
 @app.middleware("http")
@@ -45,6 +59,8 @@ app.mount("/gameon/static", StaticFiles(directory="gameon/static"), name="gameon
 app.include_router(gameon_router)
 
 STATIC_URL = '' if ws.debug else 'https://wordsmashingstatic.wordsmashing.com'
+
+ROBOTS_TXT = 'User-agent: *\nDisallow:\nSitemap: /sitemap\n'
 
 def get_template_values(request: Request, **kwargs):
     return {
@@ -128,10 +144,13 @@ async def learn_english(request: Request, noads: bool = True):
 async def english_level(request: Request, urlkey: str, noads: bool = False):
     if urlkey == 'undefined':
         return RedirectResponse('/learn-english/girls-names')
+    level = fixtures.LEARN_ENGLISH_LEVELS.get(urlkey)
+    if level is None:
+        raise HTTPException(status_code=404, detail='Unknown level')
     return templates.TemplateResponse('templates/learn-english-level.jinja2', get_template_values(
         request,
         noads=noads,
-        level=fixtures.LEARN_ENGLISH_LEVELS[urlkey],
+        level=level,
         urlkey=urlkey
     ))
 
@@ -139,6 +158,30 @@ async def english_level(request: Request, urlkey: str, noads: bool = False):
 @app.get('/campaign/{subpath:path}', response_class=HTMLResponse)
 async def campaign(request: Request, subpath: str = None, noads: bool = True):
     return templates.TemplateResponse('templates/campaign.jinja2', get_template_values(request, noads=noads))
+
+@app.get('/blog', response_class=HTMLResponse)
+async def blog_index(request: Request):
+    base = f"https://{request.url.netloc}"
+    ld = {"@context": "https://schema.org", "@type": "Blog", "name": "Word Smashing Blog", "url": base + "/blog",
+          "publisher": {"@type": "Organization", "name": "V5 Games", "url": "https://v5games.com"},
+          "blogPost": [{"@type": "BlogPosting", "headline": x["title"], "url": f"{base}/blog/{x['slug']}"} for x in blog.POSTS]}
+    return templates.TemplateResponse('templates/blog.jinja2', get_template_values(
+        request, noads=True, posts=blog.POSTS, blog_ld=json.dumps(ld).replace('</', '<\\/')))
+
+@app.get('/blog/{slug}', response_class=HTMLResponse)
+async def blog_post(request: Request, slug: str):
+    post = blog.BY_SLUG.get(slug)
+    if post is None:
+        raise HTTPException(status_code=404, detail='Not Found')
+    base = f"https://{request.url.netloc}"
+    ld = {"@context": "https://schema.org", "@type": "Article", "headline": post["title"], "description": post["description"],
+          "datePublished": blog.DATE, "dateModified": blog.DATE, "inLanguage": "en",
+          "image": base + "/static/img/og-wordsmashing.png",
+          "mainEntityOfPage": f"{base}/blog/{slug}",
+          "author": {"@type": "Organization", "name": "V5 Games", "url": "https://v5games.com"},
+          "publisher": {"@type": "Organization", "name": "V5 Games", "url": "https://v5games.com"}}
+    return templates.TemplateResponse('templates/blog-post.jinja2', get_template_values(
+        request, noads=True, post=post, posts=blog.POSTS, date=blog.DATE, article_ld=json.dumps(ld).replace('</', '<\\/')))
 
 @app.get('/buy', response_class=HTMLResponse)
 async def buy(request: Request):
@@ -149,7 +192,9 @@ async def buy(request: Request):
 async def sitemap(request: Request):
     content = templates.get_template('sitemap.xml').render(get_template_values(
         request,
-        learnenglishlevels=fixtures.LEARN_ENGLISH_LEVELS
+        learnenglishlevels=fixtures.LEARN_ENGLISH_LEVELS,
+        blog_posts=blog.POSTS,
+        lastmod=blog.DATE
     ))
     return Response(content=content, media_type='text/xml')
 
@@ -158,9 +203,22 @@ async def manifest_webapp():
     with open('manifest/manifest.json', 'r') as f:
         return Response(content=f.read(), media_type='application/json')
 
+@app.get('/robots.txt')
+async def robots_txt(request: Request):
+    return Response(content=ROBOTS_TXT.replace('Sitemap: /sitemap', f'Sitemap: https://{request.url.netloc}/sitemap.xml'), media_type='text/plain')
+
+
+def route_exists(path: str) -> bool:
+    scope = {'type': 'http', 'path': path, 'method': 'GET'}
+    return any(route.matches(scope)[0] == Match.FULL for route in app.router.routes)
+
+
 @app.get('/{url:path}/')
 async def remove_trailing_slash(url: str):
-    return RedirectResponse(url=f'/{url}')
+    target = f'/{url}'
+    if not route_exists(target):
+        raise HTTPException(status_code=404, detail='Not Found')
+    return RedirectResponse(url=target)
 
 if __name__ == '__main__':
     import uvicorn

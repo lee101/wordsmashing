@@ -1,59 +1,82 @@
 {% set site_url = "https://" ~ request.url.netloc %}<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>{{ site_url }}</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
 		<loc>{{ site_url }}/versus</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
 		<loc>{{ site_url }}/versus/1player</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
 		<loc>{{ site_url }}/versus/2player</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
 		<loc>{{ site_url }}/campaign</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	<url>
 		<loc>{{ site_url }}/learn-english</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>1</priority>
 	</url>
 	{% for key, level in learnenglishlevels.items() %}
 	<url>
 		<loc>{{ site_url }}/learn-english/{{ key }}</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>0.8</priority>
 	</url>
 	{% endfor %}
 	<url>
 		<loc>{{ site_url }}/about</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>0.1</priority>
 	</url>
 	<url>
 		<loc>{{ site_url }}/terms</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
 	<url>
 		<loc>{{ site_url }}/privacy</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
 	<url>
 		<loc>{{ site_url }}/contact</loc>
+		<lastmod>{{ lastmod }}</lastmod>
 		<changefreq>weekly</changefreq>
 		<priority>0</priority>
 	</url>
-</urlset>
+	<url>
+		<loc>{{ site_url }}/blog</loc>
+		<lastmod>{{ lastmod }}</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>0.8</priority>
+	</url>
+	{% for p in blog_posts %}<url>
+		<loc>{{ site_url }}/blog/{{ p.slug }}</loc>
+		<lastmod>{{ lastmod }}</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.7</priority>
+	</url>
+	{% endfor %}</urlset>

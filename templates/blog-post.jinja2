@@ -1,0 +1,33 @@
+{% extends 'templates/base.jinja2' %}
+
+{% block headers %}
+    <meta charset="utf-8">
+    <title>{{ post.title }}</title>
+    <meta name="description" content="{{ post.description }}">
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:url" content="https://{{ request.url.netloc }}{{ path }}">
+    <meta property="og:image" content="https://{{ request.url.netloc }}/static/img/og-wordsmashing.png">
+    <meta property="og:description" content="{{ post.description }}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Word Smashing">
+    <meta property="article:published_time" content="{{ date }}">
+    <script type="application/ld+json">{{ article_ld|safe }}</script>
+    {% include "templates/blog-style.jinja2" %}
+{% endblock %}
+
+{% block mainbody %}
+<div class="wsb">
+    <p class="wsb-crumb"><a data-bypass="1" href="/blog">Blog</a></p>
+    <h1>{{ post.title }}</h1>
+    <p class="wsb-date">Published {{ date }}</p>
+    {{ post.body|safe }}
+    <p class="wsb-cta"><a class="btn btn-success btn-lg" data-bypass="1" href="/campaign">Play Word Smashing free</a>
+    <a class="btn btn-default btn-lg" data-bypass="1" href="/learn-english">Learn English levels</a></p>
+    <h2>More from the blog</h2>
+    <ul>
+    {% for p in posts if p.slug != post.slug %}
+        <li><a data-bypass="1" href="/blog/{{ p.slug }}">{{ p.title }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}
